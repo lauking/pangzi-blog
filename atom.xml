@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.haozi520.com/"/>
-  <updated>2014-05-26T06:21:56.580Z</updated>
+  <updated>2014-05-26T08:39:07.325Z</updated>
   <id>http://www.haozi520.com/</id>
   
   <author>
@@ -13,6 +13,45 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[php在linux中利用exec执行shell脚本]]></title>
+    <link href="http://www.haozi520.com/2014/05/26/php-exec-linux-shell/"/>
+    <id>http://www.haozi520.com/2014/05/26/php-exec-linux-shell/</id>
+    <published>2014-05-26T07:42:12.000Z</published>
+    <updated>2014-05-26T08:38:28.000Z</updated>
+    <content type="html"><![CDATA[<p>今天刚好看到php在linux中利用exec方法执行shell脚本的blog，觉得很有意思，就想能不能写一个程序定时去检测某个服务是否还在跑，如果服务已挂则执行重启脚本。</p>
+<p>现在使用jetty容器来模拟。</p>
+<h3 id="编写重启已挂服务的shell脚本">编写重启已挂服务的shell脚本</h3>
+<pre>
+cd $1 //执行程序的目录
+ps -ef |grep start.jar |grep -v grep |cut -c 9-15 |xargs kill -s 9
+java -jar -Xmx768m -Xms512m $1/start.jar >/dev/null 2>&1 &
+</pre>
+脚本编写后放在jetty的根目录下,保存文件名为runjetty.sh,并执行以下命令使其成为可执行文件
+<pre>
+chmod 775 runjetty.sh
+</pre>
+
+<h3 id="编写php脚本">编写php脚本</h3>
+<p>新建TestServer.php文件，在&lt;?php和?&gt;中加入以下代码：</p>
+<p><pre><br>$flag=0;<br>try{<br>    $ch = curl_init();<br>    $url=”<a href="http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162" target="_blank">http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162</a>“;<br>    curl_setopt($ch, CURLOPT_URL, $url);<br>    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br>    curl_setopt($ch, CURLOPT_HEADER, 0);<br>    $output = curl_exec($ch);<br>    curl_close($ch);<br>    if(empty($output)){<br>        $flag=1;<br>    }else{<br>        echo $output;<br>        if(strpos($output,”ip=117.135.139.162”)&gt;0){<br>            $flag=0;<br>        }else{<br>            $flag=1;<br>        }<br>    }<br>}catch(Exception $e){<br>    $flag=1;<br>    echo $e;<br>}<br>if($flag){<br>   $ecommand=”/data/soft/jetty/runjetty.sh /data/soft/jetty”;<br>   exec($ecommand,$output,$result);<br>   if($result!=0){<br>    exec($ecommand,$output,$result);<br>   }<br>}<br></pre></p>
+<h3 id="运行php脚本">运行php脚本</h3>
+<p>首先我们确认jetty服务是否启动<br>在console上运行</p>
+<p><pre><br>ps -ef | grep start.jar<br></pre><br>输出如下结果则说明服务是启动：<br><img src="http://haozi520.u.qiniudn.com/20140526162811.png" alt="已启动jetty服务"><br>我们修改TestServer.php文件中的url请求地址，修改成服务中没有的接口。例如<br>$url=”<a href="http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：" target="_blank">http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：</a></p>
+<p><pre><br>php TestServer.php<br></pre><br>执行结束后，查看jetty进程号是否改变<br><img src="http://haozi520.u.qiniudn.com/20140526163403.png" alt="查看进程是否改变"><br>我们发现进程号发生了变化，说明我们的php脚本执行shell是成功的。</p>
+]]></content>
+    
+    
+      <category term="php" scheme="http://www.haozi520.com/tags/php/"/>
+    
+      <category term="shell" scheme="http://www.haozi520.com/tags/shell/"/>
+    
+      <category term="linux" scheme="http://www.haozi520.com/tags/linux/"/>
+    
+      <category term="php,linux" scheme="http://www.haozi520.com/categories/php,linux/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[nodejs for windows 环境搭建]]></title>
