@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[胖浩网]]></title>
+  
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://www.haozi520.com/"/>
+  <updated>2014-05-26T06:21:56.580Z</updated>
+  <id>http://www.haozi520.com/</id>
+  
+  <author>
+    <name><![CDATA[lauking]]></name>
+    <email><![CDATA[lauking1001@163.com]]></email>
+  </author>
+  
+  <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[nodejs for windows 环境搭建]]></title>
+    <link href="http://www.haozi520.com/2014/05/23/nodejs-for-windows-bulding/"/>
+    <id>http://www.haozi520.com/2014/05/23/nodejs-for-windows-bulding/</id>
+    <published>2014-05-23T10:06:12.000Z</published>
+    <updated>2014-05-26T06:20:42.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="下载">下载</h3>
+<p>登录nodejs.org的<a href="http://nodejs.org/" target="_blank">官网</a>可以下载到最新版本的安装包<br><img src="http://haozi520.u.qiniudn.com/20140526132719.png" alt="1.下载nodejs安装包"></p>
+<h3 id="安装并设置环境变量">安装并设置环境变量</h3>
+<p>我的电脑是32位的所以下载到的安装包是<em>node-v0.10.28-x86.msi</em>，双击<br>这个msi文件，会自动运行安装，在选在安装目录时选择自己需要的目录安装，默认安装在C:\Program Files\nodejs下面,程序安装结束后会自动设定系统环境变量PATH<br><img src="http://haozi520.u.qiniudn.com/20140526135740.png" alt="2.自动设置环境变量"></p>
+<h3 id="检查安装是否成功">检查安装是否成功</h3>
+<p>进入CDM窗口，输入node -v：</p>
+<pre>node -v</pre>
+
+<p>输出：v0.10.28,说明nodejs安装成功<br>输入npm -v，检查npm是否安装，一般都是被一起安装到nodejs目录下</p>
+<pre>npm -v</pre>
+输出：1.4.9，说明npm安装成功
+
+### 测试
+随便一个目录创建一个js文件，例如hello.js,编写如下代码
+<pre>console.log("hello,world!");</pre>
+在CMD窗口中进入hello.js文件目录，运行node hello.js
+<pre>
+>node hello.js
+ hello,world!
+ </pre>
+
+<h3 id="附带整理">附带整理</h3>
+<p>如果要安装别的模块可以在工程目录下运行：</p>
+<pre> 
+ npm install express //安装在当前目录
+ npm install express -g //安装在系统下
+</pre>
+
+
+]]></content>
+    
+    
+      <category term="nodejs" scheme="http://www.haozi520.com/tags/nodejs/"/>
+    
+      <category term="window" scheme="http://www.haozi520.com/tags/window/"/>
+    
+      <category term="node环境" scheme="http://www.haozi520.com/tags/node%E7%8E%AF%E5%A2%83/"/>
+    
+      <category term="nodejs" scheme="http://www.haozi520.com/categories/nodejs/"/>
+    
+  </entry>
+  
+</feed>
