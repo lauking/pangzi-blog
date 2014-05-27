@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.haozi520.com/"/>
-  <updated>2014-05-26T08:39:07.325Z</updated>
+  <updated>2014-05-27T10:21:29.533Z</updated>
   <id>http://www.haozi520.com/</id>
   
   <author>
@@ -15,11 +15,41 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[用nodejs对数据进行加密]]></title>
+    <link href="http://www.haozi520.com/2014/05/27/nodejs-Crypto-for-DES-MD5/"/>
+    <id>http://www.haozi520.com/2014/05/27/nodejs-Crypto-for-DES-MD5/</id>
+    <published>2014-05-27T10:18:12.000Z</published>
+    <updated>2014-05-27T10:20:19.000Z</updated>
+    <content type="html"><![CDATA[<p>在使用nodejs加解密的时候 有时候不知道有没有自己要用的加密方式<br>使用如下代码<br>require(‘crypto’).getHashes()<br>可以知道支持的那些哈希算法<br>或者<br> require(‘crypto’).getCiphers()<br>可以知道支持的那些非哈希算法</p>
+<h3 id="MD5加密算法使用">MD5加密算法使用</h3>
+<p>代码如下</p>
+<p><pre><br>var  MD5=function (data) {<br>   var _encrymd5 = require(‘crypto’).createHash(‘md5’);<br>   _encrymd5.update(data);<br>   return _encrymd5.digest(‘hex’);<br>}<br></pre><br>因为md5是哈希算法 ,一般哈希算法都是不可逆的吧<br>-用CreateHash创建一个对象<br>-用update来加密<br>-用digest来输出结果<br>-参数是输出的编码格式</p>
+<h3 id="DES加解密算法使用">DES加解密算法使用</h3>
+<p>因为DES不是哈希所以加密用createCipheriv解密用createDecipheriv的方法<br>代码如下：</p>
+<p><pre><br> var cipheriv = function (en, code, data) {<br>      var buf1 = en.update(data, code), buf2 = en.final();<br>      var r = new Buffer(buf1.length + buf2.length);<br>      buf1.copy(r); buf2.copy(r, buf1.length);<br>      return r;<br>};<br>var  EncryptDES=function (data, key, vi) {<br>      return data = cipheriv(_crypto.createCipheriv(‘des’, key, vi), ‘utf8’, data).toString(‘base64’);<br>};<br>var DecryptDES: function (data, key, vi) {<br>     return cipheriv(_crypto.createDecipheriv(‘des’, key, vi), ‘base64’, data) .toString(‘utf8’);<br>};<br></pre><br>因为都有加解密来填充和输出串,所以写一个公共的方法<br>-data是加解密的数据<br>-key是密钥<br>-vi是密钥向量<br>-EncryptDES是加密<br>-DecryptDES是解密</p>
+]]></content>
+    
+    
+      <category term="nodejs" scheme="http://www.haozi520.com/tags/nodejs/"/>
+    
+      <category term="md5" scheme="http://www.haozi520.com/tags/md5/"/>
+    
+      <category term="des" scheme="http://www.haozi520.com/tags/des/"/>
+    
+      <category term="加密" scheme="http://www.haozi520.com/tags/%E5%8A%A0%E5%AF%86/"/>
+    
+      <category term="解密" scheme="http://www.haozi520.com/tags/%E8%A7%A3%E5%AF%86/"/>
+    
+      <category term="nodejs" scheme="http://www.haozi520.com/categories/nodejs/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[php在linux中利用exec执行shell脚本]]></title>
     <link href="http://www.haozi520.com/2014/05/26/php-exec-linux-shell/"/>
     <id>http://www.haozi520.com/2014/05/26/php-exec-linux-shell/</id>
     <published>2014-05-26T07:42:12.000Z</published>
-    <updated>2014-05-26T08:38:28.000Z</updated>
+    <updated>2014-05-27T10:21:03.000Z</updated>
     <content type="html"><![CDATA[<p>今天刚好看到php在linux中利用exec方法执行shell脚本的blog，觉得很有意思，就想能不能写一个程序定时去检测某个服务是否还在跑，如果服务已挂则执行重启脚本。</p>
 <p>现在使用jetty容器来模拟。</p>
 <h3 id="编写重启已挂服务的shell脚本">编写重启已挂服务的shell脚本</h3>
@@ -49,7 +79,7 @@ chmod 775 runjetty.sh
     
       <category term="linux" scheme="http://www.haozi520.com/tags/linux/"/>
     
-      <category term="php,linux" scheme="http://www.haozi520.com/categories/php,linux/"/>
+      <category term="php" scheme="http://www.haozi520.com/categories/php/"/>
     
   </entry>
   
@@ -58,7 +88,7 @@ chmod 775 runjetty.sh
     <link href="http://www.haozi520.com/2014/05/23/nodejs-for-windows-bulding/"/>
     <id>http://www.haozi520.com/2014/05/23/nodejs-for-windows-bulding/</id>
     <published>2014-05-23T10:06:12.000Z</published>
-    <updated>2014-05-26T06:20:42.000Z</updated>
+    <updated>2014-05-27T10:10:02.000Z</updated>
     <content type="html"><![CDATA[<h3 id="下载">下载</h3>
 <p>登录nodejs.org的<a href="http://nodejs.org/" target="_blank">官网</a>可以下载到最新版本的安装包<br><img src="http://haozi520.u.qiniudn.com/20140526132719.png" alt="1.下载nodejs安装包"></p>
 <h3 id="安装并设置环境变量">安装并设置环境变量</h3>

@@ -1,1 +1,1 @@
-[{"title":"nodejs for windows 环境搭建","uri":"2014/05/23/nodejs-for-windows-bulding/"},{"title":"php在linux中利用exec执行shell脚本","uri":"2014/05/26/php-exec-linux-shell/"}]
+[{"title":"用nodejs对数据进行加密","uri":"2014/05/27/nodejs-Crypto-for-DES-MD5/"},{"title":"nodejs for windows 环境搭建","uri":"2014/05/23/nodejs-for-windows-bulding/"},{"title":"php在linux中利用exec执行shell脚本","uri":"2014/05/26/php-exec-linux-shell/"}]
