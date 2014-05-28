@@ -7,15 +7,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>md5 | 胖浩网</title>
+<title>MySQL复制表结构及数据SQL语句 | 胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="java、php、node、go、javascript、css、mysql、linux的点滴">
+<meta name="description" content="胖浩网，MySQL复制表结构及数据SQL语句">
 
-
+<meta name="keywords" content="mysql,表数据,表结构,复制,胖浩网">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-
+<meta property="og:title" content="MySQL复制表结构及数据SQL语句"/>
 <meta property="og:site_name" content="胖浩网"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -86,48 +86,79 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><h2 class="archive-title tag">md5</h2>
-
-
-  
-    <article>
+          <div id="wrapper"><article>
 <div id="post" class="post well">
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">用nodejs对数据进行加密</a></h1>
+      <h1 class="title">MySQL复制表结构及数据SQL语句</h1>
       
-        <span>发表于<time datetime="2014-05-27T10:18:12.000Z"> <a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">5月 27 2014</a></time></span>      
+        <span>发表于<time datetime="2014-05-08T02:23:12.000Z"> <a href="/2014/05/08/mysql-copy-struct-data-sql/">5月 8 2014</a></time></span>      
     </header>
     
-    
+    <section id='before_content_widget'></section>
     <div class="entry">
       
-        <p>在使用nodejs加解密的时候 有时候不知道有没有自己要用的加密方式<br>使用如下代码<br>require(‘crypto’).getHashes()<br>可以知道支持的那些哈希算法<br>或者<br> require(‘crypto’).getCiphers()<br>可以知道支持的那些非哈希算法</p>
-<h3 id="MD5加密算法使用">MD5加密算法使用</h3>
-<p>代码如下</p>
-<p><pre><br>var  MD5=function (data) {<br>   var _encrymd5 = require(‘crypto’).createHash(‘md5’);<br>   _encrymd5.update(data);<br>   return _encrymd5.digest(‘hex’);<br>}<br></pre><br>因为md5是哈希算法 ,一般哈希算法都是不可逆的吧<br>-用CreateHash创建一个对象<br>-用update来加密<br>-用digest来输出结果<br>-参数是输出的编码格式</p>
-<h3 id="DES加解密算法使用">DES加解密算法使用</h3>
-<p>因为DES不是哈希所以加密用createCipheriv解密用createDecipheriv的方法<br>代码如下：</p>
-<p><pre><br> var cipheriv = function (en, code, data) {<br>      var buf1 = en.update(data, code), buf2 = en.final();<br>      var r = new Buffer(buf1.length + buf2.length);<br>      buf1.copy(r); buf2.copy(r, buf1.length);<br>      return r;<br>};<br>var  EncryptDES=function (data, key, vi) {<br>      return data = cipheriv(_crypto.createCipheriv(‘des’, key, vi), ‘utf8’, data).toString(‘base64’);<br>};<br>var DecryptDES: function (data, key, vi) {<br>     return cipheriv(_crypto.createDecipheriv(‘des’, key, vi), ‘base64’, data) .toString(‘utf8’);<br>};<br></pre><br>因为都有加解密来填充和输出串,所以写一个公共的方法<br>-data是加解密的数据<br>-key是密钥<br>-vi是密钥向量<br>-EncryptDES是加密<br>-DecryptDES是解密</p>
+        <p>对大数据取样操作时避免不了对一张大表数据取出一小部分数据进行分析，这样操作不但能节省时间而且能快速查询获取结果。  复制表结构和符合条件的数据到临时表就是很好的方案，下面介绍MySQL复制表结构及数据SQL语句</p>
+<h3 id="复制表结构及数据到新表">复制表结构及数据到新表</h3>
+<p>CREATE TABLE 新表SELECT * FROM 旧表<br>这种方法会将oldtable中所有的内容都拷贝过来，当然我们可以用delete from newtable;来删除。<br>不过这种方法的一个最不好的地方就是新表中没有了旧表的primary key、Extra（auto_increment）等属性。需要自己用&quot;alter&quot;添加，而且容易搞错。</p>
+<h3 id="只复制表结构到新表">只复制表结构到新表</h3>
+<p>CREATE TABLE 新表SELECT * FROM 旧表WHERE 1=2<br>或CREATE TABLE 新表LIKE 旧表</p>
+<h3 id="复制旧表的数据到新表(假设两个表结构一样)">复制旧表的数据到新表(假设两个表结构一样)</h3>
+<p>INSERT INTO 新表SELECT * FROM 旧表</p>
+<h3 id="复制旧表的数据到新表(假设两个表结构不一样)">复制旧表的数据到新表(假设两个表结构不一样)</h3>
+<p>INSERT INTO 新表(字段1,字段2,…….) SELECT 字段1,字段2,…… FROM 旧表</p>
+<h3 id="可以将表1结构复制到表2">可以将表1结构复制到表2</h3>
+<p>SELECT * INTO 表2 FROM 表1 WHERE 1=2</p>
+<h3 id="可以将表1内容全部复制到表2">可以将表1内容全部复制到表2</h3>
+<p>SELECT * INTO 表2 FROM 表1</p>
+<h3 id="show_create_table_旧表">show create table 旧表</h3>
+<p>这样会将旧表的创建命令列出。我们只需要将该命令拷贝出来，更改table的名字，就可以建立一个完全一样的表</p>
+<h3 id="mysqldump">mysqldump</h3>
+<p>用mysqldump将表dump出来，改名字后再导回去或者直接在命令行中运行</p>
 
       
     </div>
-    
-    
-      
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
     
     
         <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/nodejs/" itemprop="url"><span itemprop="title" >nodejs</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nodejs/" class="label label-primary" itemprop="url"><span itemprop="title">nodejs</span></a><a href="/tags/md5/" class="label label-success" itemprop="url"><span itemprop="title">md5</span></a><a href="/tags/des/" class="label label-info" itemprop="url"><span itemprop="title">des</span></a><a href="/tags/加密/" class="label label-warning" itemprop="url"><span itemprop="title">加密</span></a><a href="/tags/解密/" class="label label-primary" itemprop="url"><span itemprop="title">解密</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:20:19"datetime="2014-05-27 18:20:19"> 5月 27 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/05/27/nodejs-Crypto-for-DES-MD5/#comments" id="uyan_count_unit" su="nodejs-Crypto-for-DES-MD5">暂无评论</a>
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/mysql/" itemprop="url"><span itemprop="title" >mysql</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/mysql/" class="label label-primary" itemprop="url"><span itemprop="title">mysql</span></a><a href="/tags/表数据/" class="label label-success" itemprop="url"><span itemprop="title">表数据</span></a><a href="/tags/表结构/" class="label label-info" itemprop="url"><span itemprop="title">表结构</span></a></span> | <span class="time">最近更新:<time title="2014-05-28 16:57:15"datetime="2014-05-28 16:57:15"> 5月 28 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/08/mysql-copy-struct-data-sql/#comments" id="uyan_count_unit" su="mysql-copy-struct-data-sql">暂无评论</a>
 </span>
         </footer>
     
     <div class="clearfix"></div>
   </div>
 </div>
-</article></div><!--wapper-->
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/05/23/nodejs-for-windows-bulding/" title="nodejs for windows 环境搭建">&larr; nodejs for windows 环境搭建</a></li>
+  
+  
+  <li class="next"><a href="/2014/05/05/sql-replace-update/" title="sql中使用replace函数用于update语句">sql中使用replace函数用于update语句 &rarr;</a></li>
+  
+</ul></div><div class="widget" id="widget_after_post_related_posts>">
+<ul class="list-group"><li class="list-group-item"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></li><li class="list-group-item"><a href="/2014/05/05/sql-replace-update/">sql中使用replace函数用于update语句</a></li></ul></div></section>    
+	<div id="comments">
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<!-- UY END -->
+
+</div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_search" class="widget panel panel-primary">
@@ -192,7 +223,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-05-28 17:14:09</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-05-28 16:57:15</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -237,14 +268,27 @@ _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>    
             <script type="text/javascript">
 var uyan_config={
-     'url':'http://www.haozi520.com/tags/md5/',
-'su':'nodejs-Crypto-for-DES-MD5'
+     'url':'http://www.haozi520.com/2014/05/08/mysql-copy-struct-data-sql/',
+'su':'mysql-copy-struct-data-sql'
 };
 _js2load.push({src:'http://v2.uyan.cc/code/uyan.js?uid=1899918'});
 </script>
 
     
             <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://www.haozi520.com/2014/05/08/mysql-copy-struct-data-sql/";
+    var wumiiTitle = "MySQL复制表结构及数据SQL语句";
+    var wumiiTags = "mysql,表数据,表结构";
+    var wumiiCategories = ["mysql"];
+    var wumiiSitePrefix = "http://www.haozi520.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
     
             
 <script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
