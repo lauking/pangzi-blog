@@ -7,10 +7,13 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>des | 胖浩网</title>
+<title>胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="java、php、node、go、javascript、css、mysql、linux的点滴">
+<meta name="description" content="title: 老板的眼泪，你懂吗？date: 2014-05-29 09:40:12tags:
+
+创业
+工作categories: 创业keywords:胖浩网，老板的眼泪，你懂吗？献给伟大的老板和正在抱怨的员工？description: 胖浩网，老板的眼泪，你懂吗？献给伟大的老板和正在抱怨的员工？">
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -86,48 +89,68 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><h2 class="archive-title tag">des</h2>
-
-
-  
-    <article>
+          <div id="wrapper"><article>
 <div id="post" class="post well">
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">用nodejs对数据进行加密</a></h1>
+      <h1 class="title"></h1>
       
-        <span>发表于<time datetime="2014-05-27T10:18:12.000Z"> <a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">5月 27 2014</a></time></span>      
+        <span>发表于<time datetime="2014-05-29T01:40:25.000Z"> <a href="/2014/05/29/老板的眼泪/">5月 29 2014</a></time></span>      
     </header>
     
-    
+    <section id='before_content_widget'></section>
     <div class="entry">
       
-        <p>在使用nodejs加解密的时候 有时候不知道有没有自己要用的加密方式<br>使用如下代码<br>require(‘crypto’).getHashes()<br>可以知道支持的那些哈希算法<br>或者<br> require(‘crypto’).getCiphers()<br>可以知道支持的那些非哈希算法</p>
-<h3 id="MD5加密算法使用">MD5加密算法使用</h3>
-<p>代码如下</p>
-<p><pre><br>var  MD5=function (data) {<br>   var _encrymd5 = require(‘crypto’).createHash(‘md5’);<br>   _encrymd5.update(data);<br>   return _encrymd5.digest(‘hex’);<br>}<br></pre><br>因为md5是哈希算法 ,一般哈希算法都是不可逆的吧<br>-用CreateHash创建一个对象<br>-用update来加密<br>-用digest来输出结果<br>-参数是输出的编码格式</p>
-<h3 id="DES加解密算法使用">DES加解密算法使用</h3>
-<p>因为DES不是哈希所以加密用createCipheriv解密用createDecipheriv的方法<br>代码如下：</p>
-<p><pre><br> var cipheriv = function (en, code, data) {<br>      var buf1 = en.update(data, code), buf2 = en.final();<br>      var r = new Buffer(buf1.length + buf2.length);<br>      buf1.copy(r); buf2.copy(r, buf1.length);<br>      return r;<br>};<br>var  EncryptDES=function (data, key, vi) {<br>      return data = cipheriv(_crypto.createCipheriv(‘des’, key, vi), ‘utf8’, data).toString(‘base64’);<br>};<br>var DecryptDES: function (data, key, vi) {<br>     return cipheriv(_crypto.createDecipheriv(‘des’, key, vi), ‘base64’, data) .toString(‘utf8’);<br>};<br></pre><br>因为都有加解密来填充和输出串,所以写一个公共的方法<br>-data是加解密的数据<br>-key是密钥<br>-vi是密钥向量<br>-EncryptDES是加密<br>-DecryptDES是解密</p>
+        <p>title: 老板的眼泪，你懂吗？<br>date: 2014-05-29 09:40:12<br>tags:</p>
+<ul>
+<li>创业</li>
+<li>工作<br>categories: 创业<br>keywords:胖浩网，老板的眼泪，你懂吗？献给伟大的老板和正在抱怨的员工？<br>description: 胖浩网，老板的眼泪，你懂吗？献给伟大的老板和正在抱怨的员工？</li>
+</ul>
+<hr>
+<h4 id="老板的眼泪，你懂吗？献给伟大的老板和正在抱怨的员工？">老板的眼泪，你懂吗？献给伟大的老板和正在抱怨的员工？</h4>
+<p>  选择做老板，就是选择了风险，选择了责任和压力，选择了含辛茹苦的劳累，选择了被别人的不理解，但是，您依旧无怨无悔。<br>  有多少个夜晚，所有的员工都进入了梦乡，而你办公室里的灯依然亮着；<br>  有多少个节假日，别人都在休闲，而你，却在跑客户、市场或是各种培训课程的会场上<br>  就算是一年一度的春节，你还要挨家挨户的给领导给关系户拜年；<br>  有多少次，员工犯了错，你除了自己承担责任，还要反过来去安慰犯错的人；<br>  有多少次，因为服务出了问题，客户怨你骂你，冷眼待你，而你只能陪着笑脸；<br>  有多少次，企业周转资金遇到困难时，为了让员工准时拿到工资，你放下自己的自尊，到处求人，彻夜难眠；<br>  有多少次，为了应酬，你硬着头皮一杯接一杯的喝，甚至喝到洗手间里吐出来，还要继续再喝；<br>  有多少次，你答应了陪伴家人，却一次次的失信；父母亲年纪大了，需要你去尽孝心；孩子正在成长阶段，需要你去辅导；<br>  爱人的生日、结婚纪念日，需要你陪她逛街买礼物；<br>  自己身体不舒服了，需要去医院治疗；<br>  这些常人都很容易做到的，对你来讲，却总是那么的难，那么的难；<br>  可是，即使这样，又有多少人能够理解您？员工认为你自私，朋友觉得你无情，家人抱怨你冷漠，孩子感觉你不关心他，没有人明白你内心的无奈，没有人体会你心灵的孤独，没有人理解你心里的委屈和心酸，你甚至连一个可以倾诉的人都没有，你甚至连眼泪都只能悄悄地流。<br>  是的，很多人认为你经营企业只是为了赚钱，你就算是累死也是天经地义的；<br>  有多少人知道，如果只是为了赚钱，有多少已经完成原始资本积累的老板，完全可以选择把企业卖掉，因为赚的钱一辈子都花不完；<br>  只有你自己了解，心中的追求，只有你自己明白，作为船长的责任；<br>  只有你自己知道，这，就是上天赋予你的使命!你告诉自己：<br>  既然选择了做船长，就要为船上所有的人负责！<br>  虽然，偶尔你也会有心灰意冷的时候，也会有想要放弃的念头，但是，每一次上下班的时间，当你从办公室的窗口看着几百员工像潮水一样进出企业的时候；你很快就打消了念头，很快就振作起来；你告诉自己：为了让更多的人有一份稳定的工作，为了让更多的家庭生活得幸福，为了让更多的人拥有一个实现梦想的舞台，你愿意用自己的生命作为赌注；用身体作为代价；用孤独作为交换；生命不息，战斗到底！做老板不易，多理解您的老板！现在理解老板，未来别人理解你！老板的伟大是用血泪煎熬出来的！你懂吗？</p>
 
       
     </div>
-    
-    
-      
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/05/29/老板的眼泪/"></a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
     
     
         <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/nodejs/" itemprop="url"><span itemprop="title" >nodejs</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nodejs/" class="label label-primary" itemprop="url"><span itemprop="title">nodejs</span></a><a href="/tags/md5/" class="label label-success" itemprop="url"><span itemprop="title">md5</span></a><a href="/tags/des/" class="label label-info" itemprop="url"><span itemprop="title">des</span></a><a href="/tags/加密/" class="label label-warning" itemprop="url"><span itemprop="title">加密</span></a><a href="/tags/解密/" class="label label-primary" itemprop="url"><span itemprop="title">解密</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:20:19"datetime="2014-05-27 18:20:19"> 5月 27 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/05/27/nodejs-Crypto-for-DES-MD5/#comments" id="uyan_count_unit" su="nodejs-Crypto-for-DES-MD5">暂无评论</a>
+        <span class="time">最近更新:<time title="2014-05-29 09:48:15"datetime="2014-05-29 09:48:15"> 5月 29 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/29/老板的眼泪/#comments" id="uyan_count_unit" su="老板的眼泪">暂无评论</a>
 </span>
         </footer>
     
     <div class="clearfix"></div>
   </div>
 </div>
-</article></div><!--wapper-->
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/" title="用nodejs对数据进行加密">用nodejs对数据进行加密 &rarr;</a></li>
+  
+</ul></div><div class="widget" id="widget_after_post_related_posts>">
+<ul class="list-group"><li class="list-group-item"><a href="/2014/05/26/php-exec-linux-shell/">php在linux中利用exec执行shell脚本</a></li><li class="list-group-item"><a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">用nodejs对数据进行加密</a></li><li class="list-group-item"><a href="/2014/05/29/老板的眼泪/">老板的眼泪</a></li><li class="list-group-item"><a href="/2014/02/26/only-come-from-love/">只源于：爱</a></li><li class="list-group-item"><a href="/2014/05/05/sql-replace-update/">sql中使用replace函数用于update语句</a></li><li class="list-group-item"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></li><li class="list-group-item"><a href="/2014/05/23/nodejs-for-windows-bulding/">nodejs for windows 环境搭建</a></li></ul></div></section>    
+	<div id="comments">
+<!-- UY BEGIN -->
+<div id="uyan_frame"></div>
+<!-- UY END -->
+
+</div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_search" class="widget panel panel-primary">
@@ -199,7 +222,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-05-29 09:49:05</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-05-29 09:48:15</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -244,14 +267,27 @@ _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>    
             <script type="text/javascript">
 var uyan_config={
-     'url':'http://www.haozi520.com/tags/des/',
-'su':'nodejs-Crypto-for-DES-MD5'
+     'url':'http://www.haozi520.com/2014/05/29/老板的眼泪/',
+'su':'老板的眼泪'
 };
 _js2load.push({src:'http://v2.uyan.cc/code/uyan.js?uid=1899918'});
 </script>
 
     
             <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://www.haozi520.com/2014/05/29/老板的眼泪/";
+    var wumiiTitle = "";
+    var wumiiTags = "";
+    var wumiiCategories = [];
+    var wumiiSitePrefix = "http://www.haozi520.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
     
             
 <script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
