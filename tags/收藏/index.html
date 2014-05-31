@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>解密 | 胖浩网</title>
+<title>收藏 | 胖浩网</title>
 <meta name="author" content="lauking">
 
 <meta name="description" content="java、php、node、go、javascript、css、mysql、linux的点滴">
@@ -86,7 +86,7 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><h2 class="archive-title tag">解密</h2>
+          <div id="wrapper"><h2 class="archive-title tag">收藏</h2>
 
 
   
@@ -95,21 +95,16 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">用nodejs对数据进行加密</a></h1>
+      <h1 class="title"><a href="/2014/05/29/你知道包粽子用的，都是什么植物的叶子吗/">包粽子的是什么植物的叶子</a></h1>
       
-        <span>发表于<time datetime="2014-05-27T10:18:12.000Z"> <a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">5月 27 2014</a></time></span>      
+        <span>发表于<time datetime="2014-05-29T01:40:12.000Z"> <a href="/2014/05/29/你知道包粽子用的，都是什么植物的叶子吗/">5月 29 2014</a></time></span>      
     </header>
     
     
     <div class="entry">
       
-        <p>在使用nodejs加解密的时候 有时候不知道有没有自己要用的加密方式<br>使用如下代码<br>require(‘crypto’).getHashes()<br>可以知道支持的那些哈希算法<br>或者<br> require(‘crypto’).getCiphers()<br>可以知道支持的那些非哈希算法</p>
-<h3 id="MD5加密算法使用">MD5加密算法使用</h3>
-<p>代码如下</p>
-<p><pre><br>var  MD5=function (data) {<br>   var _encrymd5 = require(‘crypto’).createHash(‘md5’);<br>   _encrymd5.update(data);<br>   return _encrymd5.digest(‘hex’);<br>}<br></pre><br>因为md5是哈希算法 ,一般哈希算法都是不可逆的吧<br>-用CreateHash创建一个对象<br>-用update来加密<br>-用digest来输出结果<br>-参数是输出的编码格式</p>
-<h3 id="DES加解密算法使用">DES加解密算法使用</h3>
-<p>因为DES不是哈希所以加密用createCipheriv解密用createDecipheriv的方法<br>代码如下：</p>
-<p><pre><br> var cipheriv = function (en, code, data) {<br>      var buf1 = en.update(data, code), buf2 = en.final();<br>      var r = new Buffer(buf1.length + buf2.length);<br>      buf1.copy(r); buf2.copy(r, buf1.length);<br>      return r;<br>};<br>var  EncryptDES=function (data, key, vi) {<br>      return data = cipheriv(_crypto.createCipheriv(‘des’, key, vi), ‘utf8’, data).toString(‘base64’);<br>};<br>var DecryptDES: function (data, key, vi) {<br>     return cipheriv(_crypto.createDecipheriv(‘des’, key, vi), ‘base64’, data) .toString(‘utf8’);<br>};<br></pre><br>因为都有加解密来填充和输出串,所以写一个公共的方法<br>-data是加解密的数据<br>-key是密钥<br>-vi是密钥向量<br>-EncryptDES是加密<br>-DecryptDES是解密</p>
+        <p>又到一年端午节，吃粽子的节日。但是你知道包粽子用的，都是什么植物的叶子吗？我在<a href="http://www.guokr.com/article/438518/" target="_blank">果壳网</a>看到的这篇，收藏到自己的博客。</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140531120312.jpg" alt="粽叶图鉴"></p>
 
       
     </div>
@@ -119,8 +114,8 @@
     
     
         <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/nodejs/" itemprop="url"><span itemprop="title" >nodejs</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nodejs/" class="label label-primary" itemprop="url"><span itemprop="title">nodejs</span></a><a href="/tags/md5/" class="label label-success" itemprop="url"><span itemprop="title">md5</span></a><a href="/tags/des/" class="label label-info" itemprop="url"><span itemprop="title">des</span></a><a href="/tags/加密/" class="label label-warning" itemprop="url"><span itemprop="title">加密</span></a><a href="/tags/解密/" class="label label-primary" itemprop="url"><span itemprop="title">解密</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:20:19"datetime="2014-05-27 18:20:19"> 5月 27 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/05/27/nodejs-Crypto-for-DES-MD5/#comments" id="uyan_count_unit" su="nodejs-Crypto-for-DES-MD5">暂无评论</a>
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/收藏/" itemprop="url"><span itemprop="title" >收藏</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/收藏/" class="label label-primary" itemprop="url"><span itemprop="title">收藏</span></a><a href="/tags/杂七杂八/" class="label label-success" itemprop="url"><span itemprop="title">杂七杂八</span></a></span> | <span class="time">最近更新:<time title="2014-05-31 12:16:13"datetime="2014-05-31 12:16:13"> 5月 31 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/29/你知道包粽子用的，都是什么植物的叶子吗/#comments" id="uyan_count_unit" su="你知道包粽子用的，都是什么植物的叶子吗">暂无评论</a>
 </span>
         </footer>
     
@@ -244,8 +239,8 @@ _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>    
             <script type="text/javascript">
 var uyan_config={
-     'url':'http://www.haozi520.com/tags/解密/',
-'su':'nodejs-Crypto-for-DES-MD5'
+     'url':'http://www.haozi520.com/tags/收藏/',
+'su':'你知道包粽子用的，都是什么植物的叶子吗'
 };
 _js2load.push({src:'http://v2.uyan.cc/code/uyan.js?uid=1899918'});
 </script>
