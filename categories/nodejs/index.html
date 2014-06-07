@@ -10,7 +10,7 @@
 <title>nodejs | 胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="java、php、node、go、javascript、css、mysql、linux的点滴">
+<meta name="description" content="做一个有知识，有文化、有技术、有内涵、有梦想的人">
 
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -81,12 +81,57 @@
   <div id='content' class="container">
      <div class="page-header-wrapper">
       <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
-      <div class="page-header"><h1>胖浩网 <small></small></h1></div>
+      <div class="page-header"><h1>胖浩网 <small>做一个有知识，有文化、有技术、有内涵、有梦想的人</small></h1></div>
      </div>
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
           <div id="wrapper"><h2 class="archive-title category">nodejs<small></small></h2>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/07/使用Chrome调试NodeJS脚本/">怎样使用Chrome调试NodeJS脚本</a></h1>
+      
+        <span>发表于<time datetime="2014-06-07T07:53:12.000Z"> <a href="/2014/06/07/使用Chrome调试NodeJS脚本/">6月 7 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>原文：<a href="http://blog.domlib.com/articles/686.html" target="_blank">http://blog.domlib.com/articles/686.html</a><br><strong>1、首先在命令行执行npm以全局模式安装node-inspector插件：</strong><br>    npm install -g node-inspector</p>
+<p><strong>2、然后用node命令执行需要调试的脚本，但是要加上–debug-brk参数，例如：node –debug-brk=5858 test.js</strong></p>
+<p><img src="http://blog.domlib.com/wp-content/uploads/2014/06/nodejs.jpg" alt=""></p>
+<p>脚本现在就已经断点在了第一行，并且在等待5858端口的监听程序启动。</p>
+<p><strong>3、重启一个命令行窗口（注意是重启一个新的窗口！），然后执行：node-inspector</strong></p>
+<p><img src="http://blog.domlib.com/wp-content/uploads/2014/06/nodejs21.png" alt=""></p>
+<p><strong>4、根据提示，在谷歌浏览器里输入地址就可以开始调试了：<a href="http://127.0.0.1:8080/debug?port=5858" target="_blank">http://127.0.0.1:8080/debug?port=5858</a></strong></p>
+<p><img src="http://blog.domlib.com/wp-content/uploads/2014/06/chrome.png" alt=""></p>
+<blockquote>
+<p>写在最后：这种调试方式只建议给使用纯文本编辑器写NodeJS脚本的开发者。更加方便的方式推荐直接使用WebStorm开发。有代码提示，也可以在IDE里直接断点调试。在WebStorm里创建一个普通工程，开始写js脚本，当你引用到nodejs 提供的API时，webstorm会提示你下载nodejs源码包，照提示一步一步操作即可。调试直接在js脚本上右键点“Debug xx.js”。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/nodejs/" itemprop="url"><span itemprop="title" >nodejs</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/Chrome/" class="label label-primary" itemprop="url"><span itemprop="title">Chrome</span></a><a href="/tags/nodejs/" class="label label-success" itemprop="url"><span itemprop="title">nodejs</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 15:55:48"datetime="2014-06-07 15:55:48"> 6月 7 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/07/使用Chrome调试NodeJS脚本/#disqus_thread" class="comment-link"  data-disqus-identifier='使用Chrome调试NodeJS脚本'>暂无评论</a>
+</span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
 
 
   
@@ -244,7 +289,7 @@
   <div id="site-info">
     <span class='author'>
   
-  &copy; 2014 lauking
+  &copy; 2013-2014 lauking
   
     &nbsp;&nbsp;</span>
   
@@ -262,7 +307,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-05 18:52:34</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-07 16:15:26</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
