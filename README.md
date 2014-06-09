@@ -1,7 +1,10 @@
-pangzi-blog
+pangzi-blog（胖浩网）
 ===========
 
-node,java,php,go,css,javascript,html,linux,mysql
-[说明]
-本站正在建设中......
-目的是把学习技术开发中的经验以博客的形式记录下来
+努力做一个有知识，有文化、有技术、有内涵、有梦想的人--
+[胖浩网](http://www.haozi520.com)
+##说明
+
+本站使用hexo建站，模板为chennal
+主要是静态文件，站点命名为[胖浩网](http://www.haozi520.com)
+站点内容每天都更新，自己看的文章，技术学习的积累，有些是摘抄的，有些是自己整理的
