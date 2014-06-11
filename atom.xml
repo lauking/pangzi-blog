@@ -4,7 +4,7 @@
   <subtitle><![CDATA[做一个有知识，有文化、有技术、有内涵、有梦想的人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.haozi520.com/"/>
-  <updated>2014-06-10T06:59:38.897Z</updated>
+  <updated>2014-06-11T08:46:04.615Z</updated>
   <id>http://www.haozi520.com/</id>
   
   <author>
@@ -13,6 +13,28 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[王八和王八蛋]]></title>
+    <link href="http://www.haozi520.com/2014/06/11/%E7%8E%8B%E5%85%AB%E5%92%8C%E7%8E%8B%E5%85%AB%E7%9A%84%E8%9B%8B/"/>
+    <id>http://www.haozi520.com/2014/06/11/王八和王八的蛋/</id>
+    <published>2014-06-11T09:20:12.000Z</published>
+    <updated>2014-06-11T08:45:49.000Z</updated>
+    <content type="html"><![CDATA[<p>相信很多人都骂过别人王八蛋，相信很多人见过王八，但是真正见过王八的蛋的人应该很少，今天给大家看看这个王八和他的蛋吧</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163757.jpg" alt=""></p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163825.jpg" alt=""></p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163832.jpg" alt=""></p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163838.jpg" alt=""></p>
+]]></content>
+    
+    
+      <category term="王八" scheme="http://www.haozi520.com/tags/%E7%8E%8B%E5%85%AB/"/>
+    
+      <category term="王八蛋" scheme="http://www.haozi520.com/tags/%E7%8E%8B%E5%85%AB%E8%9B%8B/"/>
+    
+      <category term="收藏" scheme="http://www.haozi520.com/categories/%E6%94%B6%E8%97%8F/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[如何成为优秀的程序员]]></title>
@@ -48,6 +70,58 @@
   </entry>
   
   <entry>
+    <title><![CDATA[Golang环境变量及工作空间配置]]></title>
+    <link href="http://www.haozi520.com/2014/06/09/Golang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%8A%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE/"/>
+    <id>http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/</id>
+    <published>2014-06-09T09:20:12.000Z</published>
+    <updated>2014-06-11T07:29:32.000Z</updated>
+    <content type="html"><![CDATA[<p>最近看到很多文章关于GO环境的配置，那么go需要配置哪些环境变量呢？根据官方文档GOPATH,GOROOT,GOBIN,GOOS的go环境变量配置</p>
+<h3 id="说明">说明</h3>
+<p>GOROOT go的安装目录<br>GOBIN go安装目录下的bin目录，里面有可执行的程序<br>GOOS  这个变量是在编译代码时使用的<br>GOPATH 开发的工作目录<br><em>（注：这个不是Go安装目录）</em></p>
+<h3 id="下载安装包">下载安装包</h3>
+<p>windows默认安装在C:\go<br>linux和UNIX之类系统可指定安装目录</p>
+<h3 id="windows下配置">windows下配置</h3>
+<p>在环境变量中新建<br>GOROOT = C:\go<br>GOBIN = C:\go\bin<br>GOPATH = E:\workcode\golang<br>并在PATH中添加 %GOBIN%;%GOPATH%</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140609160405.png" alt=""></p>
+<h3 id="linux和UNIX下配">linux和UNIX下配</h3>
+<h4 id="编辑用户目录下的-bashrc文件(其他用户无权操作)">编辑用户目录下的.bashrc文件(其他用户无权操作)</h4>
+<p>在文件末尾添加如下语句<br>export GOROOT = $home/go<br>export GOBIN = $GOROOT/bin<br>export GOPATH = $home/app/mygo<br>export PATH = $PATH:$GOBIN:$GOPATH</p>
+<p><em>编辑完后执行：source .bashrc 是环境变量生效</em></p>
+<h4 id="编辑/etc/profile文件">编辑/etc/profile文件</h4>
+<p>在文件末尾添加如下语句<br>export GOROOT = $home/go<br> export GOBIN = $GOROOT/bin<br> export GOPATH = $home/app/mygo<br> export PATH = $PATH:$GOBIN:$GOPATH</p>
+<p><em>编辑完后执行：source /etc/profile 是环境变量生效</em></p>
+<h3 id="创建工作空间">创建工作空间</h3>
+<p>在设定的GOPATH路径下创建三个目录：<br> src 存放源代码（比如：.go .c .h .s等）<br> pkg 编译后生成的文件（比如：.a）<br> bin 编译后生成的可执行文件（为了方便，可以把此目录加入到 $PATH 变量中）</p>
+<h3 id="应用结构目录">应用结构目录</h3>
+<p>建立包和目录：$GOPATH/src/mymath/sqrt.go(包名：mymath)</p>
+<p>以后自己新建应用或者一个代码包都是在src目录下新建一个文件夹，文件夹名称一般是代码包名称，当然也允许多级目录.</p>
+<pre><code>例如在src下面新建了目录
+$GOPATH/src/github<span class="preprocessor">.com</span>/lauking/blog, 
+那么这个包路径就是“/github<span class="preprocessor">.com</span>/lauking/blog ”，
+包名称是最后一个目录blog
+</code></pre><p>执行如下代码 sh cd $GOPATH/src mkdir mymath 新建文件sqrt.go，内容如下 </p>
+<pre><code><span class="keyword">go</span> <span class="comment">//</span>
+$GOPATH/src/mymath/sqrt.<span class="keyword">go</span>源码如下： <span class="keyword">package</span> mymath
+<span class="keyword">func</span> Sqrt(x <span class="typename">float64</span>) <span class="typename">float64</span> {
+    z :=<span class="number"> 0.0</span>
+    <span class="keyword">for</span> i :=<span class="number"> 0</span>; i &lt;<span class="number"> 1000</span>; i++ {
+        z -= (z*z - x) / <span class="number">(2</span> * x)
+    }
+    <span class="keyword">return</span> z
+}
+</code></pre><p>这样我的应用包目录和代码已经新建完毕，注意：一般建议package的名称和目录名保持一致</p>
+]]></content>
+    
+    
+      <category term="go" scheme="http://www.haozi520.com/tags/go/"/>
+    
+      <category term="golang" scheme="http://www.haozi520.com/tags/golang/"/>
+    
+      <category term="go" scheme="http://www.haozi520.com/categories/go/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Golang中new和make的区别]]></title>
     <link href="http://www.haozi520.com/2014/06/09/Golang%E4%B8%ADnew%E5%92%8Cmake%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
     <id>http://www.haozi520.com/2014/06/09/Golang中new和make的区别/</id>
@@ -75,57 +149,6 @@
       <category term="golang" scheme="http://www.haozi520.com/tags/golang/"/>
     
       <category term="go" scheme="http://www.haozi520.com/categories/go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[]]></title>
-    <link href="http://www.haozi520.com/2014/06/09/Golang%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E5%8F%8A%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4/"/>
-    <id>http://www.haozi520.com/2014/06/09/Golang环境配置及工作空间/</id>
-    <published>2014-06-09T03:36:57.000Z</published>
-    <updated>2014-06-10T06:58:06.000Z</updated>
-    <content type="html"><![CDATA[<p>title: Golang环境变量及工作空间配置<br>date: 2014-06-09 16:20:12<br>tags: </p>
-<ul>
-<li>go</li>
-<li>golang<br>categories: go<br>keywords: 胖浩网，go,golang,GOPATH,GOROOT,GOBIN,GOOS,go环境变量配置详解<br>description: 胖浩网，最近看到很多文章关于GO环境的配置，那么go需要配置哪些环境变<br>量呢？本文将介绍GOPATH,GOROOT,GOBIN,GOOS的go环境变量配置</li>
-</ul>
-<hr>
-<p> 最近看到很多文章关于GO环境的配置，那么go需要配置哪些环境变量呢？根据官方文档GOPATH,GOROOT,GOBIN,GOOS的go环境变量配置</p>
-<h3 id="说明">说明</h3>
-<p>GOROOT go的安装目录<br>GOBIN go安装目录下的bin目录，里面有可执行的程序<br>GOOS  这个变量是在编译代码时使用的<br>GOPATH 开发的工作目录<br><em>（注：这个不是Go安装目录）</em></p>
-<h3 id="下载安装包">下载安装包</h3>
-<p>windows默认安装在C:\go<br>linux和UNIX之类系统可指定安装目录</p>
-<h3 id="windows下配置">windows下配置</h3>
-<p>在环境变量中新建<br>GOROOT=C:\go<br>GOBIN=C:\go\bin<br>GOPATH=E:\workcode\golang<br>并在PATH中添加 %GOBIN%;%GOPATH%<br><img src="http://haozi520.u.qiniudn.com/20140609160405.png" alt=""></p>
-<h3 id="linux和UNIX下配">linux和UNIX下配</h3>
-<h4 id="编辑用户目录下的-bashrc文件(其他用户无权操作)">编辑用户目录下的.bashrc文件(其他用户无权操作)</h4>
-<p>在文件末尾添加如下语句<br>export GOROOT=$home/go<br>export GOBIN=$GOROOT/bin<br>export GOPATH=$home/app/mygo<br>export PATH=$PATH:$GOBIN:$GOPATH</p>
-<p><em>编辑完后执行：source .bashrc 是环境变量生效</em></p>
-<h4 id="编辑/etc/profile文件">编辑/etc/profile文件</h4>
-<p>在文件末尾添加如下语句<br> export GOROOT=$home/go<br> export GOBIN=$GOROOT/bin<br> export GOPATH=$home/app/mygo<br> export PATH=$PATH:$GOBIN:$GOPATH</p>
-<p><em>编辑完后执行：source /etc/profile 是环境变量生效</em></p>
-<h3 id="创建工作空间">创建工作空间</h3>
-<p>在设定的GOPATH路径下创建三个目录：<br> src 存放源代码（比如：.go .c .h .s等）<br> pkg 编译后生成的文件（比如：.a）<br> bin 编译后生成的可执行文件（为了方便，可以把此目录加入到 $PATH 变量中）</p>
-<h3 id="应用结构目录">应用结构目录</h3>
-<p>建立包和目录：$GOPATH/src/mymath/sqrt.go(包名：mymath)</p>
-<p>以后自己新建应用或者一个代码包都是在src目录下新建一个文件夹，文件夹名称一般是代码包名称，当然也允许多级目录.</p>
-<pre><code>例如在src下面新建了目录
-$GOPATH/src/github<span class="preprocessor">.com</span>/lauking/blog, 
-那么这个包路径就是“/github<span class="preprocessor">.com</span>/lauking/blog ”，
-包名称是最后一个目录blog
-</code></pre><p>执行如下代码 sh cd $GOPATH/src mkdir mymath 新建文件sqrt.go，内容如下 </p>
-<pre><code><span class="keyword">go</span> <span class="comment">//</span>
-$GOPATH/src/mymath/sqrt.<span class="keyword">go</span>源码如下： <span class="keyword">package</span> mymath
-<span class="keyword">func</span> Sqrt(x <span class="typename">float64</span>) <span class="typename">float64</span> {
-    z :=<span class="number"> 0.0</span>
-    <span class="keyword">for</span> i :=<span class="number"> 0</span>; i &lt;<span class="number"> 1000</span>; i++ {
-        z -= (z*z - x) / <span class="number">(2</span> * x)
-    }
-    <span class="keyword">return</span> z
-}
-</code></pre><p>这样我的应用包目录和代码已经新建完毕，注意：一般建议package的名称和目录名保持一致</p>
-]]></content>
-    
     
   </entry>
   

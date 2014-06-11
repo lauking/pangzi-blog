@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>归档：2013/12 | 胖浩网</title>
+<title>王八蛋 | 胖浩网</title>
 <meta name="author" content="lauking">
 
 <meta name="description" content="做一个有知识，有文化、有技术、有内涵、有梦想的人">
@@ -86,7 +86,7 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><h2 class="archive-title">2013/12</h2>
+          <div id="wrapper"><h2 class="archive-title tag">王八蛋</h2>
 
 
   
@@ -95,55 +95,19 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></h1>
+      <h1 class="title"><a href="/2014/06/11/王八和王八的蛋/">王八和王八蛋</a></h1>
       
-        <span>发表于<time datetime="2013-12-17T13:42:12.000Z"> <a href="/2013/12/17/GOLang连接Mysql/">12月 17 2013</a></time></span>      
+        <span>发表于<time datetime="2014-06-11T09:20:12.000Z"> <a href="/2014/06/11/王八和王八的蛋/">6月 11 2014</a></time></span>      
     </header>
     
     
     <div class="entry">
       
-        <p>昨天想着写下go连接mysql数据，以为使用<br><code>database/sql</code><br>这个包就可以连接成功，后来在cnblog上查了下，需要使用到<br><code>github.com/go-sql-driver/mysql</code><br>这个驱动包。好心人都会写明在哪怎么下载这个包，运行:<br><code>go get github.com/go-sql-driver/mysql</code><br><img src="http://haozi520.u.qiniudn.com/20131217-gogetmysql.png" alt=""><br>会下载到你的GOPATH路径的src 下</p>
-<h3 id="实例代码如下：">实例代码如下：</h3>
-<pre><code><span class="keyword">package</span> main
-<span class="keyword">import</span> (
-<span class="string">"database/sql"</span>
-<span class="string">"fmt"</span>
-_ <span class="string">"github.com/go-sql-driver/mysql"</span>
-)
-<span class="keyword">func</span> testSelect() {
-    db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:111111@tcp(127.0.0.1:3333)/showme?charset=utf8"</span>)
-    <span class="keyword">if</span> err != <span class="constant">nil</span> {
-      fmt.Printf(<span class="string">"connect err"</span>)
-    }
-   rows, err1 := db.Query(<span class="string">"select userid,username from tb_user limit 0,5"</span>)
-   <span class="keyword">if</span> err1 != <span class="constant">nil</span> {
-      fmt.Println(err1.Error())
-      <span class="keyword">return</span>
-   }
-   <span class="keyword">defer</span> rows.Close()
-   fmt.Println(<span class="string">""</span>)
-   cols, _ := rows.Columns()
-   <span class="keyword">for</span> i := <span class="keyword">range</span> cols {
-      fmt.Print(cols[i])
-      fmt.Print(<span class="string">"\t"</span>)
-   }
-   fmt.Println(<span class="string">""</span>)
-   <span class="keyword">var</span> userid <span class="typename">int</span>
-   <span class="keyword">var</span> username <span class="typename">string</span>
-    <span class="keyword">for</span> rows.Next() {
-    <span class="keyword">if</span> err := rows.Scan(&amp;amp;userid, &amp;amp;username); err == <span class="constant">nil</span> {
-        fmt.Print(userid)
-        fmt.Print(<span class="string">"\t"</span>)
-        fmt.Print(username)
-        fmt.Print(<span class="string">"\t\r\n"</span>)
-    }
-}
-}
-<span class="keyword">func</span> main() {
-   testSelect()
-}
-</code></pre><p><img src="http://haozi520.u.qiniudn.com/20131217_dbtest.png" alt=""><br>总结:多看文档，多动手谢谢！</p>
+        <p>相信很多人都骂过别人王八蛋，相信很多人见过王八，但是真正见过王八的蛋的人应该很少，今天给大家看看这个王八和他的蛋吧</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163757.jpg" alt=""></p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163825.jpg" alt=""></p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163832.jpg" alt=""></p>
+<p><img src="http://haozi520.u.qiniudn.com/20140611163838.jpg" alt=""></p>
 
       
     </div>
@@ -153,8 +117,8 @@ _ <span class="string">"github.com/go-sql-driver/mysql"</span>
     
     
         <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a><a href="/tags/mysql/" class="label label-info" itemprop="url"><span itemprop="title">mysql</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 15:31:46"datetime="2014-06-07 15:31:46"> 6月 7 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2013/12/17/GOLang连接Mysql/#comments" class="ds-thread-count comment-link" data-thread-key="GOLang连接Mysql" data-count-type="comments">暂无评论</a></span>
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/收藏/" itemprop="url"><span itemprop="title" >收藏</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/王八/" class="label label-primary" itemprop="url"><span itemprop="title">王八</span></a><a href="/tags/王八蛋/" class="label label-success" itemprop="url"><span itemprop="title">王八蛋</span></a></span> | <span class="time">最近更新:<time title="2014-06-11 16:45:49"datetime="2014-06-11 16:45:49"> 6月 11 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/11/王八和王八的蛋/#comments" class="ds-thread-count comment-link" data-thread-key="王八和王八的蛋" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -232,7 +196,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-11 16:46:06</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-11 16:46:08</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

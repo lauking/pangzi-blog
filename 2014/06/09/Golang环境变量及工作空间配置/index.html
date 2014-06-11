@@ -7,15 +7,17 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>归档：2013/12 | 胖浩网</title>
+<title>Golang环境变量及工作空间配置 | 胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="做一个有知识，有文化、有技术、有内涵、有梦想的人">
+<meta name="description" content="最近看到很多文章关于GO环境的配置，那么go需要配置哪些环境变量呢？根据官方文档GOPATH,GOROOT,GOBIN,GOOS的go环境变量配置
+说明
+GOROOT go的安装目录GOBIN go安装目录下的bin目录，里面有可执行的程序GOOS  这个变量是在编译代码时使用的GOPATH 开发的工作目录（注：这个不是Go安装目录）">
 
-<meta name="keywords" content="java，linux，php，golang，nodejs，javascript，css，html，mysql，web开发，有知识，有文化，有技术，有内涵，有梦想">
+<meta name="keywords" content="胖浩网,go,golang,GOPATH,GOROOT,GOBIN,GOOS,go环境变量配置详解">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-
+<meta property="og:title" content="Golang环境变量及工作空间配置"/>
 <meta property="og:site_name" content="胖浩网"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -86,81 +88,96 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><h2 class="archive-title">2013/12</h2>
-
-
-  
-    <article>
+          <div id="wrapper"><article>
 <div id="post" class="post well">
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></h1>
+      <h1 class="title">Golang环境变量及工作空间配置</h1>
       
-        <span>发表于<time datetime="2013-12-17T13:42:12.000Z"> <a href="/2013/12/17/GOLang连接Mysql/">12月 17 2013</a></time></span>      
+        <span>发表于<time datetime="2014-06-09T09:20:12.000Z"> <a href="/2014/06/09/Golang环境变量及工作空间配置/">6月 9 2014</a></time></span>      
     </header>
     
-    
+    <section id='before_content_widget'></section>
     <div class="entry">
       
-        <p>昨天想着写下go连接mysql数据，以为使用<br><code>database/sql</code><br>这个包就可以连接成功，后来在cnblog上查了下，需要使用到<br><code>github.com/go-sql-driver/mysql</code><br>这个驱动包。好心人都会写明在哪怎么下载这个包，运行:<br><code>go get github.com/go-sql-driver/mysql</code><br><img src="http://haozi520.u.qiniudn.com/20131217-gogetmysql.png" alt=""><br>会下载到你的GOPATH路径的src 下</p>
-<h3 id="实例代码如下：">实例代码如下：</h3>
-<pre><code><span class="keyword">package</span> main
-<span class="keyword">import</span> (
-<span class="string">"database/sql"</span>
-<span class="string">"fmt"</span>
-_ <span class="string">"github.com/go-sql-driver/mysql"</span>
-)
-<span class="keyword">func</span> testSelect() {
-    db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:111111@tcp(127.0.0.1:3333)/showme?charset=utf8"</span>)
-    <span class="keyword">if</span> err != <span class="constant">nil</span> {
-      fmt.Printf(<span class="string">"connect err"</span>)
+        <p>最近看到很多文章关于GO环境的配置，那么go需要配置哪些环境变量呢？根据官方文档GOPATH,GOROOT,GOBIN,GOOS的go环境变量配置</p>
+<h3 id="说明">说明</h3>
+<p>GOROOT go的安装目录<br>GOBIN go安装目录下的bin目录，里面有可执行的程序<br>GOOS  这个变量是在编译代码时使用的<br>GOPATH 开发的工作目录<br><em>（注：这个不是Go安装目录）</em></p>
+<h3 id="下载安装包">下载安装包</h3>
+<p>windows默认安装在C:\go<br>linux和UNIX之类系统可指定安装目录</p>
+<h3 id="windows下配置">windows下配置</h3>
+<p>在环境变量中新建<br>GOROOT = C:\go<br>GOBIN = C:\go\bin<br>GOPATH = E:\workcode\golang<br>并在PATH中添加 %GOBIN%;%GOPATH%</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140609160405.png" alt=""></p>
+<h3 id="linux和UNIX下配">linux和UNIX下配</h3>
+<h4 id="编辑用户目录下的-bashrc文件(其他用户无权操作)">编辑用户目录下的.bashrc文件(其他用户无权操作)</h4>
+<p>在文件末尾添加如下语句<br>export GOROOT = $home/go<br>export GOBIN = $GOROOT/bin<br>export GOPATH = $home/app/mygo<br>export PATH = $PATH:$GOBIN:$GOPATH</p>
+<p><em>编辑完后执行：source .bashrc 是环境变量生效</em></p>
+<h4 id="编辑/etc/profile文件">编辑/etc/profile文件</h4>
+<p>在文件末尾添加如下语句<br>export GOROOT = $home/go<br> export GOBIN = $GOROOT/bin<br> export GOPATH = $home/app/mygo<br> export PATH = $PATH:$GOBIN:$GOPATH</p>
+<p><em>编辑完后执行：source /etc/profile 是环境变量生效</em></p>
+<h3 id="创建工作空间">创建工作空间</h3>
+<p>在设定的GOPATH路径下创建三个目录：<br> src 存放源代码（比如：.go .c .h .s等）<br> pkg 编译后生成的文件（比如：.a）<br> bin 编译后生成的可执行文件（为了方便，可以把此目录加入到 $PATH 变量中）</p>
+<h3 id="应用结构目录">应用结构目录</h3>
+<p>建立包和目录：$GOPATH/src/mymath/sqrt.go(包名：mymath)</p>
+<p>以后自己新建应用或者一个代码包都是在src目录下新建一个文件夹，文件夹名称一般是代码包名称，当然也允许多级目录.</p>
+<pre><code>例如在src下面新建了目录
+$GOPATH/src/github<span class="preprocessor">.com</span>/lauking/blog, 
+那么这个包路径就是“/github<span class="preprocessor">.com</span>/lauking/blog ”，
+包名称是最后一个目录blog
+</code></pre><p>执行如下代码 sh cd $GOPATH/src mkdir mymath 新建文件sqrt.go，内容如下 </p>
+<pre><code><span class="keyword">go</span> <span class="comment">//</span>
+$GOPATH/src/mymath/sqrt.<span class="keyword">go</span>源码如下： <span class="keyword">package</span> mymath
+<span class="keyword">func</span> Sqrt(x <span class="typename">float64</span>) <span class="typename">float64</span> {
+    z :=<span class="number"> 0.0</span>
+    <span class="keyword">for</span> i :=<span class="number"> 0</span>; i &lt;<span class="number"> 1000</span>; i++ {
+        z -= (z*z - x) / <span class="number">(2</span> * x)
     }
-   rows, err1 := db.Query(<span class="string">"select userid,username from tb_user limit 0,5"</span>)
-   <span class="keyword">if</span> err1 != <span class="constant">nil</span> {
-      fmt.Println(err1.Error())
-      <span class="keyword">return</span>
-   }
-   <span class="keyword">defer</span> rows.Close()
-   fmt.Println(<span class="string">""</span>)
-   cols, _ := rows.Columns()
-   <span class="keyword">for</span> i := <span class="keyword">range</span> cols {
-      fmt.Print(cols[i])
-      fmt.Print(<span class="string">"\t"</span>)
-   }
-   fmt.Println(<span class="string">""</span>)
-   <span class="keyword">var</span> userid <span class="typename">int</span>
-   <span class="keyword">var</span> username <span class="typename">string</span>
-    <span class="keyword">for</span> rows.Next() {
-    <span class="keyword">if</span> err := rows.Scan(&amp;amp;userid, &amp;amp;username); err == <span class="constant">nil</span> {
-        fmt.Print(userid)
-        fmt.Print(<span class="string">"\t"</span>)
-        fmt.Print(username)
-        fmt.Print(<span class="string">"\t\r\n"</span>)
-    }
+    <span class="keyword">return</span> z
 }
-}
-<span class="keyword">func</span> main() {
-   testSelect()
-}
-</code></pre><p><img src="http://haozi520.u.qiniudn.com/20131217_dbtest.png" alt=""><br>总结:多看文档，多动手谢谢！</p>
+</code></pre><p>这样我的应用包目录和代码已经新建完毕，注意：一般建议package的名称和目录名保持一致</p>
 
       
     </div>
-    
-    
-      
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/06/09/Golang环境变量及工作空间配置/">Golang环境变量及工作空间配置</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
     
     
         <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a><a href="/tags/mysql/" class="label label-info" itemprop="url"><span itemprop="title">mysql</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 15:31:46"datetime="2014-06-07 15:31:46"> 6月 7 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2013/12/17/GOLang连接Mysql/#comments" class="ds-thread-count comment-link" data-thread-key="GOLang连接Mysql" data-count-type="comments">暂无评论</a></span>
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a></span> | <span class="time">最近更新:<time title="2014-06-11 15:29:32"datetime="2014-06-11 15:29:32"> 6月 11 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/#comments" class="ds-thread-count comment-link" data-thread-key="Golang环境变量及工作空间配置" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
   </div>
 </div>
-</article></div><!--wapper-->
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/06/09/如何成为优秀的程序员/" title="如何成为优秀的程序员">&larr; 如何成为优秀的程序员</a></li>
+  
+  
+  <li class="next"><a href="/2014/06/09/Golang中new和make的区别/" title="Golang中new和make的区别">Golang中new和make的区别 &rarr;</a></li>
+  
+</ul></div><div class="widget" id="widget_after_post_related_posts>">
+<ul class="list-group"><li class="list-group-item"><a href="/2014/06/09/Golang环境变量及工作空间配置/">Golang环境变量及工作空间配置</a></li><li class="list-group-item"><a href="/2014/06/09/Golang中new和make的区别/">Golang中new和make的区别</a></li><li class="list-group-item"><a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></li></ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="Golang环境变量及工作空间配置"  data-url="http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/" data-title="Golang环境变量及工作空间配置"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_search" class="widget panel panel-primary">
@@ -232,7 +249,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-11 16:46:06</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-11 15:29:32</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -281,6 +298,19 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
 </script>
     
             <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/";
+    var wumiiTitle = "Golang环境变量及工作空间配置";
+    var wumiiTags = "go,golang";
+    var wumiiCategories = ["go"];
+    var wumiiSitePrefix = "http://www.haozi520.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
     
             
 <script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
