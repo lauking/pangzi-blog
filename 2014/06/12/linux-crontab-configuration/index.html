@@ -7,15 +7,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>青春期的孩儿们都叛逆? | 胖浩网</title>
+<title>老是遗忘的crontab配置 | 胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="胖浩网，儿童以上，成人未满，身高快速成长，激素剧烈波动，性成熟得足以制造下一代，而大脑的“自制区”前额叶还没有发育完善……我们都曾度过这样的中二期，满怀着“我是与众不同的”、“没有人理解我”、“是世界错了，不是我错”的信念在世上横冲直撞，认为自己心底受过很深的伤并因此莫名悲愤，坚持做着被周遭人视为白痴但自认帅气的事情——“那天夕阳下的奔跑，是我逝去的青春”。">
+<meta name="description" content="很多情况下，都需要在linux系统中定制一些定时任务自动完成操作，而我总是会忘记一些配置项，今天就好好整理下，在linux中crontab的配置">
 
-<meta name="keywords" content="胖浩网，青春期,青春期的孩儿们都叛逆">
+<meta name="keywords" content="胖浩网，linux,crond,crontab,crontab配置，有技术">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<meta property="og:title" content="青春期的孩儿们都叛逆?"/>
+<meta property="og:title" content="老是遗忘的crontab配置"/>
 <meta property="og:site_name" content="胖浩网"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -91,26 +91,58 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title">青春期的孩儿们都叛逆?</h1>
+      <h1 class="title">老是遗忘的crontab配置</h1>
       
-        <span>发表于<time datetime="2014-06-03T15:01:00.000Z"> <a href="/2014/06/03/青春期的孩儿们都叛逆/">6月 3 2014</a></time></span>      
+        <span>发表于<time datetime="2014-06-12T02:54:00.000Z"> <a href="/2014/06/12/linux-crontab-configuration/">6月 12 2014</a></time></span>      
     </header>
     
     <section id='before_content_widget'></section>
     <div class="entry">
       
-        <p><img src="http://cdn.songshuhui.net/wp-content/uploads/littlemontage1-600x202.jpg" alt=""><br>【图片作者：<a href="http://www.benoliverart.blogspot.com/" target="_blank">Ben Oliver</a> 】<br>想象这样一辆汽车，有引擎，有方向盘，加装了火箭助推器，但没有刹车，没有保险杠，没有安全气囊。青春期人类，跟这样一辆车没太大区别。如果不曾愤怒，不曾叛逆，不曾发神经，简直不足以自称曾度过青春。处在这个阶段的人类又可称为“中二病患者”，因其“发病期”大概在初二前后。</p>
-<p>儿童以上，成人未满，身高快速成长，激素剧烈波动，性成熟得足以制造下一代，而大脑的“自制区”前额叶还没有发育完善……我们都曾度过这样的中二期，满怀着“我是与众不同的”、“没有人理解我”、“是世界错了，不是我错”的信念在世上横冲直撞，认为自己心底受过很深的伤并因此莫名悲愤，坚持做着被周遭人视为白痴但自认帅气的事情——“那天夕阳下的奔跑，是我逝去的青春”。</p>
-<p>在人类演化史上，青春期与其说是必经环节，不如说是生产力发达导致学习期延长的奢侈品。在远古时期，一个人高马大的性成熟少年，已可被视为成人，出能战斗，建立社会地位，入能求偶，从事高危性行为。到了如今，这些行为几乎无一例外地会引来父母的惊骇反应——天哪，你还“未成年”呢！</p>
-<p>然而青春期的大脑热爱冒险。成年大脑对“损失”更敏感。但对青春期大脑来说，最能打动他们的是“没准会有超出预期的收益”，此时的大脑中，“快乐中枢”腹侧纹状体（ ventral striatum）有着较大的面积和密集的灰质，令少年们对能带来奖赏的多巴胺尤其敏感。当收到的奖金比预期更多时，8至30岁的被试者里，快乐中枢反应最大的是14至19岁的人群 。这或许能解释为何许多人从青春期开始沉迷于最能激活多巴胺系统的上瘾物——烟草、酒精、赌博、上网、游戏……德国研究者曾找来一群每周平均玩21小时游戏的14岁少年，要求他们迅速按下正确的按键，成功就会得到奖金，有趣的是，即使失败，这群少年的快乐中枢仍然活跃 。正常大脑会“厌恶损失”，上瘾的青春期大脑反而可能“追逐损失（loss chasing）”。父母眼中，这叫“专干蠢事”。</p>
-<p>同时，青春期的大脑过度乐观。这时候的青少年认为自己是“世界的主角”，刀枪不入，气运所钟，风险只会发生在其他“愚蠢的人类身上”，哪怕自己喝醉嗑药无保护性行为，也不会有什么意外状况，再说了，“一次而已，不会出事的”。 心理学上，这叫“个人神话（personal fable）”。父母眼中，这叫“无脑”。</p>
-<p>而且，青春期的大脑还没完全学会“共情（empathy）”。 所谓“将心比心、设身处地”的能力，人类从五岁开始才逐渐习得，一般到三十岁左右才会完全掌握。伦敦大学研究者就曾发现，成年人在行动前，会更多地思考“我的行动会如何影响他人”，同时激活克制冲动的前额叶皮层；而青少年在行动前，大脑里活跃的是负责简单行动的颞上沟，“会不会给别人添麻烦”这种念头压根就没出现在他们脑中。他们难以理解父母的担忧，为了摆脱“控制”，会做出许多毫不体谅的行动。父母眼中，这叫“无情”。</p>
-<p>青春期的大脑到底学会了啥呢？学会了独立自主，学会了逻辑推理和抽象思维。父母期待青少年先学会像成人一样负责，但青少年首先学会的是要求像成人一样得到平等自由的权力。通过推理归纳，他们能观察到父母教导中的言行不一，能指出父母要求里的自相矛盾。父母们痛苦地发现， “我说啥你做啥”的好日子一去不返，青少年天天“顶嘴”，满口“歪理”，分分钟都在“无理取闹”。</p>
-<p>总而言之，在父母眼中，青少年就是一个无脑无情无理取闹还专干蠢事的奇葩存在。难怪统计显示，有青少年的家庭中平均三天就会发生一次冲突，每次争吵平均11分钟。而青春期充满愤怒或充满压力的男孩占了60%。</p>
-<p>好消息是，随着青少年长到十八九岁，父母让渡出足够的自主权后，这类的冲突频率通常会逐渐下降。另一个好消息是，有25%的男孩能够稳定而自信地度过动荡青春，他们和父母依然互相关怀，但减少单向依赖。要做到这点，关键在于三点：一要亲近，让青少年安全依恋。二要给予心理自主，尊重隐私，允许部分决定自由。三要适当约束，出现争执时，用沟通协商来解决。</p>
-<p>天下当然有“不是的父母”。尽管父母会认为“我吃的盐比你吃的饭多”，但养育这件事，从来都是充满互动的双向过程。父母在教导人情世态、“社会化”下一代的同时，青少年也会给“知识陈旧落后”的父母带来最新的时代观念，从而“社会化”父母。在此过程中，越是拥有开明心态、愿意接受新知的父母，越可能赢得青少年的信任。</p>
-<p>青少年爱父母，并非因为父母是完美无缺的人类。父母爱青少年，也不该带有“你必须完美”的附加条件，而应该在了解的基础上接受青少年的本来模样。自认父母关爱并会支持自己的青少年，可以成长为所谓的“安全型依恋者”，他们适应性更好，社交能力更强，也更能在困境中平复情绪，找到合适出路。而依恋类型是焦虑或回避的青少年，则会更带有敌意，也更可能用暴力来解决问题。</p>
-<p>在冲突发生时，强制顺从或者回避争论都不是解决良策。最好的办法，是鼓励青少年表达自己意见，然后双方共同协商出应对策略。当然，这需要父母拥有控制自我情绪以及找出多种方案的能力。身教胜于言传，这两项能力能传递给孩子后，他们会拥有更高的自尊，更少的负面情绪，更高的问题解决能力，最终成长为身心健康的独立个体。考虑到这些，父母付出的全部努力，还是非常值得的。</p>
+        <blockquote>
+<p>很多情况下，都需要在linux系统中定制一些定时任务自动完成操作，而我总是会忘记一些配置项，今天就好好整理下，在linux中crontab的配置</p>
+</blockquote>
+<h3 id="任务调度分类">任务调度分类</h3>
+<ul>
+<li>系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存</li>
+<li>个人执行的工作：某个用户定期要做的工作，例如每隔10分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置</li>
+</ul>
+<h3 id="权限文件">权限文件</h3>
+<ul>
+<li>/etc/cron.deny 该文件中所列的用户不允许使用Crontab命令</li>
+<li>/etc/cron.allow 该文件中所列的用户允许使用Crontab命令</li>
+<li>/var/spool/cron/ 是所有用户的crontab文件 </li>
+</ul>
+<h3 id="crontab命令">crontab命令</h3>
+<p>Crontab命令的格式为：crontab –l|-r|-e|-i [username]</p>
+<ul>
+<li>-l 显示用户的Crontab文件的内容,eg:crontab -l</li>
+<li>-i 删除用户的Crontab文件前给提示,eg:crontab -ri</li>
+<li>-r 从Crontab目录中删除用户的Crontab文件,eg:crontab -r</li>
+<li>e 编辑用户的Crontab文件,eg:crontab -e</li>
+</ul>
+<p><em>用户所建立的Crontab文件存于/var/spool/cron中，其文件名与用户名一致。</em></p>
+<h3 id="crontab格式">crontab格式</h3>
+<p>它的格式共分为六段，前五段为时间设定段，第六段为所要执行的命令段，<br>格式如下：<em> </em> <em> </em> * </p>
+<pre><code>.------------- minute (<span class="number">0</span>-<span class="number">59</span>) 
+|  .---------- hour (<span class="number">0</span>-<span class="number">23</span>)
+|  |  .------- day of month (<span class="number">1</span>-<span class="number">31</span>)
+|  |  |  .---- month (<span class="number">1</span>-<span class="number">12</span>) OR jan,feb,mar,apr <span class="keyword">...</span>
+|  |  |  |  .- day of week(<span class="number">0</span>-<span class="number">6</span>)(Sunday=0or7) OR sun,mon,tue,wed,thu,fri,sat
+|  |  |  |  |
+*  *  *  *  * user-name command to be executed
+</code></pre><h3 id="举例">举例</h3>
+<ul>
+<li>0 17 <em> </em> 1-5 mail -s “hi” alex@domain.name&gt;/dev/null 2&gt;&amp;1 周一到周五每天下午 5:00 寄一封信给 alex@domain.name</li>
+<li>0 6-12/3 <em> 12 </em> /usr/bin/backup  在 12 月内, 每天的早上 6 点到 12 点中，每隔 20 分钟执行一次 /usr/bin/backup</li>
+<li>0 <em>/2 </em> <em> </em> /sbin/service httpd restart  意思是每两个小时重启一次apache</li>
+<li>50 7 <em> </em> * /sbin/service sshd start  意思是每天7：50开启ssh服务</li>
+<li>50 22 <em> </em> * /sbin/service sshd stop  意思是每天22：50关闭ssh服务</li>
+<li>0 0 1,15 <em> </em> fsck /home  每月1号和15号检查/home 磁盘</li>
+<li>1 <em> </em> <em> </em> /home/bruce/backup  每小时的第一分执行 /home/bruce/backup这个文件</li>
+<li>00 03 <em> </em> 1-5 find /home “*.xxx” -mtime +4 -exec rm {} \;  每周一至周五3点钟，在目录/home中，查找文件名为*.xxx的文件，并删除4天前的文件。</li>
+<li>30 6 <em>/10 </em> * ls  意思是每月的1、11、21、31日是的6：30执行一次ls命令</li>
+</ul>
 
       
     </div>
@@ -120,15 +152,15 @@
 <div class="panel panel-success">
     <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
     <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2014/06/03/青春期的孩儿们都叛逆/">青春期的孩儿们都叛逆?</a></div>
+    <div class="panel-body">本文链接: <a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></div>
 </div></div><div class="widget" id="widget_after_content_ujian>">
 <div class="ujian-hook"></div>
 </div></section>
     
     
         <footer id="post-meta">
-        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/收藏/" itemprop="url"><span itemprop="title" >收藏</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/收藏/" class="label label-primary" itemprop="url"><span itemprop="title">收藏</span></a><a href="/tags/杂七杂八/" class="label label-success" itemprop="url"><span itemprop="title">杂七杂八</span></a></span> | <span class="time">最近更新:<time title="2014-06-03 23:01:55"datetime="2014-06-03 23:01:55"> 6月 3 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/03/青春期的孩儿们都叛逆/#comments" class="ds-thread-count comment-link" data-thread-key="青春期的孩儿们都叛逆" data-count-type="comments">暂无评论</a></span>
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/crontab/" class="label label-success" itemprop="url"><span itemprop="title">crontab</span></a></span> | <span class="time">最近更新:<time title="2014-06-12 12:23:36"datetime="2014-06-12 12:23:36"> 6月 12 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/12/linux-crontab-configuration/#comments" class="ds-thread-count comment-link" data-thread-key="linux-crontab-configuration" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -140,16 +172,14 @@
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/06/05/常看色情片会让大脑萎缩/" title="常看色情片会让大脑萎缩？">&larr; 常看色情片会让大脑萎缩？</a></li>
   
-  
-  <li class="next"><a href="/2014/05/31/你知道包粽子用的，都是什么植物的叶子吗/" title="包粽子的是什么植物的叶子">包粽子的是什么植物的叶子 &rarr;</a></li>
+  <li class="next"><a href="/2014/06/11/王八和王八的蛋/" title="王八和王八蛋">王八和王八蛋 &rarr;</a></li>
   
 </ul></div><div class="widget" id="widget_after_post_related_posts>">
-<ul class="list-group"><li class="list-group-item"><a href="/2014/06/05/常看色情片会让大脑萎缩/">常看色情片会让大脑萎缩？</a></li><li class="list-group-item"><a href="/2014/06/03/青春期的孩儿们都叛逆/">青春期的孩儿们都叛逆?</a></li><li class="list-group-item"><a href="/2014/05/31/你知道包粽子用的，都是什么植物的叶子吗/">包粽子的是什么植物的叶子</a></li><li class="list-group-item"><a href="/2014/06/11/王八和王八的蛋/">王八和王八蛋</a></li></ul></div></section>    
+<ul class="list-group"><li class="list-group-item"><a href="/2014/05/26/php-exec-linux-shell/">php在linux中利用exec执行shell脚本</a></li><li class="list-group-item"><a href="/2014/06/07/linux grep命令详解/">linux grep命令详解</a></li><li class="list-group-item"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></li></ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
 
-<div class="ds-thread"  data-thread-key="青春期的孩儿们都叛逆"  data-url="http://www.haozi520.com/2014/06/03/青春期的孩儿们都叛逆/" data-title="青春期的孩儿们都叛逆?"></div>
+<div class="ds-thread"  data-thread-key="linux-crontab-configuration"  data-url="http://www.haozi520.com/2014/06/12/linux-crontab-configuration/" data-title="老是遗忘的crontab配置"></div>
 <!-- Duoshuo Comment END -->
 
 </div></div><!--wapper-->
@@ -224,7 +254,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-03 23:01:55</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-12 12:23:36</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -275,10 +305,10 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
             <!--wumii_relatedItems-->
 
 <script type="text/javascript">
-    var wumiiPermaLink = "http://www.haozi520.com/2014/06/03/青春期的孩儿们都叛逆/";
-    var wumiiTitle = "青春期的孩儿们都叛逆?";
-    var wumiiTags = "收藏,杂七杂八";
-    var wumiiCategories = ["收藏"];
+    var wumiiPermaLink = "http://www.haozi520.com/2014/06/12/linux-crontab-configuration/";
+    var wumiiTitle = "老是遗忘的crontab配置";
+    var wumiiTags = "linux,crontab";
+    var wumiiCategories = ["linux"];
     var wumiiSitePrefix = "http://www.haozi520.com";
     var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
     _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
