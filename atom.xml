@@ -4,7 +4,7 @@
   <subtitle><![CDATA[做一个有知识，有文化、有技术、有内涵、有梦想的人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.haozi520.com/"/>
-  <updated>2014-06-12T04:24:30.575Z</updated>
+  <updated>2014-06-12T09:51:41.305Z</updated>
   <id>http://www.haozi520.com/</id>
   
   <author>
@@ -13,6 +13,43 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[喝蜂蜜注意哪些事项？]]></title>
+    <link href="http://www.haozi520.com/2014/06/12/knowledge-honey-attentions/"/>
+    <id>http://www.haozi520.com/2014/06/12/knowledge-honey-attentions/</id>
+    <published>2014-06-12T09:20:12.000Z</published>
+    <updated>2014-06-12T09:40:28.000Z</updated>
+    <content type="html"><![CDATA[<p>蜂蜜是我们家喻户晓的一个营养品，但是吃起来也是很有讲究的，早上晚上喝蜂蜜水都需要注意以下几点<br><img src="http://haozi520.u.qiniudn.com/20140612172923.png" alt=""></p>
+<h3 id="不能用开水冲或高温蒸煮蜂蜜">不能用开水冲或高温蒸煮蜂蜜</h3>
+<p><strong>解惑：</strong></p>
+<blockquote>
+<p>蜂蜜中除含65%至80%的葡萄糖和果糖外，还含有丰富的酶、维生素、矿物质等。食用蜂蜜时，要用温水冲饮，水温不超过60℃为宜。如果高温开水冲入蜂蜜，不仅破坏了其丰富的营养物质，还会导致其天然的色、香、味都发生变化。</p>
+<p>喝蜂蜜水对水温是有讲究的。医学大家李时珍在《本草纲目》中记载“蜂蜜入药之功有五：清热也；补中也；润燥也；解毒也；止痛也。生则性凉，故能清热。熟则性温，故能补中。”可见，较凉的蜂蜜水具有清热、润燥、解毒的功效，比较适合于体质偏热的人；而温热的蜂蜜水（40至60度）具有补益脾胃、促进消化的功效，比较适合于脾胃虚弱的人。</p>
+</blockquote>
+<h3 id="清晨空腹第一杯就饮用蜂蜜水，不利健康">清晨空腹第一杯就饮用蜂蜜水，不利健康</h3>
+<p><strong>解惑：</strong></p>
+<blockquote>
+<p>蜂蜜水中含有相应的糖分，不是以单纯水的形式存在。饮用后，蜜中的果糖要经过人体代谢转化为葡萄糖，才能被人体所吸收利用，这样失去了清晨第一杯水清扫身体内环境的作用。</p>
+<p>而且，蜂蜜作为第一杯水，不能有效地补充机体细胞的水分，排尿时间比白开水相对减缓，降低体内排毒的功效。此时的体内没有清除废弃物，又来接受新的物质，那么新物质与一夜代谢的废弃残渣混合，就呈现了体内新旧杂合物质的代谢吸收过程，不能很好地获取蜂蜜的营养物质，残渣的再次代谢更不利于健康。</p>
+<p>所以，在清晨饮用完白开水后，体内相对洁净了，再食用蜂蜜就更有利于发挥其防治功效。为了不影响早餐的食欲，可以将蜂蜜直接食用或与面包等一起食用，还可以与酸奶、果蔬汁等混合食用。</p>
+</blockquote>
+<h3 id="晚上睡觉前不能喝蜂蜜水">晚上睡觉前不能喝蜂蜜水</h3>
+<p><strong>解惑：</strong></p>
+<blockquote>
+<p>晚上睡觉之前，宜在睡前半小时再喝一杯100ml左右的温开水，但此时并不适宜喝蜂蜜水。这是因为晚上睡前喝白开水是为了身体一夜新陈代谢作水分储备，但如果喝了蜂蜜水，水中含有大量溶质，密度上升，达不到睡前喝水的作用，因此不予推荐。另外，蜂蜜中含有大量的糖分，如果晚上睡觉之前喝了蜂蜜水，这些糖分极容易转换成脂肪堆积在身体里，让你悄悄长胖！</p>
+<p>如果刷了牙再喝蜂蜜水就更糟糕了，大量的细菌会在你的口腔里腐蚀你的牙齿，因此晚上睡前喝蜂蜜水委实太不划算！</p>
+</blockquote>
+]]></content>
+    
+    
+      <category term="有知识" scheme="http://www.haozi520.com/tags/%E6%9C%89%E7%9F%A5%E8%AF%86/"/>
+    
+      <category term="蜂蜜" scheme="http://www.haozi520.com/tags/%E8%9C%82%E8%9C%9C/"/>
+    
+      <category term="有知识" scheme="http://www.haozi520.com/categories/%E6%9C%89%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[老是遗忘的crontab配置]]></title>
@@ -131,6 +168,37 @@
   </entry>
   
   <entry>
+    <title><![CDATA[Golang中new和make的区别]]></title>
+    <link href="http://www.haozi520.com/2014/06/09/Golang%E4%B8%ADnew%E5%92%8Cmake%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://www.haozi520.com/2014/06/09/Golang中new和make的区别/</id>
+    <published>2014-06-09T09:20:12.000Z</published>
+    <updated>2014-06-10T06:54:02.000Z</updated>
+    <content type="html"><![CDATA[<p>刚学go的人，在看源码或别人的代码时都会头晕，有的时候用new创建变量，有的时候用make创建，一下整理几点</p>
+<h3 id="总结几点">总结几点</h3>
+<ul>
+<li>new会分配结构空间，并初始化为清空为零，不进一步初始化</li>
+<li>new之后需要一个指针来指向这个结构</li>
+<li>make会分配结构空间及其附属空间，并完成其间的指针初始化</li>
+<li>make返回这个结构空间，不另外分配一个指针</li>
+</ul>
+<h3 id="例子new">例子new</h3>
+<p>var p *[]int = new([]int)<br>或p := new([]int)<br>以上分配了一个slice结构，但是结构中的应该指向底层数组的ptr指针为空，故实际不能往这个slice里面存取数据<br>同时分配了一个指针p，也即(在32位系统中)占4个字节并存放slice结构的地址</p>
+<h3 id="例子make">例子make</h3>
+<p>var v []int = make([]int, 0)<br>v := make([]int, 0)<br>以上分配了一个slice结构，且结构中的应该指向底层数组的ptr指针已经指向了某个底层数组，这个底层数组应该已经分配了，故这个slice已经可以使用了<br>注意v就是这个slice结构，而不是一个指向slice的指针<br>上述仅是示例，一般使用时都会明确长度和容量：v := make([]int, 10, 50)</p>
+<h3 id="结论">结论</h3>
+<p>由上可见，用new来分配slice的意义不大，因为没有恰当的初始化，无法直接使用<br>有附带空间的结构，使用make来初始化，可以完成内部指针初始化，其后可以立即使用</p>
+]]></content>
+    
+    
+      <category term="go" scheme="http://www.haozi520.com/tags/go/"/>
+    
+      <category term="golang" scheme="http://www.haozi520.com/tags/golang/"/>
+    
+      <category term="go" scheme="http://www.haozi520.com/categories/go/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[Golang环境变量及工作空间配置]]></title>
     <link href="http://www.haozi520.com/2014/06/09/Golang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%8A%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE/"/>
     <id>http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/</id>
@@ -171,37 +239,6 @@ $GOPATH/src/mymath/sqrt.<span class="keyword">go</span>源码如下： <span cla
     <span class="keyword">return</span> z
 }
 </code></pre><p>这样我的应用包目录和代码已经新建完毕，注意：一般建议package的名称和目录名保持一致</p>
-]]></content>
-    
-    
-      <category term="go" scheme="http://www.haozi520.com/tags/go/"/>
-    
-      <category term="golang" scheme="http://www.haozi520.com/tags/golang/"/>
-    
-      <category term="go" scheme="http://www.haozi520.com/categories/go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Golang中new和make的区别]]></title>
-    <link href="http://www.haozi520.com/2014/06/09/Golang%E4%B8%ADnew%E5%92%8Cmake%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
-    <id>http://www.haozi520.com/2014/06/09/Golang中new和make的区别/</id>
-    <published>2014-06-09T09:20:12.000Z</published>
-    <updated>2014-06-10T06:54:02.000Z</updated>
-    <content type="html"><![CDATA[<p>刚学go的人，在看源码或别人的代码时都会头晕，有的时候用new创建变量，有的时候用make创建，一下整理几点</p>
-<h3 id="总结几点">总结几点</h3>
-<ul>
-<li>new会分配结构空间，并初始化为清空为零，不进一步初始化</li>
-<li>new之后需要一个指针来指向这个结构</li>
-<li>make会分配结构空间及其附属空间，并完成其间的指针初始化</li>
-<li>make返回这个结构空间，不另外分配一个指针</li>
-</ul>
-<h3 id="例子new">例子new</h3>
-<p>var p *[]int = new([]int)<br>或p := new([]int)<br>以上分配了一个slice结构，但是结构中的应该指向底层数组的ptr指针为空，故实际不能往这个slice里面存取数据<br>同时分配了一个指针p，也即(在32位系统中)占4个字节并存放slice结构的地址</p>
-<h3 id="例子make">例子make</h3>
-<p>var v []int = make([]int, 0)<br>v := make([]int, 0)<br>以上分配了一个slice结构，且结构中的应该指向底层数组的ptr指针已经指向了某个底层数组，这个底层数组应该已经分配了，故这个slice已经可以使用了<br>注意v就是这个slice结构，而不是一个指向slice的指针<br>上述仅是示例，一般使用时都会明确长度和容量：v := make([]int, 10, 50)</p>
-<h3 id="结论">结论</h3>
-<p>由上可见，用new来分配slice的意义不大，因为没有恰当的初始化，无法直接使用<br>有附带空间的结构，使用make来初始化，可以完成内部指针初始化，其后可以立即使用</p>
 ]]></content>
     
     
@@ -798,66 +835,6 @@ chmod 775 runjetty.sh
       <category term="生活" scheme="http://www.haozi520.com/tags/%E7%94%9F%E6%B4%BB/"/>
     
       <category term="体悟生活" scheme="http://www.haozi520.com/categories/%E4%BD%93%E6%82%9F%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[GOLang连接mysql]]></title>
-    <link href="http://www.haozi520.com/2013/12/17/GOLang%E8%BF%9E%E6%8E%A5Mysql/"/>
-    <id>http://www.haozi520.com/2013/12/17/GOLang连接Mysql/</id>
-    <published>2013-12-17T13:42:12.000Z</published>
-    <updated>2014-06-07T07:31:46.000Z</updated>
-    <content type="html"><![CDATA[<p>昨天想着写下go连接mysql数据，以为使用<br><code>database/sql</code><br>这个包就可以连接成功，后来在cnblog上查了下，需要使用到<br><code>github.com/go-sql-driver/mysql</code><br>这个驱动包。好心人都会写明在哪怎么下载这个包，运行:<br><code>go get github.com/go-sql-driver/mysql</code><br><img src="http://haozi520.u.qiniudn.com/20131217-gogetmysql.png" alt=""><br>会下载到你的GOPATH路径的src 下</p>
-<h3 id="实例代码如下：">实例代码如下：</h3>
-<pre><code><span class="keyword">package</span> main
-<span class="keyword">import</span> (
-<span class="string">"database/sql"</span>
-<span class="string">"fmt"</span>
-_ <span class="string">"github.com/go-sql-driver/mysql"</span>
-)
-<span class="keyword">func</span> testSelect() {
-    db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:111111@tcp(127.0.0.1:3333)/showme?charset=utf8"</span>)
-    <span class="keyword">if</span> err != <span class="constant">nil</span> {
-      fmt.Printf(<span class="string">"connect err"</span>)
-    }
-   rows, err1 := db.Query(<span class="string">"select userid,username from tb_user limit 0,5"</span>)
-   <span class="keyword">if</span> err1 != <span class="constant">nil</span> {
-      fmt.Println(err1.Error())
-      <span class="keyword">return</span>
-   }
-   <span class="keyword">defer</span> rows.Close()
-   fmt.Println(<span class="string">""</span>)
-   cols, _ := rows.Columns()
-   <span class="keyword">for</span> i := <span class="keyword">range</span> cols {
-      fmt.Print(cols[i])
-      fmt.Print(<span class="string">"\t"</span>)
-   }
-   fmt.Println(<span class="string">""</span>)
-   <span class="keyword">var</span> userid <span class="typename">int</span>
-   <span class="keyword">var</span> username <span class="typename">string</span>
-    <span class="keyword">for</span> rows.Next() {
-    <span class="keyword">if</span> err := rows.Scan(&amp;amp;userid, &amp;amp;username); err == <span class="constant">nil</span> {
-        fmt.Print(userid)
-        fmt.Print(<span class="string">"\t"</span>)
-        fmt.Print(username)
-        fmt.Print(<span class="string">"\t\r\n"</span>)
-    }
-}
-}
-<span class="keyword">func</span> main() {
-   testSelect()
-}
-</code></pre><p><img src="http://haozi520.u.qiniudn.com/20131217_dbtest.png" alt=""><br>总结:多看文档，多动手谢谢！</p>
-]]></content>
-    
-    
-      <category term="go" scheme="http://www.haozi520.com/tags/go/"/>
-    
-      <category term="golang" scheme="http://www.haozi520.com/tags/golang/"/>
-    
-      <category term="mysql" scheme="http://www.haozi520.com/tags/mysql/"/>
-    
-      <category term="go" scheme="http://www.haozi520.com/categories/go/"/>
     
   </entry>
   
