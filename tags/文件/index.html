@@ -1,0 +1,548 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+<meta name="wumiiVerification" content="eaeee5f8-f47e-44b2-b042-3fe25f5ee8fd" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>文件 | 胖浩网</title>
+<meta name="author" content="lauking">
+
+<meta name="description" content="做一个有知识，有文化、有技术、有内涵、有梦想的人">
+
+<meta name="keywords" content="java，linux，php，golang，nodejs，javascript，css，html，mysql，web开发，有知识，有文化，有技术，有内涵，有梦想">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+<meta property="og:site_name" content="胖浩网"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css"><![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="胖浩网 Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.staticfile.org/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+      <header id="header" class="container"><nav id="main-nav" class="navbar navbar-default navbar-fixed-top " role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">胖浩网</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+  
+        <li><a href="/" title="主页">主页</a></li>      
+        <li><a href="/about/" title="关于">关于</a></li>      
+        <li><a href="/archives/" title="归档">归档</a></li>      
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/lauking">github</a></li>
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id='content' class="container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>胖浩网 <small>做一个有知识，有文化、有技术、有内涵、有梦想的人</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><h2 class="archive-title tag">文件</h2>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/13/java-write-file-in-thread/">一个句柄无效引发的思考</a></h1>
+      
+        <span>发表于<time datetime="2014-06-13T04:22:00.000Z"> <a href="/2014/06/13/java-write-file-in-thread/">6月 13 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>今天在用java多线模拟并发用户请求，想把报告写到文件中后分析，可是写完代码后总是报“java.io.IOException: 句柄无效”，可能是多线程的原因</p>
+<h3 id="有问题的代码如下">有问题的代码如下</h3>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpPressTest</span> {</span>
+    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) <span class="keyword">throws</span> Exception {
+        HttpPressTest h=<span class="keyword">new</span> HttpPressTest();
+        h.commit();
+        h.closeExe();
+    }
+    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
+        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
+        exec = Executors.newFixedThreadPool(cpu);
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>(){
+        <span class="keyword">final</span> FileOutputStream os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(
+                    <span class="string">"D:\\temp\\report.txt"</span>));
+            <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">1000000</span>; index++) {
+                <span class="keyword">final</span> <span class="keyword">int</span> NO = index;
+                Runnable run = <span class="keyword">new</span> Runnable() {
+                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+                        <span class="keyword">try</span> {
+                            <span class="keyword">long</span> time1 = System.currentTimeMillis();
+                            URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
+                            InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(
+                                    url.openStream());
+                            <span class="keyword">long</span> time2 = System.currentTimeMillis();
+                            os.write((<span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1) + <span class="string">"ms\n"</span>)
+                                    .getBytes());
+                            os.flush();
+                            BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
+                            String str;
+                            <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
+                                System.out.println(str);
+                            }
+                            br.close();
+                            isr.close();
+                        } <span class="keyword">catch</span> (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                exec.execute(run);
+            }
+        os.flush();
+        os.close();
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
+        exec.shutdown();
+    }
+}
+</code></pre><p>这段代码看似没问题，但是你执行后就会告诉你“java.io.IOException: 句柄无效”，分析了下Runnable实例run在ExecutorService执行时是异步的，还没等到所有的Runnable执行完毕FileOutputStream就Close掉了造成IO异常。既然os放在外面会因为关闭而导致异常，那能不能放在里面呢？我测了一下</p>
+<h3 id="第一次修改">第一次修改</h3>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> HttpPressTest {
+    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) throws Exception {
+        HttpPressTest h=<span class="keyword">new</span> HttpPressTest();
+        h.commit();
+        h.closeExe();
+    }
+    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
+        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
+        exec = Executors.newFixedThreadPool(cpu);
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>(){
+        <span class="keyword">int</span> cpu=Runtime.getRuntime().availableProcessors();
+        ExecutorService exec = Executors.newFixedThreadPool(cpu);
+            <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">100000</span>; index++) {
+                final <span class="keyword">int</span> NO = index;
+                Runnable run = <span class="keyword">new</span> Runnable() {
+                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
+                        OutputStream os = <span class="keyword">null</span>;
+                        <span class="keyword">try</span> {
+                            os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(
+                                    <span class="string">"D:\\temp\\report.txt"</span>),<span class="keyword">true</span>);
+                            <span class="keyword">long</span> time1 = System.currentTimeMillis();
+                            URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
+                            InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(
+                                    url.openStream());
+                            <span class="keyword">long</span> time2 = System.currentTimeMillis();
+                            os.write((<span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1) + <span class="string">"ms\n"</span>)
+                                    .getBytes());
+                            os.flush();
+                            os.close();
+                            BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
+                            String str;
+                            <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
+                                System.<span class="keyword">out</span>.println(str);
+                            }
+                            br.close();
+                            isr.close();
+                        } <span class="keyword">catch</span> (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+                exec.execute(run);
+            }
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
+        exec.shutdown();
+    }
+}
+</code></pre><p>这样修改后确实没问题，但是代码里面使用的文件流一开一关造成了IO资源的浪费，可能会造成以后高并发暂用资源，影响测试准确率，有没有别的办法修改这种情况呢？</p>
+<p>多线程中有个submit方法返回Future能判断线程是否执行完毕，只要执行完毕的我们就把报告写道文件中，为完毕的等待。</p>
+<h3 id="第二次修改">第二次修改</h3>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpPressTest</span> {</span>
+    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
+    <span class="keyword">private</span> List&lt;Future&lt;String&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;Future&lt;String&gt;&gt;();
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) <span class="keyword">throws</span> Exception {
+        HttpPressTest h = <span class="keyword">new</span> HttpPressTest();
+        h.commit();
+    }
+    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
+        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
+        exec = Executors.newFixedThreadPool(cpu);
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>() {
+        <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">100000</span>; index++) {
+            <span class="keyword">final</span> <span class="keyword">int</span> NO = index;
+            Future&lt;String&gt; f = exec.submit(<span class="keyword">new</span> Callable&lt;String&gt;() {
+                <span class="annotation">@Override</span>
+                <span class="keyword">public</span> String <span class="title">call</span>() <span class="keyword">throws</span> Exception {
+                    <span class="keyword">try</span> {
+                        <span class="keyword">long</span> time1 = System.currentTimeMillis();
+                        URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
+                        InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(url
+                                .openStream());
+                        <span class="keyword">long</span> time2 = System.currentTimeMillis();
+                        BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
+                        String str;
+                        <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
+                            System.out.println(str);
+                        }
+                        br.close();
+                        isr.close();
+                        <span class="keyword">return</span> <span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1)
+                                + <span class="string">"ms\n"</span>;
+                    } <span class="keyword">catch</span> (Exception e) {
+                        e.printStackTrace();
+                    }
+                    <span class="keyword">return</span> <span class="keyword">null</span>;
+                }
+            });
+            list.add(f);
+        }
+        writeFile();
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeFile</span>() {
+        FileOutputStream os = <span class="keyword">null</span>;
+        <span class="keyword">try</span> {
+            os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(<span class="string">"D:\\temp\\report.txt"</span>));
+            <span class="keyword">for</span> (Future&lt;String&gt; fs : list) {
+                os.write(fs.get().getBytes());
+                os.flush();
+            }
+        } <span class="keyword">catch</span> (Exception e) {
+            e.printStackTrace();
+        } <span class="keyword">finally</span> {
+            <span class="keyword">if</span> (os != <span class="keyword">null</span>) {
+                <span class="keyword">try</span> {
+                    os.flush();
+                    os.close();
+                } <span class="keyword">catch</span> (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
+        exec.shutdown();
+    }
+}
+</code></pre><p>在刚在的例子中，writeFile()方法的实现过程中，迭代了Future的数组，如果任务还没有完成则当前线程会阻塞，如果我们希望任意字任务完成后就把其结果写到文件中，而不用依次等待每个任务完成，可以使CompletionService。生产者submit()执行的任务。使用者take()已完成的任务，并按照完成这些任务的顺序处理它们的结果。也就是调用CompletionService的take方法是，会返回按完成顺序放回任务的结果，CompletionService内部维护了一个阻塞队列BlockingQueue，如果没有任务完成，take()方法也会阻塞。修改刚才的例子使用CompletionService</p>
+<h3 id="第三次修改">第三次修改</h3>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> HttpPressTest {
+    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
+    <span class="keyword">private</span> <span class="keyword">int</span> MAX = <span class="number">1000000</span>;
+    <span class="keyword">private</span> ExecutorCompletionService&lt;String&gt; completionService = <span class="keyword">null</span>;
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) throws Exception {
+        HttpPressTest h = <span class="keyword">new</span> HttpPressTest();
+        h.commit();
+        h.closeExe();
+    }
+    <span class="keyword">public</span> <span class="keyword">class</span> InnerPressTest implements Callable&lt;String&gt; {
+        <span class="keyword">private</span> <span class="keyword">int</span> NO;
+        <span class="keyword">public</span> <span class="title">InnerPressTest</span>(<span class="keyword">int</span> index) {
+            NO = index;
+        }
+        @Override
+        <span class="keyword">public</span> String <span class="title">call</span>() throws Exception {
+            <span class="keyword">try</span> {
+                <span class="keyword">long</span> time1 = System.currentTimeMillis();
+                URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
+                InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(url.openStream());
+                <span class="keyword">long</span> time2 = System.currentTimeMillis();
+                BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
+                String str;
+                <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
+                    System.<span class="keyword">out</span>.println(str);
+                }
+                br.close();
+                isr.close();
+                <span class="keyword">return</span> <span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1) + <span class="string">"ms\n"</span>;
+            } <span class="keyword">catch</span> (Exception e) {
+                e.printStackTrace();
+            }
+            <span class="keyword">return</span> <span class="keyword">null</span>;
+        }
+    }
+    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
+        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
+        exec = Executors.newFixedThreadPool(cpu);
+        completionService = <span class="keyword">new</span> ExecutorCompletionService&lt;String&gt;(exec);
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>() {
+        <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; MAX; index++) {
+            InnerPressTest innerPressTest = <span class="keyword">new</span> InnerPressTest(index);
+            <span class="keyword">if</span> (!exec.isShutdown()) {
+                completionService.submit(innerPressTest);
+            }
+        }
+        writeFile();
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeFile</span>() {
+        FileOutputStream os = <span class="keyword">null</span>;
+        <span class="keyword">try</span> {
+            os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(<span class="string">"D:\\temp\\report.txt"</span>));
+            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX; i++) {
+                os.write(completionService.take().<span class="keyword">get</span>().getBytes());
+                os.flush();
+            }
+        } <span class="keyword">catch</span> (Exception e) {
+            e.printStackTrace();
+        } <span class="keyword">finally</span> {
+            <span class="keyword">if</span> (os != <span class="keyword">null</span>) {
+                <span class="keyword">try</span> {
+                    os.flush();
+                    os.close();
+                } <span class="keyword">catch</span> (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
+        exec.shutdown();
+    }
+}
+</code></pre><h3 id="总结">总结</h3>
+<p>多线程是好用，但是要理解其中的原理，整理下多线程特性</p>
+<h4 id="创建线程池">创建线程池</h4>
+<p>Executors类，提供了一系列工厂方法用于创先线程池，返回的线程池都实现了ExecutorService接口。</p>
+<ul>
+<li>public static ExecutorService newFixedThreadPool(int nThreads) public static - ExecutorService newFixedThreadPool(int nThreads) 创建固定数目线程的线程池。</li>
+<li>public static ExecutorService newCachedThreadPool() 创建一个可缓存的线程池，调用execute将重用以前构造的线程（如果线程可用）。如果现有线程没有可用的，则创建一个新线程并添加到池中。终止并从缓存中移除那些已有 60 秒钟未被使用的线程。</li>
+<li>public static ExecutorService newSingleThreadExecutor()创建一个单线程化的<br>Executor。</li>
+<li>public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)创建一个支持定时及周期性的任务执行的线程池，多数情况下可用来</li>
+<li>替代Timer类。</li>
+</ul>
+<h4 id="ExecutorService与生命周期">ExecutorService与生命周期</h4>
+<p>ExecutorService扩展了Executor并添加了一些生命周期管理的方法。一个Executor的生命周期有三种状态，运行，关闭，终止。Executor创建时处于运行状态。当调用ExecutorService.shutdown()后，处于关闭状态，isShutdown()方法返回true。这时，不应该再想Executor中添加任务，所有已添加的任务执行完毕后，Executor处于终止状态，isTerminated()返回true。如果Executor处于关闭状态，往Executor提交任务会抛出unchecked exception RejectedExecutionException。</p>
+<h4 id="使用Callable，Future返回结果">使用Callable，Future返回结果</h4>
+<p>Future<V>代表一个异步执行的操作，通过get()方法可以获得操作的结果，如果异步操作<br>还没有完成，则get()会使当前线程阻塞。FutureTask<V>实现了Future<V>和Runable<V>。<br>Callable代表一个有返回值得操作。<br>ExecutoreService提供了submit()方法，传递一个Callable，或Runnable，返回Future。如果Executor后台线程池还没有完成Callable的执行，这调用返回Future对象的get()方法，会阻塞直到执行完成</p>
+<h4 id="CompletionService">CompletionService</h4>
+<p>如果我们希望任意任务完成后就把其结果处理掉，而不用依次等待每个任务完成，可以使CompletionService。生产者submit()执行的任务。使用者take()已完成的任务，并按照完成这些任务的顺序处理它们的结果。也就是调用CompletionService的take方法是，会返回按完成顺序放回任务的结果，CompletionService内部维护了一个阻塞队列BlockingQueue，如果没有任务完成，take()方法也会阻塞</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/线程/" class="label label-success" itemprop="url"><span itemprop="title">线程</span></a><a href="/tags/文件/" class="label label-info" itemprop="url"><span itemprop="title">文件</span></a><a href="/tags/句柄无效/" class="label label-warning" itemprop="url"><span itemprop="title">句柄无效</span></a></span> | <span class="time">最近更新:<time title="2014-06-13 14:36:50"datetime="2014-06-13 14:36:50"> 6月 13 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/13/java-write-file-in-thread/#comments" class="ds-thread-count comment-link" data-thread-key="java-write-file-in-thread" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget panel panel-primary">
+    <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="search">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:www.haozi520.com">
+  </div>
+</form>
+</div>
+
+<div id="widget_category" class="widget panel panel-primary">
+  <div class="panel-heading">分类</div>  <div data-src='category' class='ajax_widgets'>正在加载...</div>
+</div>
+
+<div id="widget_recent_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_tagcloud" class="widget panel panel-primary">
+  <div class="panel-heading">标签云</div>  <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_latest_update_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近更新</div>  <div data-src='latest_update_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_random_posts" class="widget panel panel-primary">
+  <div class="panel-heading">随机文章</div>  <div class='hexo_random_posts' data-count=8></div></div>
+
+<div id="widget_google_sidebar" class="widget panel panel-primary">
+  <div class="panel-heading">赞助商</div>  <div style="margin-top:0">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- 侧边栏广告 -->
+	<ins class="adsbygoogle"
+	     style="display:inline-block;width:250px;height:250px"
+	     data-ad-client="ca-pub-2783023736003892"
+	     data-ad-slot="6006336369"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2013-2014 lauking
+  
+    &nbsp;&nbsp;</span>
+  
+  <span id='analytics-51la'></span><span id='analytics-google'>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-46059111-1']);
+  _gaq.push(['_trackPageview']);
+  _js2load.push({src:('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'});
+</script></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000210742'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D1000210742%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-13 14:41:47</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haozi520"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      if (alt){
+        $(this).before('<span class="caption">' + alt + '</span>');
+      }
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />');
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script type="text/javascript" src="/js/chenall.js"></script>
+  </body>
+</html>
