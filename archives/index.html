@@ -103,6 +103,136 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/14/java-event-driver-program/">这样写java事件驱动编程，是否可以</a></h1>
+      
+        <span>发表于<time datetime="2014-06-14T10:19:00.000Z"> <a href="/2014/06/14/java-event-driver-program/">6月 14 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>java事件驱动模型主要是在swing上体现的比较多，但是现在在JDk和软件业发展迅速的情况下，事件驱动编程的需求也越来越或不可缺。作为一直用java编程的程序员，使用事件编程是理由有的思路。<br>思路：</p>
+<ul>
+<li>定义事件</li>
+<li>定义监听器</li>
+<li>定义事件源</li>
+</ul>
+<hr>
+<h3 id="定义事件">定义事件</h3>
+<p>在JDK API中java.util.EventObject,所有事件状态对象都将从其派生的根类。<br>所有 Event 在构造时都引用了对象 “source”，在逻辑上认为该对象是最初发生有关 Event 的对象。我们定义自己的事件状态对象继承java.util.EventObject</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AEvent</span> <span class="keyword">extends</span> <span class="title">EventObject</span> {</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1</span>L;
+    <span class="comment">//事件名称</span>
+    <span class="keyword">private</span> String eName;
+    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source) {
+        <span class="keyword">this</span>(source, <span class="keyword">null</span>);
+    }
+    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source, String eName) {
+        <span class="keyword">super</span>(source);
+        <span class="keyword">this</span>.eName = eName;
+    }
+    <span class="keyword">public</span> String <span class="title">getEName</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.eName;
+    }
+}
+</code></pre><h3 id="定义监听器">定义监听器</h3>
+<p>在JDK API中java.util.EventListener接口，JDK是这样描述的“所有事件侦听器接口必须扩展的标记接口”，我们定义一个事件监听器接口继承EventListener</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AListener</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">util</span>.<span class="title">EventListener</span>{</span>
+    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e);
+}
+</code></pre><h3 id="定义事件源">定义事件源</h3>
+<p>定义一个ASource，用Map来存储监听器<br>事件源：</p>
+<ul>
+<li>可以增加、删除事件</li>
+<li>可以监听事件</li>
+<li>可以触发被监听到的事件</li>
+</ul>
+<hr>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ASource</span>{</span>
+    <span class="keyword">private</span> 
+    Map&lt;String, AListener&gt; alisteners = <span class="keyword">new</span> HashMap&lt;String, AListener&gt;();
+    <span class="javadoc">/**
+    *模拟出发事件
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trigger</span>(String eName) {
+        <span class="keyword">if</span> (alisteners.containsKey(eName)) {
+            AEvent evt = <span class="keyword">new</span> AEvent(<span class="keyword">this</span>, eName);
+            <span class="comment">// 如果值改变的话,就触发事件</span>
+            fireAEvent(evt, eName);
+        }
+    }
+    <span class="javadoc">/**
+    *定义出发事件
+    */</span>
+    <span class="keyword">public</span> Map&lt;String, AListener&gt; <span class="title">getAllAListener</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.alisteners;
+    }
+    <span class="javadoc">/**
+    *获取事件监听器
+    */</span>
+    <span class="keyword">public</span> AListener <span class="title">getAListener</span>(String eName) {
+        <span class="keyword">return</span> alisteners.get(eName);
+    }
+    <span class="javadoc">/**
+    *添加事件
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addAListener</span>(String eName, AListener a) {
+        <span class="keyword">if</span> (eName != <span class="keyword">null</span> &amp;&amp; !<span class="string">""</span>.equals(eName.trim()) &amp;&amp; a != <span class="keyword">null</span>) {
+            alisteners.put(eName, a);
+        }
+    }
+    <span class="javadoc">/**
+    *删除监听器
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeAListener</span>(String eName) {
+        alisteners.remove(eName);
+    }
+    <span class="javadoc">/**
+    *调用监听器处理事件
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fireAEvent</span>(AEvent evt, String eName) {
+        alisteners.get(eName).performed(evt);
+    }
+}
+</code></pre><h3 id="编写测试">编写测试</h3>
+<p>编写个测试类Test</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Test{
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        ASource <span class="keyword">as</span>=<span class="keyword">new</span> ASource();
+        <span class="keyword">as</span>.addAListener(<span class="string">"add"</span>,<span class="keyword">new</span> AListener(){
+            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e) {
+                System.<span class="keyword">out</span>.println(e.getEName());
+            }
+        });
+        <span class="comment">//模拟出发事件</span>
+        <span class="keyword">as</span>.trigger(<span class="string">"add"</span>);
+    }
+}
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/事件驱动/" class="label label-success" itemprop="url"><span itemprop="title">事件驱动</span></a></span> | <span class="time">最近更新:<time title="2014-06-14 21:23:36"datetime="2014-06-14 21:23:36"> 6月 14 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/14/java-event-driver-program/#comments" class="ds-thread-count comment-link" data-thread-key="java-event-driver-program" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/13/java-write-file-in-thread/">一个句柄无效引发的思考</a></h1>
       
         <span>发表于<time datetime="2014-06-13T04:22:00.000Z"> <a href="/2014/06/13/java-write-file-in-thread/">6月 13 2014</a></time></span>      
@@ -564,55 +694,6 @@
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/09/如何成为优秀的程序员/">如何成为优秀的程序员</a></h1>
-      
-        <span>发表于<time datetime="2014-06-09T10:20:12.000Z"> <a href="/2014/06/09/如何成为优秀的程序员/">6月 9 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p><em>原文：<a href="http://www.csdn.net/article/2014-06-09/2820135" target="_blank">http://www.csdn.net/article/2014-06-09/2820135</a></em></p>
-<p>作为程序员，价值的实现不是通过你知道些什么来衡量，而是通过你做出的设计来衡量。虽然两者之间存在联系，但并不相同。那么，如何才能成为伟大的程序员？</p>
-<h3 id="发现问题要及时解决">发现问题要及时解决</h3>
-<p>程序员在编写代码时，遇到真正的难题很少，也很少有专门做技术的公司。要想成为优秀的程序员，第一步就是要解决之前遇到过的难题。遇到有问题的代码而不去解决的程序员不是好程序员。无论你是Ruby、Nodejs、Angular还是其他开发人员，遇到问题一定要解决。<br><img src="http://cms.csdnimg.cn/article/201406/09/5395688962841.jpg" alt=""></p>
-<h3 id="从代码中学习">从代码中学习</h3>
-<p>我发现很多程序员的编码水平都达到了一个稳定值，因为他们还没有找到可以提高他们编码水平的方法，这是一件很糟糕的事。怎样才能提高自己的编码水平？最简单的方法就是从好的、不好的代码中学习。通过长期积累，你应该可以分辨出哪些代码值得你学习。</p>
-<h3 id="态度端正">态度端正</h3>
-<p>一个好的程序要确保自己写出的代码能够正常运行，在写代码过程中，态度一定要端正。如果不端正的话，会影响到你写代码的速度和质量，同时也会造成Bug，说不定还会惹怒你的领导。</p>
-<h3 id="适量测试">适量测试</h3>
-<p>测试是一种有力的工具，就像战士穿铠甲一样，穿得越多，越不容易失败；越不害怕失败，你做得就会多，进步的空间也比较大。但到底什么才是适量的测试？对此没有明确的回答，依情况来定。测试是你需要学习的另一个新的专业知识，要多花时间思考哪些东西需要做测试，怎样才能做好测试。</p>
-<h3 id="每天至少花四个小时来认真做本分工作">每天至少花四个小时来认真做本分工作</h3>
-<p>大多数程序员喜欢讨论优化自己、关注黑客等，其实你根本不需要做这些来提高工作效率，最根本的是要每天坚持做自己的本分工作。每天至少花4个小时的时间认真做好自己的本职工作，这并不是一件容易的事情，如果长期坚持下去的话，势必会成为团队最优秀的成员之一。</p>
-<p>记录有价值的代码并与团队分享：培养记录有价值代码的习惯，记录下来之后，还应该花时间与你的团队成员分享，互相学习。在编程过程中，遇到的最糟糕的事就是修复Bug。分享可以有效降低出现这种事情的概率。</p>
-<h3 id="使团队更优秀">使团队更优秀</h3>
-<p>你的出现使团队变得更优秀还是更糟糕？你编写代码、编制文档和你的技术能力帮助到队友了吗？你是否经常鼓励队友，使他们为成为优秀的程序员努力？你应该想尽办法使团队变得更优秀，比如在工作上帮助他们。要记住，只有你一个人“聪明”并不聪明。</p>
-<p>其实，作为一个优秀的程序员，不在于你有多聪明或者有很多理论知识，也和你从哪个大学毕业无关。你是一个怎样的程序员最终只由你所做出来的工作以及身边人对你的评价决定。所以，要想成为一名优秀的程序员，继续加油吧！</p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/有理想/" itemprop="url"><span itemprop="title" >有理想</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/程序员/" class="label label-primary" itemprop="url"><span itemprop="title">程序员</span></a><a href="/tags/有理想/" class="label label-success" itemprop="url"><span itemprop="title">有理想</span></a></span> | <span class="time">最近更新:<time title="2014-06-09 18:03:17"datetime="2014-06-09 18:03:17"> 6月 9 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/09/如何成为优秀的程序员/#comments" class="ds-thread-count comment-link" data-thread-key="如何成为优秀的程序员" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
   <li class="active"><li><span class="page-number current">1</span></li></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><a class="page-number" href="/archives/page/4/">4</a></li><li><a class="page-number" href="/archives/page/5/">5</a></li><li><a class="extend next" href="/archives/page/2/">&raquo;</a></li>
@@ -706,7 +787,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-13 17:39:17</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-14 21:24:16</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

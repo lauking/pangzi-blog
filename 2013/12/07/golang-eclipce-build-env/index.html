@@ -7,15 +7,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GOLang连接mysql | 胖浩网</title>
+<title>eclipse下Go的开发配置 | 胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="胖浩网，golang连接mysql数据库的操作">
+<meta name="description" content="胖浩网,go,eclipse,eclipse下Go的开发配置">
 
-<meta name="keywords" content="胖浩网，go,golang,go语言，go基础，mysql，go开发">
+<meta name="keywords" content="胖浩网，go,eclipse,eclipse下Go的开发配置">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<meta property="og:title" content="GOLang连接mysql"/>
+<meta property="og:title" content="eclipse下Go的开发配置"/>
 <meta property="og:site_name" content="胖浩网"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -99,55 +99,20 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title">GOLang连接mysql</h1>
+      <h1 class="title">eclipse下Go的开发配置</h1>
       
-        <span>发表于<time datetime="2013-12-17T13:42:12.000Z"> <a href="/2013/12/17/GOLang连接Mysql/">12月 17 2013</a></time></span>      
+        <span>发表于<time datetime="2013-12-07T09:18:00.000Z"> <a href="/2013/12/07/golang-eclipce-build-env/">12月 7 2013</a></time></span>      
     </header>
     
     <section id='before_content_widget'></section>
     <div class="entry">
       
-        <p>昨天想着写下go连接mysql数据，以为使用<br><code>database/sql</code><br>这个包就可以连接成功，后来在cnblog上查了下，需要使用到<br><code>github.com/go-sql-driver/mysql</code><br>这个驱动包。好心人都会写明在哪怎么下载这个包，运行:<br><code>go get github.com/go-sql-driver/mysql</code><br><img src="http://haozi520.u.qiniudn.com/20131217-gogetmysql.png" alt=""><br>会下载到你的GOPATH路径的src 下</p>
-<h3 id="实例代码如下：">实例代码如下：</h3>
-<pre><code><span class="keyword">package</span> main
-<span class="keyword">import</span> (
-<span class="string">"database/sql"</span>
-<span class="string">"fmt"</span>
-_ <span class="string">"github.com/go-sql-driver/mysql"</span>
-)
-<span class="keyword">func</span> testSelect() {
-    db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:111111@tcp(127.0.0.1:3333)/showme?charset=utf8"</span>)
-    <span class="keyword">if</span> err != <span class="constant">nil</span> {
-      fmt.Printf(<span class="string">"connect err"</span>)
-    }
-   rows, err1 := db.Query(<span class="string">"select userid,username from tb_user limit 0,5"</span>)
-   <span class="keyword">if</span> err1 != <span class="constant">nil</span> {
-      fmt.Println(err1.Error())
-      <span class="keyword">return</span>
-   }
-   <span class="keyword">defer</span> rows.Close()
-   fmt.Println(<span class="string">""</span>)
-   cols, _ := rows.Columns()
-   <span class="keyword">for</span> i := <span class="keyword">range</span> cols {
-      fmt.Print(cols[i])
-      fmt.Print(<span class="string">"\t"</span>)
-   }
-   fmt.Println(<span class="string">""</span>)
-   <span class="keyword">var</span> userid <span class="typename">int</span>
-   <span class="keyword">var</span> username <span class="typename">string</span>
-    <span class="keyword">for</span> rows.Next() {
-    <span class="keyword">if</span> err := rows.Scan(&amp;amp;userid, &amp;amp;username); err == <span class="constant">nil</span> {
-        fmt.Print(userid)
-        fmt.Print(<span class="string">"\t"</span>)
-        fmt.Print(username)
-        fmt.Print(<span class="string">"\t\r\n"</span>)
-    }
-}
-}
-<span class="keyword">func</span> main() {
-   testSelect()
-}
-</code></pre><p><img src="http://haozi520.u.qiniudn.com/20131217_dbtest.png" alt=""><br>总结:多看文档，多动手谢谢！</p>
+        <h5 id="1、进入help-&gt;Install_New_Software_在弹出框中">1、进入help-&gt;Install New Software 在弹出框中</h5>
+<h5 id="2、选择Add">2、选择Add</h5>
+<h5 id="3、在name中输入go_plugin，在location中输入：http://goclipse-googlecode-com/svn/trunk/goclipse-update-site/*，OK退出。">3、在name中输入go plugin，在location中输入：<a href="http://goclipse.googlecode.com/svn/trunk/goclipse-update-site/*，OK退出。" target="_blank">http://goclipse.googlecode.com/svn/trunk/goclipse-update-site/*，OK退出。</a></h5>
+<h5 id="4、等待一会，出现GoClipse，选择后Next">4、等待一会，出现GoClipse，选择后Next</h5>
+<h5 id="5、引导安装完成后，配置Go的preference">5、引导安装完成后，配置Go的preference</h5>
+<h5 id="6、配置完成后，就可以建立Go工程，编写go代码了">6、配置完成后，就可以建立Go工程，编写go代码了</h5>
 
       
     </div>
@@ -157,15 +122,15 @@ _ <span class="string">"github.com/go-sql-driver/mysql"</span>
 <div class="panel panel-success">
     <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
     <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></div>
+    <div class="panel-body">本文链接: <a href="/2013/12/07/golang-eclipce-build-env/">eclipse下Go的开发配置</a></div>
 </div></div><div class="widget" id="widget_after_content_ujian>">
 <div class="ujian-hook"></div>
 </div></section>
     
     
         <footer id="post-meta">
-        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a><a href="/tags/mysql/" class="label label-info" itemprop="url"><span itemprop="title">mysql</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 15:31:46"datetime="2014-06-07 15:31:46"> 6月 7 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2013/12/17/GOLang连接Mysql/#comments" class="ds-thread-count comment-link" data-thread-key="GOLang连接Mysql" data-count-type="comments">暂无评论</a></span>
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/eclipse/" class="label label-primary" itemprop="url"><span itemprop="title">eclipse</span></a><a href="/tags/go/" class="label label-success" itemprop="url"><span itemprop="title">go</span></a></span> | <span class="time">最近更新:<time title="2014-06-13 17:54:17"datetime="2014-06-13 17:54:17"> 6月 13 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2013/12/07/golang-eclipce-build-env/#comments" class="ds-thread-count comment-link" data-thread-key="golang-eclipce-build-env" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -177,16 +142,14 @@ _ <span class="string">"github.com/go-sql-driver/mysql"</span>
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/02/26/only-come-from-love/" title="只源于：爱">&larr; 只源于：爱</a></li>
+  <li class="previous"><a href="/2013/12/17/GOLang连接Mysql/" title="GOLang连接mysql">&larr; GOLang连接mysql</a></li>
   
-  
-  <li class="next"><a href="/2013/12/07/golang-eclipce-build-env/" title="eclipse下Go的开发配置">eclipse下Go的开发配置 &rarr;</a></li>
   
 </ul></div><div class="widget" id="widget_after_post_related_posts>">
-<ul class="list-group"><li class="list-group-item"><a href="/2013/12/07/golang-eclipce-build-env/">eclipse下Go的开发配置</a></li><li class="list-group-item"><a href="/2014/06/09/Golang中new和make的区别/">Golang中new和make的区别</a></li><li class="list-group-item"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></li><li class="list-group-item"><a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></li><li class="list-group-item"><a href="/2014/06/09/Golang环境变量及工作空间配置/">Golang环境变量及工作空间配置</a></li><li class="list-group-item"><a href="/2014/05/05/sql-replace-update/">sql中使用replace函数用于update语句</a></li></ul></div></section>    
+<ul class="list-group"><li class="list-group-item"><a href="/2013/12/07/golang-eclipce-build-env/">eclipse下Go的开发配置</a></li><li class="list-group-item"><a href="/2014/06/09/Golang环境变量及工作空间配置/">Golang环境变量及工作空间配置</a></li><li class="list-group-item"><a href="/2014/06/09/Golang中new和make的区别/">Golang中new和make的区别</a></li><li class="list-group-item"><a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></li></ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
 
-<div class="ds-thread"  data-thread-key="GOLang连接Mysql"  data-url="http://www.haozi520.com/2013/12/17/GOLang连接Mysql/" data-title="GOLang连接mysql"></div>
+<div class="ds-thread"  data-thread-key="golang-eclipce-build-env"  data-url="http://www.haozi520.com/2013/12/07/golang-eclipce-build-env/" data-title="eclipse下Go的开发配置"></div>
 <!-- Duoshuo Comment END -->
 
 </div></div><!--wapper-->
@@ -278,7 +241,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-07 15:31:46</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-13 17:54:17</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -329,9 +292,9 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
             <!--wumii_relatedItems-->
 
 <script type="text/javascript">
-    var wumiiPermaLink = "http://www.haozi520.com/2013/12/17/GOLang连接Mysql/";
-    var wumiiTitle = "GOLang连接mysql";
-    var wumiiTags = "go,golang,mysql";
+    var wumiiPermaLink = "http://www.haozi520.com/2013/12/07/golang-eclipce-build-env/";
+    var wumiiTitle = "eclipse下Go的开发配置";
+    var wumiiTags = "eclipse,go";
     var wumiiCategories = ["go"];
     var wumiiSitePrefix = "http://www.haozi520.com";
     var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";

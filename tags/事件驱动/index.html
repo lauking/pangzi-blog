@@ -7,15 +7,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>GOLang连接mysql | 胖浩网</title>
+<title>事件驱动 | 胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="胖浩网，golang连接mysql数据库的操作">
+<meta name="description" content="做一个有知识，有文化、有技术、有内涵、有梦想的人">
 
-<meta name="keywords" content="胖浩网，go,golang,go语言，go基础，mysql，go开发">
+<meta name="keywords" content="java，linux，php，golang，nodejs，javascript，css，html，mysql，web开发，有知识，有文化，有技术，有内涵，有梦想">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<meta property="og:title" content="GOLang连接mysql"/>
+
 <meta property="og:site_name" content="胖浩网"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -94,102 +94,137 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><article>
+          <div id="wrapper"><h2 class="archive-title tag">事件驱动</h2>
+
+
+  
+    <article>
 <div id="post" class="post well">
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title">GOLang连接mysql</h1>
+      <h1 class="title"><a href="/2014/06/14/java-event-driver-program/">这样写java事件驱动编程，是否可以</a></h1>
       
-        <span>发表于<time datetime="2013-12-17T13:42:12.000Z"> <a href="/2013/12/17/GOLang连接Mysql/">12月 17 2013</a></time></span>      
+        <span>发表于<time datetime="2014-06-14T10:19:00.000Z"> <a href="/2014/06/14/java-event-driver-program/">6月 14 2014</a></time></span>      
     </header>
     
-    <section id='before_content_widget'></section>
+    
     <div class="entry">
       
-        <p>昨天想着写下go连接mysql数据，以为使用<br><code>database/sql</code><br>这个包就可以连接成功，后来在cnblog上查了下，需要使用到<br><code>github.com/go-sql-driver/mysql</code><br>这个驱动包。好心人都会写明在哪怎么下载这个包，运行:<br><code>go get github.com/go-sql-driver/mysql</code><br><img src="http://haozi520.u.qiniudn.com/20131217-gogetmysql.png" alt=""><br>会下载到你的GOPATH路径的src 下</p>
-<h3 id="实例代码如下：">实例代码如下：</h3>
-<pre><code><span class="keyword">package</span> main
-<span class="keyword">import</span> (
-<span class="string">"database/sql"</span>
-<span class="string">"fmt"</span>
-_ <span class="string">"github.com/go-sql-driver/mysql"</span>
-)
-<span class="keyword">func</span> testSelect() {
-    db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:111111@tcp(127.0.0.1:3333)/showme?charset=utf8"</span>)
-    <span class="keyword">if</span> err != <span class="constant">nil</span> {
-      fmt.Printf(<span class="string">"connect err"</span>)
+        <p>java事件驱动模型主要是在swing上体现的比较多，但是现在在JDk和软件业发展迅速的情况下，事件驱动编程的需求也越来越或不可缺。作为一直用java编程的程序员，使用事件编程是理由有的思路。<br>思路：</p>
+<ul>
+<li>定义事件</li>
+<li>定义监听器</li>
+<li>定义事件源</li>
+</ul>
+<hr>
+<h3 id="定义事件">定义事件</h3>
+<p>在JDK API中java.util.EventObject,所有事件状态对象都将从其派生的根类。<br>所有 Event 在构造时都引用了对象 “source”，在逻辑上认为该对象是最初发生有关 Event 的对象。我们定义自己的事件状态对象继承java.util.EventObject</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AEvent</span> <span class="keyword">extends</span> <span class="title">EventObject</span> {</span>
+    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1</span>L;
+    <span class="comment">//事件名称</span>
+    <span class="keyword">private</span> String eName;
+    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source) {
+        <span class="keyword">this</span>(source, <span class="keyword">null</span>);
     }
-   rows, err1 := db.Query(<span class="string">"select userid,username from tb_user limit 0,5"</span>)
-   <span class="keyword">if</span> err1 != <span class="constant">nil</span> {
-      fmt.Println(err1.Error())
-      <span class="keyword">return</span>
-   }
-   <span class="keyword">defer</span> rows.Close()
-   fmt.Println(<span class="string">""</span>)
-   cols, _ := rows.Columns()
-   <span class="keyword">for</span> i := <span class="keyword">range</span> cols {
-      fmt.Print(cols[i])
-      fmt.Print(<span class="string">"\t"</span>)
-   }
-   fmt.Println(<span class="string">""</span>)
-   <span class="keyword">var</span> userid <span class="typename">int</span>
-   <span class="keyword">var</span> username <span class="typename">string</span>
-    <span class="keyword">for</span> rows.Next() {
-    <span class="keyword">if</span> err := rows.Scan(&amp;amp;userid, &amp;amp;username); err == <span class="constant">nil</span> {
-        fmt.Print(userid)
-        fmt.Print(<span class="string">"\t"</span>)
-        fmt.Print(username)
-        fmt.Print(<span class="string">"\t\r\n"</span>)
+    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source, String eName) {
+        <span class="keyword">super</span>(source);
+        <span class="keyword">this</span>.eName = eName;
+    }
+    <span class="keyword">public</span> String <span class="title">getEName</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.eName;
     }
 }
+</code></pre><h3 id="定义监听器">定义监听器</h3>
+<p>在JDK API中java.util.EventListener接口，JDK是这样描述的“所有事件侦听器接口必须扩展的标记接口”，我们定义一个事件监听器接口继承EventListener</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AListener</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">util</span>.<span class="title">EventListener</span>{</span>
+    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e);
 }
-<span class="keyword">func</span> main() {
-   testSelect()
+</code></pre><h3 id="定义事件源">定义事件源</h3>
+<p>定义一个ASource，用Map来存储监听器<br>事件源：</p>
+<ul>
+<li>可以增加、删除事件</li>
+<li>可以监听事件</li>
+<li>可以触发被监听到的事件</li>
+</ul>
+<hr>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ASource</span>{</span>
+    <span class="keyword">private</span> 
+    Map&lt;String, AListener&gt; alisteners = <span class="keyword">new</span> HashMap&lt;String, AListener&gt;();
+    <span class="javadoc">/**
+    *模拟出发事件
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trigger</span>(String eName) {
+        <span class="keyword">if</span> (alisteners.containsKey(eName)) {
+            AEvent evt = <span class="keyword">new</span> AEvent(<span class="keyword">this</span>, eName);
+            <span class="comment">// 如果值改变的话,就触发事件</span>
+            fireAEvent(evt, eName);
+        }
+    }
+    <span class="javadoc">/**
+    *定义出发事件
+    */</span>
+    <span class="keyword">public</span> Map&lt;String, AListener&gt; <span class="title">getAllAListener</span>() {
+        <span class="keyword">return</span> <span class="keyword">this</span>.alisteners;
+    }
+    <span class="javadoc">/**
+    *获取事件监听器
+    */</span>
+    <span class="keyword">public</span> AListener <span class="title">getAListener</span>(String eName) {
+        <span class="keyword">return</span> alisteners.get(eName);
+    }
+    <span class="javadoc">/**
+    *添加事件
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addAListener</span>(String eName, AListener a) {
+        <span class="keyword">if</span> (eName != <span class="keyword">null</span> &amp;&amp; !<span class="string">""</span>.equals(eName.trim()) &amp;&amp; a != <span class="keyword">null</span>) {
+            alisteners.put(eName, a);
+        }
+    }
+    <span class="javadoc">/**
+    *删除监听器
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeAListener</span>(String eName) {
+        alisteners.remove(eName);
+    }
+    <span class="javadoc">/**
+    *调用监听器处理事件
+    */</span>
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fireAEvent</span>(AEvent evt, String eName) {
+        alisteners.get(eName).performed(evt);
+    }
 }
-</code></pre><p><img src="http://haozi520.u.qiniudn.com/20131217_dbtest.png" alt=""><br>总结:多看文档，多动手谢谢！</p>
-
+</code></pre><h3 id="编写测试">编写测试</h3>
+<p>编写个测试类Test</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Test{
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        ASource <span class="keyword">as</span>=<span class="keyword">new</span> ASource();
+        <span class="keyword">as</span>.addAListener(<span class="string">"add"</span>,<span class="keyword">new</span> AListener(){
+            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e) {
+                System.<span class="keyword">out</span>.println(e.getEName());
+            }
+        });
+        <span class="comment">//模拟出发事件</span>
+        <span class="keyword">as</span>.trigger(<span class="string">"add"</span>);
+    }
+}
+</code></pre>
       
     </div>
-    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
-<script type="text/javascript" id="wumiiRelatedItems"></script>
-</div><div class="widget" id="widget_after_content_post_footer_info>">
-<div class="panel panel-success">
-    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
-    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></div>
-</div></div><div class="widget" id="widget_after_content_ujian>">
-<div class="ujian-hook"></div>
-</div></section>
+    
+    
+      
     
     
         <footer id="post-meta">
-        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a><a href="/tags/mysql/" class="label label-info" itemprop="url"><span itemprop="title">mysql</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 15:31:46"datetime="2014-06-07 15:31:46"> 6月 7 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2013/12/17/GOLang连接Mysql/#comments" class="ds-thread-count comment-link" data-thread-key="GOLang连接Mysql" data-count-type="comments">暂无评论</a></span>
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/事件驱动/" class="label label-success" itemprop="url"><span itemprop="title">事件驱动</span></a></span> | <span class="time">最近更新:<time title="2014-06-14 21:23:36"datetime="2014-06-14 21:23:36"> 6月 14 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/14/java-event-driver-program/#comments" class="ds-thread-count comment-link" data-thread-key="java-event-driver-program" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
   </div>
 </div>
-</article>
-
-
-    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
-<ul class="pager">
-  
-  <li class="previous"><a href="/2014/02/26/only-come-from-love/" title="只源于：爱">&larr; 只源于：爱</a></li>
-  
-  
-  <li class="next"><a href="/2013/12/07/golang-eclipce-build-env/" title="eclipse下Go的开发配置">eclipse下Go的开发配置 &rarr;</a></li>
-  
-</ul></div><div class="widget" id="widget_after_post_related_posts>">
-<ul class="list-group"><li class="list-group-item"><a href="/2013/12/07/golang-eclipce-build-env/">eclipse下Go的开发配置</a></li><li class="list-group-item"><a href="/2014/06/09/Golang中new和make的区别/">Golang中new和make的区别</a></li><li class="list-group-item"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></li><li class="list-group-item"><a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></li><li class="list-group-item"><a href="/2014/06/09/Golang环境变量及工作空间配置/">Golang环境变量及工作空间配置</a></li><li class="list-group-item"><a href="/2014/05/05/sql-replace-update/">sql中使用replace函数用于update语句</a></li></ul></div></section>    
-	<div id="comments"><!-- Duoshuo Comment BEGIN -->
-
-<div class="ds-thread"  data-thread-key="GOLang连接Mysql"  data-url="http://www.haozi520.com/2013/12/17/GOLang连接Mysql/" data-title="GOLang连接mysql"></div>
-<!-- Duoshuo Comment END -->
-
-</div></div><!--wapper-->
+</article></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_search" class="widget panel panel-primary">
@@ -278,7 +313,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-07 15:31:46</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-14 21:24:17</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -327,19 +362,6 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
 </script>
     
             <!--wumii_relatedItems-->
-
-<script type="text/javascript">
-    var wumiiPermaLink = "http://www.haozi520.com/2013/12/17/GOLang连接Mysql/";
-    var wumiiTitle = "GOLang连接mysql";
-    var wumiiTags = "go,golang,mysql";
-    var wumiiCategories = ["go"];
-    var wumiiSitePrefix = "http://www.haozi520.com";
-    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
-    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
-</script>
-<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
-<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
-</a>
     
             
 <script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
