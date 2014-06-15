@@ -103,6 +103,41 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/05/31/你知道包粽子用的，都是什么植物的叶子吗/">包粽子的是什么植物的叶子</a></h1>
+      
+        <span>发表于<time datetime="2014-05-31T04:25:12.000Z"> <a href="/2014/05/31/你知道包粽子用的，都是什么植物的叶子吗/">5月 31 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>又到一年端午节，吃粽子的节日。但是你知道包粽子用的，都是什么植物的叶子吗？我在<a href="http://www.guokr.com/article/438518/" target="_blank">果壳网</a>看到的这篇，收藏到自己的博客。</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140531120312.jpg" alt="粽叶图鉴"></p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/收藏/" itemprop="url"><span itemprop="title" >收藏</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/收藏/" class="label label-primary" itemprop="url"><span itemprop="title">收藏</span></a><a href="/tags/杂七杂八/" class="label label-success" itemprop="url"><span itemprop="title">杂七杂八</span></a></span> | <span class="time">最近更新:<time title="2014-05-31 12:25:43"datetime="2014-05-31 12:25:43"> 5月 31 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/31/你知道包粽子用的，都是什么植物的叶子吗/#comments" class="ds-thread-count comment-link" data-thread-key="你知道包粽子用的，都是什么植物的叶子吗" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/05/29/老板的眼泪/">老板的眼泪，你懂吗？</a></h1>
       
         <span>发表于<time datetime="2014-05-29T01:40:12.000Z"> <a href="/2014/05/29/老板的眼泪/">5月 29 2014</a></time></span>      
@@ -288,56 +323,6 @@ chmod 775 runjetty.sh
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></h1>
-      
-        <span>发表于<time datetime="2014-05-08T02:23:12.000Z"> <a href="/2014/05/08/mysql-copy-struct-data-sql/">5月 8 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>对大数据取样操作时避免不了对一张大表数据取出一小部分数据进行分析，这样操作不但能节省时间而且能快速查询获取结果。  复制表结构和符合条件的数据到临时表就是很好的方案，下面介绍MySQL复制表结构及数据SQL语句</p>
-<h3 id="复制表结构及数据到新表">复制表结构及数据到新表</h3>
-<p>CREATE TABLE 新表SELECT * FROM 旧表<br>这种方法会将oldtable中所有的内容都拷贝过来，当然我们可以用delete from newtable;来删除。<br>不过这种方法的一个最不好的地方就是新表中没有了旧表的primary key、Extra（auto_increment）等属性。需要自己用&quot;alter&quot;添加，而且容易搞错。</p>
-<h3 id="只复制表结构到新表">只复制表结构到新表</h3>
-<p>CREATE TABLE 新表SELECT * FROM 旧表WHERE 1=2<br>或CREATE TABLE 新表LIKE 旧表</p>
-<h3 id="复制旧表的数据到新表(假设两个表结构一样)">复制旧表的数据到新表(假设两个表结构一样)</h3>
-<p>INSERT INTO 新表SELECT * FROM 旧表</p>
-<h3 id="复制旧表的数据到新表(假设两个表结构不一样)">复制旧表的数据到新表(假设两个表结构不一样)</h3>
-<p>INSERT INTO 新表(字段1,字段2,…….) SELECT 字段1,字段2,…… FROM 旧表</p>
-<h3 id="可以将表1结构复制到表2">可以将表1结构复制到表2</h3>
-<p>SELECT * INTO 表2 FROM 表1 WHERE 1=2</p>
-<h3 id="可以将表1内容全部复制到表2">可以将表1内容全部复制到表2</h3>
-<p>SELECT * INTO 表2 FROM 表1</p>
-<h3 id="show_create_table_旧表">show create table 旧表</h3>
-<p>这样会将旧表的创建命令列出。我们只需要将该命令拷贝出来，更改table的名字，就可以建立一个完全一样的表</p>
-<h3 id="mysqldump">mysqldump</h3>
-<p>用mysqldump将表dump出来，改名字后再导回去或者直接在命令行中运行</p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/mysql/" itemprop="url"><span itemprop="title" >mysql</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/mysql/" class="label label-primary" itemprop="url"><span itemprop="title">mysql</span></a><a href="/tags/表数据/" class="label label-success" itemprop="url"><span itemprop="title">表数据</span></a><a href="/tags/表结构/" class="label label-info" itemprop="url"><span itemprop="title">表结构</span></a></span> | <span class="time">最近更新:<time title="2014-05-28 16:57:15"datetime="2014-05-28 16:57:15"> 5月 28 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/05/08/mysql-copy-struct-data-sql/#comments" class="ds-thread-count comment-link" data-thread-key="mysql-copy-struct-data-sql" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
   <li><a class="extend prev" href="/archives/page/3/">&laquo;</a></li><li><a class="page-number" href="/archives/">1</a></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><a class="page-number" href="/archives/page/3/">3</a></li><li class="active"><li><span class="page-number current">4</span></li></li><li><a class="page-number" href="/archives/page/5/">5</a></li><li><a class="extend next" href="/archives/page/5/">&raquo;</a></li>
@@ -431,7 +416,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-14 21:24:16</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-15 09:44:14</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
