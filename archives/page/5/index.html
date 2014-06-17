@@ -103,6 +103,68 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/05/23/nodejs-for-windows-bulding/">nodejs for windows 环境搭建</a></h1>
+      
+        <span>发表于<time datetime="2014-05-23T10:06:12.000Z"> <a href="/2014/05/23/nodejs-for-windows-bulding/">5月 23 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <h3 id="下载">下载</h3>
+<p>登录nodejs.org的<a href="http://nodejs.org/" target="_blank">官网</a>可以下载到最新版本的安装包<br><img src="http://haozi520.u.qiniudn.com/20140526132719.png" alt="1.下载nodejs安装包"></p>
+<h3 id="安装并设置环境变量">安装并设置环境变量</h3>
+<p>我的电脑是32位的所以下载到的安装包是<em>node-v0.10.28-x86.msi</em>，双击<br>这个msi文件，会自动运行安装，在选在安装目录时选择自己需要的目录安装，默认安装在C:\Program Files\nodejs下面,程序安装结束后会自动设定系统环境变量PATH<br><img src="http://haozi520.u.qiniudn.com/20140526135740.png" alt="2.自动设置环境变量"></p>
+<h3 id="检查安装是否成功">检查安装是否成功</h3>
+<p>进入CDM窗口，输入node -v：</p>
+<pre>node -v</pre>
+
+<p>输出：v0.10.28,说明nodejs安装成功<br>输入npm -v，检查npm是否安装，一般都是被一起安装到nodejs目录下</p>
+<pre>npm -v</pre>
+输出：1.4.9，说明npm安装成功
+
+### 测试
+随便一个目录创建一个js文件，例如hello.js,编写如下代码
+<pre>console.log("hello,world!");</pre>
+在CMD窗口中进入hello.js文件目录，运行node hello.js
+<pre>
+>node hello.js
+ hello,world!
+ </pre>
+
+<h3 id="附带整理">附带整理</h3>
+<p>如果要安装别的模块可以在工程目录下运行：</p>
+<pre> 
+ npm install express //安装在当前目录
+ npm install express -g //安装在系统下
+</pre>
+
+
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/nodejs/" itemprop="url"><span itemprop="title" >nodejs</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nodejs/" class="label label-primary" itemprop="url"><span itemprop="title">nodejs</span></a><a href="/tags/window/" class="label label-success" itemprop="url"><span itemprop="title">window</span></a><a href="/tags/node环境/" class="label label-info" itemprop="url"><span itemprop="title">node环境</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:10:02"datetime="2014-05-27 18:10:02"> 5月 27 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/23/nodejs-for-windows-bulding/#comments" class="ds-thread-count comment-link" data-thread-key="nodejs-for-windows-bulding" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></h1>
       
         <span>发表于<time datetime="2014-05-08T02:23:12.000Z"> <a href="/2014/05/08/mysql-copy-struct-data-sql/">5月 8 2014</a></time></span>      
@@ -303,48 +365,9 @@ _ <span class="string">"github.com/go-sql-driver/mysql"</span>
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2013/12/07/golang-eclipce-build-env/">eclipse下Go的开发配置</a></h1>
-      
-        <span>发表于<time datetime="2013-12-07T09:18:00.000Z"> <a href="/2013/12/07/golang-eclipce-build-env/">12月 7 2013</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <h5 id="1、进入help-&gt;Install_New_Software_在弹出框中">1、进入help-&gt;Install New Software 在弹出框中</h5>
-<h5 id="2、选择Add">2、选择Add</h5>
-<h5 id="3、在name中输入go_plugin，在location中输入：http://goclipse-googlecode-com/svn/trunk/goclipse-update-site/*，OK退出。">3、在name中输入go plugin，在location中输入：<a href="http://goclipse.googlecode.com/svn/trunk/goclipse-update-site/*，OK退出。" target="_blank">http://goclipse.googlecode.com/svn/trunk/goclipse-update-site/*，OK退出。</a></h5>
-<h5 id="4、等待一会，出现GoClipse，选择后Next">4、等待一会，出现GoClipse，选择后Next</h5>
-<h5 id="5、引导安装完成后，配置Go的preference">5、引导安装完成后，配置Go的preference</h5>
-<h5 id="6、配置完成后，就可以建立Go工程，编写go代码了">6、配置完成后，就可以建立Go工程，编写go代码了</h5>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/eclipse/" class="label label-primary" itemprop="url"><span itemprop="title">eclipse</span></a><a href="/tags/go/" class="label label-success" itemprop="url"><span itemprop="title">go</span></a></span> | <span class="time">最近更新:<time title="2014-06-13 17:54:17"datetime="2014-06-13 17:54:17"> 6月 13 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2013/12/07/golang-eclipce-build-env/#comments" class="ds-thread-count comment-link" data-thread-key="golang-eclipce-build-env" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
-  <li><a class="extend prev" href="/archives/page/4/">&laquo;</a></li><li><a class="page-number" href="/archives/">1</a></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><a class="page-number" href="/archives/page/4/">4</a></li><li class="active"><li><span class="page-number current">5</span></li></li>
+  <li><a class="extend prev" href="/archives/page/4/">&laquo;</a></li><li><a class="page-number" href="/archives/">1</a></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><a class="page-number" href="/archives/page/4/">4</a></li><li class="active"><li><span class="page-number current">5</span></li></li><li><a class="page-number" href="/archives/page/6/">6</a></li><li><a class="extend next" href="/archives/page/6/">&raquo;</a></li>
   <div class="clearfix"></div>
 </ul></div><!--wapper-->
        </div><!-- ID main-col END -->
@@ -435,7 +458,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-15 09:44:14</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-17 18:04:03</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
