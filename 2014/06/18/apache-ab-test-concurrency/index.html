@@ -7,15 +7,15 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>php在linux中利用exec执行shell脚本 | 胖浩网</title>
+<title>apache的ab工具测试结果说明 | 胖浩网</title>
 <meta name="author" content="lauking">
 
-<meta name="description" content="php在linux中利用exec执行shell脚本">
+<meta name="description" content="胖浩网,Apache服务器自带了ab压力测试工具，可以用来测试网站性能，使用简单方便。有时也可以用来测试写的web服务的并发性能。ab进行一切测试的本质都是基于HTTP的，所以可以说ab对于Web服务器软件的黑盒性能测试，获得的一切数据和计算结果，都是可以通过HTTP来解释的。">
 
-<meta name="keywords" content="php,linux,shell,脚本,胖浩网">
+<meta name="keywords" content="胖浩网，ab测试，压力测试，并发测试，黑盒测试，apache的ab工具测试结果说明">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-<meta property="og:title" content="php在linux中利用exec执行shell脚本"/>
+<meta property="og:title" content="apache的ab工具测试结果说明"/>
 <meta property="og:site_name" content="胖浩网"/>
 
 <!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
@@ -99,34 +99,57 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title">php在linux中利用exec执行shell脚本</h1>
+      <h1 class="title">apache的ab工具测试结果说明</h1>
       
-        <span>发表于<time datetime="2014-05-26T07:42:12.000Z"> <a href="/2014/05/26/php-exec-linux-shell/">5月 26 2014</a></time></span>      
+        <span>发表于<time datetime="2014-06-18T04:31:00.000Z"> <a href="/2014/06/18/apache-ab-test-concurrency/">6月 18 2014</a></time></span>      
     </header>
     
     <section id='before_content_widget'></section>
     <div class="entry">
       
-        <p>今天刚好看到php在linux中利用exec方法执行shell脚本的blog，觉得很有意思，就想能不能写一个程序定时去检测某个服务是否还在跑，如果服务已挂则执行重启脚本。</p>
-<p>现在使用jetty容器来模拟。</p>
-<h3 id="编写重启已挂服务的shell脚本">编写重启已挂服务的shell脚本</h3>
-<pre>
-cd $1 //执行程序的目录
-ps -ef |grep start.jar |grep -v grep |cut -c 9-15 |xargs kill -s 9
-java -jar -Xmx768m -Xms512m $1/start.jar >/dev/null 2>&1 &
-</pre>
-脚本编写后放在jetty的根目录下,保存文件名为runjetty.sh,并执行以下命令使其成为可执行文件
-<pre>
-chmod 775 runjetty.sh
-</pre>
-
-<h3 id="编写php脚本">编写php脚本</h3>
-<p>新建TestServer.php文件，在&lt;?php和?&gt;中加入以下代码：</p>
-<p><pre><br>$flag=0;<br>try{<br>    $ch = curl_init();<br>    $url=”<a href="http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162" target="_blank">http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162</a>“;<br>    curl_setopt($ch, CURLOPT_URL, $url);<br>    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br>    curl_setopt($ch, CURLOPT_HEADER, 0);<br>    $output = curl_exec($ch);<br>    curl_close($ch);<br>    if(empty($output)){<br>        $flag=1;<br>    }else{<br>        echo $output;<br>        if(strpos($output,”ip=117.135.139.162”)&gt;0){<br>            $flag=0;<br>        }else{<br>            $flag=1;<br>        }<br>    }<br>}catch(Exception $e){<br>    $flag=1;<br>    echo $e;<br>}<br>if($flag){<br>   $ecommand=”/data/soft/jetty/runjetty.sh /data/soft/jetty”;<br>   exec($ecommand,$output,$result);<br>   if($result!=0){<br>    exec($ecommand,$output,$result);<br>   }<br>}<br></pre></p>
-<h3 id="运行php脚本">运行php脚本</h3>
-<p>首先我们确认jetty服务是否启动<br>在console上运行</p>
-<p><pre><br>ps -ef | grep start.jar<br></pre><br>输出如下结果则说明服务是启动：<br><img src="http://haozi520.u.qiniudn.com/20140526162811.png" alt="已启动jetty服务"><br>我们修改TestServer.php文件中的url请求地址，修改成服务中没有的接口。例如<br>$url=”<a href="http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：" target="_blank">http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：</a></p>
-<p><pre><br>php TestServer.php<br></pre><br>执行结束后，查看jetty进程号是否改变<br><img src="http://haozi520.u.qiniudn.com/20140526163403.png" alt="查看进程是否改变"><br>我们发现进程号发生了变化，说明我们的php脚本执行shell是成功的。</p>
+        <p>Apache服务器自带了ab压力测试工具，可以用来测试网站性能，使用简单方便。有时也可以用来测试写的web服务的并发性能。ab进行一切测试的本质都是基于HTTP的，所以可以说ab对于Web服务器软件的黑盒性能测试，获得的一切数据和计算结果，都是可以通过HTTP来解释的。</p>
+<h3 id="ab位置">ab位置</h3>
+<h4 id="window系统下">window系统下</h4>
+<p>打开apache服务的安装路径，在bin目录中有一个ab.exe的可执行程序，这个就是ab测试<br>工具</p>
+<h4 id="linux系统下">linux系统下</h4>
+<p>用whereis ab找到ab工具，一般在/usr/bin目录下</p>
+<h3 id="用法及参数含义">用法及参数含义</h3>
+<h4 id="用法">用法</h4>
+<blockquote>
+<p>ab [options] [<a href="http://]hostname[:port]/path" target="_blank">http://]hostname[:port]/path</a><br>eg:ab -n 5000 -c 200 <a href="http://localhost/index.php" target="_blank">http://localhost/index.php</a><br>上例表示总共访问<a href="http://localhost/index.php这个脚本5000次，200并发同时执行。" target="_blank">http://localhost/index.php这个脚本5000次，200并发同时执行。</a></p>
+</blockquote>
+<h3 id="参数含义">参数含义</h3>
+<p>在ab工具目录下，直接运行ab会打印出ab所有的参数说明不过是英文的。如下图</p>
+<ul>
+<li>-n：总共的请求执行数，缺省是1；</li>
+<li>-c：并发数，缺省是1；</li>
+<li>-t：测试所进行的总时间，秒为单位，缺省50000s</li>
+<li>-p：POST时的数据文件</li>
+<li>-w: 以HTML表的格式输出结果</li>
+</ul>
+<p><img src="http://haozi520.u.qiniudn.com/20140618114818.png" alt=""></p>
+<h3 id="使用ab工具">使用ab工具</h3>
+<p>测试一个线上的服务，输入命令<br><img src="http://haozi520.u.qiniudn.com/20140618115536.png" alt=""></p>
+<p>我把结果输出到一个html文件中，结果如下图</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140618114921.png" alt=""></p>
+<ul>
+<li>Server Software 表示被测试的Web服务器软件名称</li>
+<li>Server Hostname 表示请求的URL主机名</li>
+<li>Server Port 表示被测试的Web服务器软件的监听端口</li>
+<li>Document Path 表示请求的URL中的根绝对路径，通过该文件的后缀名，<br>我们一般可以了解该请求的类型</li>
+<li>Document Length 表示HTTP响应数据的正文长度</li>
+<li>Concurrency Level 表示并发用户数，这是我们设置的参数之一</li>
+<li>Time taken for tests 表示所有这些请求被处理完成所花费的总时间</li>
+<li>Complete requests 表示总请求数量，这是我们设置的参数之一</li>
+<li>Failed requests 表示失败的请求数量，这里的失败是指请求在连接服务器、发送数据等环节发生异常，以及无响应后超时的情况。如果接收到的HTTP响应数据的头信息中含有2XX以外的状态码，则会在测试结果中显示另一个名为“Non-2xx responses”的统计项，<br>用于统计这部分请求数，这些请求并不算在失败的请求中。</li>
+<li>Total transferred 表示所有请求的响应数据长度总和，包括每个HTTP响应数据的头信息和正文数据的长度。注意这里不包括HTTP请求数据的长度，仅仅为web服务器流向用户PC的应用层数据总长度。</li>
+<li>HTML transferred 表示所有请求的响应数据中正文数据的总和，也就是减去了Total transferred中HTTP响应数据中的头信息的长度。</li>
+<li>Requests per second 吞吐率，计算公式：Complete requests / Time taken for tests</li>
+<li>Time per request 用户平均请求等待时间，计算公式：Time token for tests/（Complete requests/Concurrency Level）</li>
+<li>Time per requet(across all concurrent request) 服务器平均请求等待时间，<br>计算公式：Time taken for tests/Complete requests，正好是吞吐率的倒数。也可<br>以这么统计：Time per request/Concurrency Level</li>
+<li>Transfer rate 表示这些请求在单位时间内从服务器获取的数据长度，计算公式：<br>Total trnasferred/ Time taken for tests，这个统计很好的说明服务器的处理能<br>力达到极限时，其出口宽带的需求量。</li>
+<li>Percentage of requests served within a certain time（ms） 这部分数据用于描述每个请求处理时间的分布情况，比如以上测试，80%的请求处理时间都不超过6ms，这个处理时间是指前面的Time per request，即对于单个用户而言，平均每个请求的处理时间。</li>
+</ul>
 
       
     </div>
@@ -136,15 +159,15 @@ chmod 775 runjetty.sh
 <div class="panel panel-success">
     <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
     <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
-    <div class="panel-body">本文链接: <a href="/2014/05/26/php-exec-linux-shell/">php在linux中利用exec执行shell脚本</a></div>
+    <div class="panel-body">本文链接: <a href="/2014/06/18/apache-ab-test-concurrency/">apache的ab工具测试结果说明</a></div>
 </div></div><div class="widget" id="widget_after_content_ujian>">
 <div class="ujian-hook"></div>
 </div></section>
     
     
         <footer id="post-meta">
-        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/php/" itemprop="url"><span itemprop="title" >php</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/php/" class="label label-primary" itemprop="url"><span itemprop="title">php</span></a><a href="/tags/shell/" class="label label-success" itemprop="url"><span itemprop="title">shell</span></a><a href="/tags/linux/" class="label label-info" itemprop="url"><span itemprop="title">linux</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:21:03"datetime="2014-05-27 18:21:03"> 5月 27 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/05/26/php-exec-linux-shell/#comments" class="ds-thread-count comment-link" data-thread-key="php-exec-linux-shell" data-count-type="comments">暂无评论</a></span>
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/有技术/" itemprop="url"><span itemprop="title" >有技术</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/ab测试/" class="label label-primary" itemprop="url"><span itemprop="title">ab测试</span></a><a href="/tags/ab/" class="label label-success" itemprop="url"><span itemprop="title">ab</span></a></span> | <span class="time">最近更新:<time title="2014-06-18 12:34:39"datetime="2014-06-18 12:34:39"> 6月 18 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/18/apache-ab-test-concurrency/#comments" class="ds-thread-count comment-link" data-thread-key="apache-ab-test-concurrency" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -156,16 +179,14 @@ chmod 775 runjetty.sh
     <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
 <ul class="pager">
   
-  <li class="previous"><a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/" title="用nodejs对数据进行加密">&larr; 用nodejs对数据进行加密</a></li>
   
-  
-  <li class="next"><a href="/2014/05/23/nodejs-for-windows-bulding/" title="nodejs for windows 环境搭建">nodejs for windows 环境搭建 &rarr;</a></li>
+  <li class="next"><a href="/2014/06/17/knowledge-ten-reason-for-biotechnology-and-gmfood/" title="需要生物技术及转基因食品的10大理由">需要生物技术及转基因食品的10大理由 &rarr;</a></li>
   
 </ul></div><div class="widget" id="widget_after_post_related_posts>">
-<ul class="list-group"><li class="list-group-item"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></li><li class="list-group-item"><a href="/2014/05/26/php-exec-linux-shell/">php在linux中利用exec执行shell脚本</a></li><li class="list-group-item"><a href="/2014/06/07/linux grep命令详解/">linux grep命令详解</a></li></ul></div></section>    
+<ul class="list-group"><li class="list-group-item"><a href="/2014/06/18/apache-ab-test-concurrency/">apache的ab工具测试结果说明</a></li></ul></div></section>    
 	<div id="comments"><!-- Duoshuo Comment BEGIN -->
 
-<div class="ds-thread"  data-thread-key="php-exec-linux-shell"  data-url="http://www.haozi520.com/2014/05/26/php-exec-linux-shell/" data-title="php在linux中利用exec执行shell脚本"></div>
+<div class="ds-thread"  data-thread-key="apache-ab-test-concurrency"  data-url="http://www.haozi520.com/2014/06/18/apache-ab-test-concurrency/" data-title="apache的ab工具测试结果说明"></div>
 <!-- Duoshuo Comment END -->
 
 </div></div><!--wapper-->
@@ -257,7 +278,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-05-27 18:21:03</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-18 12:34:39</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
@@ -308,10 +329,10 @@ _js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
             <!--wumii_relatedItems-->
 
 <script type="text/javascript">
-    var wumiiPermaLink = "http://www.haozi520.com/2014/05/26/php-exec-linux-shell/";
-    var wumiiTitle = "php在linux中利用exec执行shell脚本";
-    var wumiiTags = "php,shell,linux";
-    var wumiiCategories = ["php"];
+    var wumiiPermaLink = "http://www.haozi520.com/2014/06/18/apache-ab-test-concurrency/";
+    var wumiiTitle = "apache的ab工具测试结果说明";
+    var wumiiTags = "ab测试,ab";
+    var wumiiCategories = ["有技术"];
     var wumiiSitePrefix = "http://www.haozi520.com";
     var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
     _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});

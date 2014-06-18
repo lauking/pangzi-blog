@@ -4,7 +4,7 @@
   <subtitle><![CDATA[做一个有知识，有文化、有技术、有内涵、有梦想的人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.haozi520.com/"/>
-  <updated>2014-06-17T10:04:01.300Z</updated>
+  <updated>2014-06-18T04:34:57.588Z</updated>
   <id>http://www.haozi520.com/</id>
   
   <author>
@@ -15,11 +15,71 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[apache的ab工具测试结果说明]]></title>
+    <link href="http://www.haozi520.com/2014/06/18/apache-ab-test-concurrency/"/>
+    <id>http://www.haozi520.com/2014/06/18/apache-ab-test-concurrency/</id>
+    <published>2014-06-18T04:31:00.000Z</published>
+    <updated>2014-06-18T04:34:39.000Z</updated>
+    <content type="html"><![CDATA[<p>Apache服务器自带了ab压力测试工具，可以用来测试网站性能，使用简单方便。有时也可以用来测试写的web服务的并发性能。ab进行一切测试的本质都是基于HTTP的，所以可以说ab对于Web服务器软件的黑盒性能测试，获得的一切数据和计算结果，都是可以通过HTTP来解释的。</p>
+<h3 id="ab位置">ab位置</h3>
+<h4 id="window系统下">window系统下</h4>
+<p>打开apache服务的安装路径，在bin目录中有一个ab.exe的可执行程序，这个就是ab测试<br>工具</p>
+<h4 id="linux系统下">linux系统下</h4>
+<p>用whereis ab找到ab工具，一般在/usr/bin目录下</p>
+<h3 id="用法及参数含义">用法及参数含义</h3>
+<h4 id="用法">用法</h4>
+<blockquote>
+<p>ab [options] [<a href="http://]hostname[:port]/path" target="_blank">http://]hostname[:port]/path</a><br>eg:ab -n 5000 -c 200 <a href="http://localhost/index.php" target="_blank">http://localhost/index.php</a><br>上例表示总共访问<a href="http://localhost/index.php这个脚本5000次，200并发同时执行。" target="_blank">http://localhost/index.php这个脚本5000次，200并发同时执行。</a></p>
+</blockquote>
+<h3 id="参数含义">参数含义</h3>
+<p>在ab工具目录下，直接运行ab会打印出ab所有的参数说明不过是英文的。如下图</p>
+<ul>
+<li>-n：总共的请求执行数，缺省是1；</li>
+<li>-c：并发数，缺省是1；</li>
+<li>-t：测试所进行的总时间，秒为单位，缺省50000s</li>
+<li>-p：POST时的数据文件</li>
+<li>-w: 以HTML表的格式输出结果</li>
+</ul>
+<p><img src="http://haozi520.u.qiniudn.com/20140618114818.png" alt=""></p>
+<h3 id="使用ab工具">使用ab工具</h3>
+<p>测试一个线上的服务，输入命令<br><img src="http://haozi520.u.qiniudn.com/20140618115536.png" alt=""></p>
+<p>我把结果输出到一个html文件中，结果如下图</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140618114921.png" alt=""></p>
+<ul>
+<li>Server Software 表示被测试的Web服务器软件名称</li>
+<li>Server Hostname 表示请求的URL主机名</li>
+<li>Server Port 表示被测试的Web服务器软件的监听端口</li>
+<li>Document Path 表示请求的URL中的根绝对路径，通过该文件的后缀名，<br>我们一般可以了解该请求的类型</li>
+<li>Document Length 表示HTTP响应数据的正文长度</li>
+<li>Concurrency Level 表示并发用户数，这是我们设置的参数之一</li>
+<li>Time taken for tests 表示所有这些请求被处理完成所花费的总时间</li>
+<li>Complete requests 表示总请求数量，这是我们设置的参数之一</li>
+<li>Failed requests 表示失败的请求数量，这里的失败是指请求在连接服务器、发送数据等环节发生异常，以及无响应后超时的情况。如果接收到的HTTP响应数据的头信息中含有2XX以外的状态码，则会在测试结果中显示另一个名为“Non-2xx responses”的统计项，<br>用于统计这部分请求数，这些请求并不算在失败的请求中。</li>
+<li>Total transferred 表示所有请求的响应数据长度总和，包括每个HTTP响应数据的头信息和正文数据的长度。注意这里不包括HTTP请求数据的长度，仅仅为web服务器流向用户PC的应用层数据总长度。</li>
+<li>HTML transferred 表示所有请求的响应数据中正文数据的总和，也就是减去了Total transferred中HTTP响应数据中的头信息的长度。</li>
+<li>Requests per second 吞吐率，计算公式：Complete requests / Time taken for tests</li>
+<li>Time per request 用户平均请求等待时间，计算公式：Time token for tests/（Complete requests/Concurrency Level）</li>
+<li>Time per requet(across all concurrent request) 服务器平均请求等待时间，<br>计算公式：Time taken for tests/Complete requests，正好是吞吐率的倒数。也可<br>以这么统计：Time per request/Concurrency Level</li>
+<li>Transfer rate 表示这些请求在单位时间内从服务器获取的数据长度，计算公式：<br>Total trnasferred/ Time taken for tests，这个统计很好的说明服务器的处理能<br>力达到极限时，其出口宽带的需求量。</li>
+<li>Percentage of requests served within a certain time（ms） 这部分数据用于描述每个请求处理时间的分布情况，比如以上测试，80%的请求处理时间都不超过6ms，这个处理时间是指前面的Time per request，即对于单个用户而言，平均每个请求的处理时间。</li>
+</ul>
+]]></content>
+    
+    
+      <category term="ab测试" scheme="http://www.haozi520.com/tags/ab%E6%B5%8B%E8%AF%95/"/>
+    
+      <category term="ab" scheme="http://www.haozi520.com/tags/ab/"/>
+    
+      <category term="有技术" scheme="http://www.haozi520.com/categories/%E6%9C%89%E6%8A%80%E6%9C%AF/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[需要生物技术及转基因食品的10大理由]]></title>
     <link href="http://www.haozi520.com/2014/06/17/knowledge-ten-reason-for-biotechnology-and-gmfood/"/>
     <id>http://www.haozi520.com/2014/06/17/knowledge-ten-reason-for-biotechnology-and-gmfood/</id>
     <published>2014-06-17T09:36:00.000Z</published>
-    <updated>2014-06-17T10:03:12.000Z</updated>
+    <updated>2014-06-17T10:12:46.000Z</updated>
     <content type="html"><![CDATA[<p>如今的网络已经像下水道般充斥着各种污名化生物技术、制造转基因恐慌的流言和谣言。反生物技术阵营的人们最常用的手段就是揭露所谓真相：生物技术公司伙同美国、欧盟等国的顶尖科学家以及国家监管机构，偷偷摸摸地大量生产转基因食品，意图毁灭整个世界的食物供应链。那么，关于生物技术的科学事实到底如何？</p>
 <p><img src="http://haozi520.u.qiniudn.com/20140617175112.jpg" alt=""></p>
 <h3 id="需要生物技术及转基因食品的10大理由">需要生物技术及转基因食品的10大理由</h3>
@@ -654,37 +714,6 @@
   </entry>
   
   <entry>
-    <title><![CDATA[Golang中new和make的区别]]></title>
-    <link href="http://www.haozi520.com/2014/06/09/Golang%E4%B8%ADnew%E5%92%8Cmake%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
-    <id>http://www.haozi520.com/2014/06/09/Golang中new和make的区别/</id>
-    <published>2014-06-09T09:20:12.000Z</published>
-    <updated>2014-06-10T06:54:02.000Z</updated>
-    <content type="html"><![CDATA[<p>刚学go的人，在看源码或别人的代码时都会头晕，有的时候用new创建变量，有的时候用make创建，一下整理几点</p>
-<h3 id="总结几点">总结几点</h3>
-<ul>
-<li>new会分配结构空间，并初始化为清空为零，不进一步初始化</li>
-<li>new之后需要一个指针来指向这个结构</li>
-<li>make会分配结构空间及其附属空间，并完成其间的指针初始化</li>
-<li>make返回这个结构空间，不另外分配一个指针</li>
-</ul>
-<h3 id="例子new">例子new</h3>
-<p>var p *[]int = new([]int)<br>或p := new([]int)<br>以上分配了一个slice结构，但是结构中的应该指向底层数组的ptr指针为空，故实际不能往这个slice里面存取数据<br>同时分配了一个指针p，也即(在32位系统中)占4个字节并存放slice结构的地址</p>
-<h3 id="例子make">例子make</h3>
-<p>var v []int = make([]int, 0)<br>v := make([]int, 0)<br>以上分配了一个slice结构，且结构中的应该指向底层数组的ptr指针已经指向了某个底层数组，这个底层数组应该已经分配了，故这个slice已经可以使用了<br>注意v就是这个slice结构，而不是一个指向slice的指针<br>上述仅是示例，一般使用时都会明确长度和容量：v := make([]int, 10, 50)</p>
-<h3 id="结论">结论</h3>
-<p>由上可见，用new来分配slice的意义不大，因为没有恰当的初始化，无法直接使用<br>有附带空间的结构，使用make来初始化，可以完成内部指针初始化，其后可以立即使用</p>
-]]></content>
-    
-    
-      <category term="go" scheme="http://www.haozi520.com/tags/go/"/>
-    
-      <category term="golang" scheme="http://www.haozi520.com/tags/golang/"/>
-    
-      <category term="go" scheme="http://www.haozi520.com/categories/go/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[Golang环境变量及工作空间配置]]></title>
     <link href="http://www.haozi520.com/2014/06/09/Golang%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%8A%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%97%B4%E9%85%8D%E7%BD%AE/"/>
     <id>http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/</id>
@@ -725,6 +754,37 @@ $GOPATH/src/mymath/sqrt.<span class="keyword">go</span>源码如下： <span cla
     <span class="keyword">return</span> z
 }
 </code></pre><p>这样我的应用包目录和代码已经新建完毕，注意：一般建议package的名称和目录名保持一致</p>
+]]></content>
+    
+    
+      <category term="go" scheme="http://www.haozi520.com/tags/go/"/>
+    
+      <category term="golang" scheme="http://www.haozi520.com/tags/golang/"/>
+    
+      <category term="go" scheme="http://www.haozi520.com/categories/go/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Golang中new和make的区别]]></title>
+    <link href="http://www.haozi520.com/2014/06/09/Golang%E4%B8%ADnew%E5%92%8Cmake%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <id>http://www.haozi520.com/2014/06/09/Golang中new和make的区别/</id>
+    <published>2014-06-09T09:20:12.000Z</published>
+    <updated>2014-06-10T06:54:02.000Z</updated>
+    <content type="html"><![CDATA[<p>刚学go的人，在看源码或别人的代码时都会头晕，有的时候用new创建变量，有的时候用make创建，一下整理几点</p>
+<h3 id="总结几点">总结几点</h3>
+<ul>
+<li>new会分配结构空间，并初始化为清空为零，不进一步初始化</li>
+<li>new之后需要一个指针来指向这个结构</li>
+<li>make会分配结构空间及其附属空间，并完成其间的指针初始化</li>
+<li>make返回这个结构空间，不另外分配一个指针</li>
+</ul>
+<h3 id="例子new">例子new</h3>
+<p>var p *[]int = new([]int)<br>或p := new([]int)<br>以上分配了一个slice结构，但是结构中的应该指向底层数组的ptr指针为空，故实际不能往这个slice里面存取数据<br>同时分配了一个指针p，也即(在32位系统中)占4个字节并存放slice结构的地址</p>
+<h3 id="例子make">例子make</h3>
+<p>var v []int = make([]int, 0)<br>v := make([]int, 0)<br>以上分配了一个slice结构，且结构中的应该指向底层数组的ptr指针已经指向了某个底层数组，这个底层数组应该已经分配了，故这个slice已经可以使用了<br>注意v就是这个slice结构，而不是一个指向slice的指针<br>上述仅是示例，一般使用时都会明确长度和容量：v := make([]int, 10, 50)</p>
+<h3 id="结论">结论</h3>
+<p>由上可见，用new来分配slice的意义不大，因为没有恰当的初始化，无法直接使用<br>有附带空间的结构，使用make来初始化，可以完成内部指针初始化，其后可以立即使用</p>
 ]]></content>
     
     
@@ -1151,45 +1211,6 @@ north           NO      Margot Weber        <span class="number">4.5</span>     
       <category term="解密" scheme="http://www.haozi520.com/tags/%E8%A7%A3%E5%AF%86/"/>
     
       <category term="nodejs" scheme="http://www.haozi520.com/categories/nodejs/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[php在linux中利用exec执行shell脚本]]></title>
-    <link href="http://www.haozi520.com/2014/05/26/php-exec-linux-shell/"/>
-    <id>http://www.haozi520.com/2014/05/26/php-exec-linux-shell/</id>
-    <published>2014-05-26T07:42:12.000Z</published>
-    <updated>2014-05-27T10:21:03.000Z</updated>
-    <content type="html"><![CDATA[<p>今天刚好看到php在linux中利用exec方法执行shell脚本的blog，觉得很有意思，就想能不能写一个程序定时去检测某个服务是否还在跑，如果服务已挂则执行重启脚本。</p>
-<p>现在使用jetty容器来模拟。</p>
-<h3 id="编写重启已挂服务的shell脚本">编写重启已挂服务的shell脚本</h3>
-<pre>
-cd $1 //执行程序的目录
-ps -ef |grep start.jar |grep -v grep |cut -c 9-15 |xargs kill -s 9
-java -jar -Xmx768m -Xms512m $1/start.jar >/dev/null 2>&1 &
-</pre>
-脚本编写后放在jetty的根目录下,保存文件名为runjetty.sh,并执行以下命令使其成为可执行文件
-<pre>
-chmod 775 runjetty.sh
-</pre>
-
-<h3 id="编写php脚本">编写php脚本</h3>
-<p>新建TestServer.php文件，在&lt;?php和?&gt;中加入以下代码：</p>
-<p><pre><br>$flag=0;<br>try{<br>    $ch = curl_init();<br>    $url=”<a href="http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162" target="_blank">http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162</a>“;<br>    curl_setopt($ch, CURLOPT_URL, $url);<br>    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br>    curl_setopt($ch, CURLOPT_HEADER, 0);<br>    $output = curl_exec($ch);<br>    curl_close($ch);<br>    if(empty($output)){<br>        $flag=1;<br>    }else{<br>        echo $output;<br>        if(strpos($output,”ip=117.135.139.162”)&gt;0){<br>            $flag=0;<br>        }else{<br>            $flag=1;<br>        }<br>    }<br>}catch(Exception $e){<br>    $flag=1;<br>    echo $e;<br>}<br>if($flag){<br>   $ecommand=”/data/soft/jetty/runjetty.sh /data/soft/jetty”;<br>   exec($ecommand,$output,$result);<br>   if($result!=0){<br>    exec($ecommand,$output,$result);<br>   }<br>}<br></pre></p>
-<h3 id="运行php脚本">运行php脚本</h3>
-<p>首先我们确认jetty服务是否启动<br>在console上运行</p>
-<p><pre><br>ps -ef | grep start.jar<br></pre><br>输出如下结果则说明服务是启动：<br><img src="http://haozi520.u.qiniudn.com/20140526162811.png" alt="已启动jetty服务"><br>我们修改TestServer.php文件中的url请求地址，修改成服务中没有的接口。例如<br>$url=”<a href="http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：" target="_blank">http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：</a></p>
-<p><pre><br>php TestServer.php<br></pre><br>执行结束后，查看jetty进程号是否改变<br><img src="http://haozi520.u.qiniudn.com/20140526163403.png" alt="查看进程是否改变"><br>我们发现进程号发生了变化，说明我们的php脚本执行shell是成功的。</p>
-]]></content>
-    
-    
-      <category term="php" scheme="http://www.haozi520.com/tags/php/"/>
-    
-      <category term="shell" scheme="http://www.haozi520.com/tags/shell/"/>
-    
-      <category term="linux" scheme="http://www.haozi520.com/tags/linux/"/>
-    
-      <category term="php" scheme="http://www.haozi520.com/categories/php/"/>
     
   </entry>
   
