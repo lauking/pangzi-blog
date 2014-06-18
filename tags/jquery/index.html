@@ -7,7 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>王八蛋 | 胖浩网</title>
+<title>jquery | 胖浩网</title>
 <meta name="author" content="lauking">
 
 <meta name="description" content="做一个有知识，有文化、有技术、有内涵、有梦想的人">
@@ -94,7 +94,7 @@
      <div class="row">
        <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
       <section id='header_widget'></section>
-          <div id="wrapper"><h2 class="archive-title tag">王八蛋</h2>
+          <div id="wrapper"><h2 class="archive-title tag">jquery</h2>
 
 
   
@@ -103,19 +103,117 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/11/王八和王八的蛋/">王八和王八蛋</a></h1>
+      <h1 class="title"><a href="/2014/06/18/js-jquery-plugin-dev/">这是你要的jQuery插件开发吗？</a></h1>
       
-        <span>发表于<time datetime="2014-06-11T09:20:12.000Z"> <a href="/2014/06/11/王八和王八的蛋/">6月 11 2014</a></time></span>      
+        <span>发表于<time datetime="2014-06-18T14:21:00.000Z"> <a href="/2014/06/18/js-jquery-plugin-dev/">6月 18 2014</a></time></span>      
     </header>
     
     
     <div class="entry">
       
-        <p>相信很多人都骂过别人王八蛋，相信很多人见过王八，但是真正见过王八的蛋的人应该很少，今天给大家看看这个王八和他的蛋吧</p>
-<p><img src="http://haozi520.u.qiniudn.com/20140611163757.jpg" alt=""></p>
-<p><img src="http://haozi520.u.qiniudn.com/20140611163825.jpg" alt=""></p>
-<p><img src="http://haozi520.u.qiniudn.com/20140611163832.jpg" alt=""></p>
-<p><img src="http://haozi520.u.qiniudn.com/20140611163838.jpg" alt=""></p>
+        <p>所谓“插件”，就是用户自己新增的jQuery实例对象的方法。由于该方法要被所有实例共享，所以只能定义在jQuery构造函数的原型对象（prototype）之上。对于用户来说，把一些常用的操作封装成插件（plugin），使用起来会非常方便。</p>
+<h3 id="插件的编写">插件的编写</h3>
+<p>本质上，jQuery插件是定义在jQuery构造函数的prototype对象上面的一个方法，这样做就能使得所有jQuery对象的实例都能共 享这个方法。因为jQuery构造函数的prototype对象被简写成jQuery.fn对象，所以插件采用下面的方法定义。</p>
+<pre><code>jQuery.fn.myPlugin = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="comment">// Do your awesome plugin stuff here</span>
+};
+</code></pre><p>更好的做法是采用下面的写法，这样就能在函数体内自由使用美元符号（$）。</p>
+<pre><code>;(<span class="function"><span class="keyword">function</span> <span class="params">($)</span>{</span>
+  $.fn.myPlugin = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>
+    <span class="comment">// Do your awesome plugin stuff here</span>
+  };
+})(jQuery);
+</code></pre><p>上面代码的最前面有一个分号，这是为了防止多个脚本文件合并时，其他脚本的结尾语句没有添加分号，造成运行时错误。<br>有时，还可以把顶层对象（window）作为参数输入，这样可以加快代码的执行速度和执行更有效的最小化操作。</p>
+<pre><code>;(<span class="function"><span class="keyword">function</span> <span class="params">($, window)</span> {</span>
+  $.fn.myPlugin = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="comment">// Do your awesome plugin stuff here</span>
+  };
+}(jQuery, window));
+</code></pre><p>需要注意的是，在插件内部，this关键字指的是jQuery对象的实例。而在一般的jQuery回调函数之中，this关键字指的是DOM对象。</p>
+<pre><code><span class="list">(<span class="title">function</span> <span class="list">($)</span>{
+  $.fn.maxHeight = function <span class="list">()</span>{
+    var max = <span class="number">0</span><span class="comment">;</span>
+    // 下面这个this，指的是jQuery对象实例
+    this.each<span class="list">(<span class="title">function</span><span class="list">()</span> {
+        // 回调函数内部，this指的是DOM对象
+        max = Math.max<span class="list">(<span class="title">max</span>, $<span class="list">(<span class="title">this</span>)</span>.height<span class="list">()</span>)</span><span class="comment">;</span>
+    })</span><span class="comment">;</span>
+    return max<span class="comment">;</span>
+  }<span class="comment">;</span>
+})</span><span class="list">(<span class="title">jQuery</span>)</span><span class="comment">;</span>
+</code></pre><p>上面这个maxHeight插件的作用是，返回一系列DOM对象中高度最高的那个对象的高度。<br>大多数情况下，插件应该返回jQuery对象，这样可以保持链式操作。</p>
+<pre><code>(<span class="function"><span class="keyword">function</span> <span class="params">($)</span>{</span>
+  $.fn.greenify = <span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>
+    <span class="keyword">this</span>.css(<span class="string">"color"</span>, <span class="string">"green"</span>);
+    <span class="keyword">return</span> <span class="keyword">this</span>;
+  };
+})(jQuery);
+
+$(<span class="string">"a"</span>).greenify().addClass(<span class="string">"greenified"</span>);
+</code></pre><p>上面代码返回this对象，即jQuery对象实例，所以接下来可以采用链式操作。<br>对于包含多个jQuery对象的结果集，可以采用each方法，进行处理。</p>
+<pre><code>$.fn.myNewPlugin = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+        <span class="comment">// 处理每个对象</span>
+    });
+};
+</code></pre><p>插件可以接受一个属性对象参数。</p>
+<pre><code>(<span class="function"><span class="keyword">function</span> <span class="params">($)</span>{</span>
+  $.fn.tooltip = <span class="function"><span class="keyword">function</span> <span class="params">(options)</span>{</span>
+    <span class="keyword">var</span> settings = $.extend( {
+      <span class="string">'location'</span>         : <span class="string">'top'</span>,
+      <span class="string">'background-color'</span> : <span class="string">'blue'</span>
+    }, options);
+    <span class="keyword">return</span> <span class="keyword">this</span>.each(<span class="function"><span class="keyword">function</span> <span class="params">()</span>{</span>
+      <span class="comment">// 填入插件代码</span>
+    });
+  };
+})(jQuery);
+</code></pre><p>上面代码使用extend方法，为参数对象设置属性的默认值。</p>
+<h3 id="实例">实例</h3>
+<p>下面是一个将a元素的href属性添加到网页的插件。</p>
+<pre><code>(<span class="function"><span class="keyword">function</span><span class="params">($)</span>{</span>
+    $.fn.showLinkLocation = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+        <span class="keyword">return</span> <span class="keyword">this</span>.filter(<span class="string">'a'</span>).append(<span class="function"><span class="keyword">function</span><span class="params">()</span>{</span>
+            <span class="keyword">return</span> <span class="string">' ('</span> + <span class="keyword">this</span>.href + <span class="string">')'</span>;
+        });
+    };
+}(jQuery));
+</code></pre><p>// 用法</p>
+<pre><code><span class="variable">$(</span><span class="string">'a'</span>).showLinkLocation();
+</code></pre><p>从上面的代码可以看到，插件的开发和使用都非常简单。</p>
+<h3 id="插件的发布">插件的发布</h3>
+<p>编写插件以后，可以将它发布到jQuery官方网站上。<br>首先，编写一个插件的信息文件yourPluginName.jquery.json。文件名中的yourPluginName表示你的插件名。</p>
+<pre><code>{
+  <span class="string">"name"</span>: <span class="string">"plugin_name"</span>,
+  <span class="string">"title"</span>: <span class="string">"plugin_long_title"</span>,
+  <span class="string">"description"</span>: <span class="string">"..."</span>,
+  <span class="string">"keywords"</span>: [<span class="string">"jquery"</span>, <span class="string">"plugins"</span>],
+  <span class="string">"version"</span>: <span class="string">"0.0.1"</span>,
+  <span class="string">"author"</span>: {
+    <span class="string">"name"</span>: <span class="string">"..."</span>,
+    <span class="string">"url"</span>: <span class="string">"..."</span>
+  },
+  <span class="string">"maintainers"</span>: [
+    {
+      <span class="string">"name"</span>: <span class="string">"..."</span>,
+      <span class="string">"url"</span>: <span class="string">"..."</span>
+    }
+  ],
+  <span class="string">"licenses"</span>: [
+    {
+      <span class="string">"type"</span>: <span class="string">"MIT"</span>,
+      <span class="string">"url"</span>: <span class="string">"http://www.opensource.org/licenses/mit-license.php"</span>
+    }
+  ],
+  <span class="string">"bugs"</span>: <span class="string">"..."</span>, <span class="comment">// bugs url</span>
+  <span class="string">"homepage"</span>: <span class="string">"..."</span>, <span class="comment">// homepage url</span>
+  <span class="string">"docs"</span>: <span class="string">"..."</span>, <span class="comment">// docs url</span>
+  <span class="string">"download"</span>: <span class="string">"..."</span>, <span class="comment">// download url</span>
+  <span class="string">"dependencies"</span>: {
+    <span class="string">"jquery"</span>: <span class="string">"&gt;=1.4"</span>
+  }
+}
+</code></pre><p>上面是一个插件信息文件的实例。<br>然后，将代码文件发布到Github，在设置页面点击“Service Hooks/WebHook URLs”选项，填入网址<a href="http://plugins.jquery.com/postreceive-hook" target="_blank">http://plugins.jquery.com/postreceive-hook</a>，再点击“Update Settings”进行保存。<br><em>文章来源：<a href="http://www.w3cui.com/?p=306" target="_blank">w3cui.com</a></em></p>
 
       
     </div>
@@ -125,8 +223,8 @@
     
     
         <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/收藏/" itemprop="url"><span itemprop="title" >收藏</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/王八/" class="label label-primary" itemprop="url"><span itemprop="title">王八</span></a><a href="/tags/王八蛋/" class="label label-success" itemprop="url"><span itemprop="title">王八蛋</span></a></span> | <span class="time">最近更新:<time title="2014-06-11 16:45:49"datetime="2014-06-11 16:45:49"> 6月 11 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/11/王八和王八的蛋/#comments" class="ds-thread-count comment-link" data-thread-key="王八和王八的蛋" data-count-type="comments">暂无评论</a></span>
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/javascript/" itemprop="url"><span itemprop="title" >javascript</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/javascript/" class="label label-primary" itemprop="url"><span itemprop="title">javascript</span></a><a href="/tags/jquery/" class="label label-success" itemprop="url"><span itemprop="title">jquery</span></a></span> | <span class="time">最近更新:<time title="2014-06-18 22:30:23"datetime="2014-06-18 22:30:23"> 6月 18 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/18/js-jquery-plugin-dev/#comments" class="ds-thread-count comment-link" data-thread-key="js-jquery-plugin-dev" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
