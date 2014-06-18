@@ -2,6 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.haozi520.com/2014/06/18/java-thread-002/</loc>
+    <lastmod>2014-06-18T13:54:05.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.haozi520.com/2014/06/18/java-thread-003/</loc>
+    <lastmod>2014-06-18T13:48:57.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.haozi520.com/2014/06/18/java-thread-002/</loc>
+    <lastmod>2014-06-18T09:27:39.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.haozi520.com/2014/06/18/java-thread-001/</loc>
+    <lastmod>2014-06-18T07:58:03.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.haozi520.com/2014/06/18/apache-ab-test-concurrency/</loc>
     <lastmod>2014-06-18T04:34:39.000Z</lastmod>
   </url>

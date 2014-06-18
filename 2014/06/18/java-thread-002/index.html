@@ -1,0 +1,531 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+<meta name="wumiiVerification" content="eaeee5f8-f47e-44b2-b042-3fe25f5ee8fd" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>java线程：创建与启动 | 胖浩网</title>
+<meta name="author" content="lauking">
+
+<meta name="description" content="胖浩网,java线程学习，线程的创建与启动">
+
+<meta name="keywords" content="胖浩网，java线程学习，创建与启动">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="java线程：创建与启动"/>
+<meta property="og:site_name" content="胖浩网"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css"><![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="胖浩网 Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.staticfile.org/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+      <header id="header" class="container"><nav id="main-nav" class="navbar navbar-default navbar-fixed-top " role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">胖浩网</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+  
+        <li><a href="/categories/go" title="GoLang">GoLang</a></li>      
+        <li><a href="/categories/java" title="Java">Java</a></li>      
+        <li><a href="/categories/php" title="PHP">PHP</a></li>      
+        <li><a href="/categories/nodejs" title="Nodejs">Nodejs</a></li>      
+        <li><a href="/categories/mysql" title="MySql">MySql</a></li>      
+        <li><a href="/categories/linux" title="Linux">Linux</a></li>      
+        <li><a href="/categories/有理想" title="有理想">有理想</a></li>      
+        <li><a href="/categories/有知识" title="有知识">有知识</a></li>      
+        <li><a href="/categories/有技术" title="有技术">有技术</a></li>      
+        <li><a href="/categories/有文化" title="有文化">有文化</a></li>      
+        <li><a href="/categories/收藏" title="收藏">收藏</a></li>      
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/lauking">github</a></li>
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id='content' class="container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>胖浩网 <small>做一个有知识，有文化、有技术、有内涵、有梦想的人</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title">java线程：创建与启动</h1>
+      
+        <span>发表于<time datetime="2014-06-18T08:03:00.000Z"> <a href="/2014/06/18/java-thread-002/">6月 18 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry">
+      
+        <p>上一篇整理了<a href="http://www.haozi520.com/2014/06/18/java-thread-001/index.html" target="_blank">《java线程：概念与原理》</a>,介绍了线程与进程的关系，这篇将整理线程的创建与启动。<br>在java中可有两种方式实现多线程，一种是继承Thread类，一种是实现Runnable接口；Thread类是在java.lang包中定义的。一个类只要继承了Thread类同时覆写了本类中的run()方法就可以实现多线程操作了，但是一个类只能继承一个父类，这是此方法的局限。</p>
+<h3 id="扩展java-lang-Thread类">扩展java.lang.Thread类</h3>
+<p>实例化线程时直接new出来，并调用start方法可以实现线程交互运行，不能直接调用run方法</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span>{</span>
+    <span class="keyword">private</span> String name;
+    <span class="keyword">public</span> <span class="title">MyThread</span>(){}
+    <span class="keyword">public</span> <span class="title">MyThread</span>(String name){
+        <span class="keyword">super</span>();
+        <span class="keyword">this</span>.name=name;
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++){
+            <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;<span class="number">1000000</span>;k++);<span class="comment">//为了能够清楚看到多线效果</span>
+            System.out.println(<span class="string">"线程开始："</span>+<span class="keyword">this</span>.name+<span class="string">"="</span>+i)
+        }
+    }
+}
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMyThread</span>{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        MyThread mA=<span class="keyword">new</span> MyThread(<span class="string">"线程A"</span>);
+        MyThread mB=<span class="keyword">new</span> MyThread(<span class="string">"线程B"</span>);
+        mA.run();
+        mB.run();
+    }
+}
+</code></pre><p>执行的结果：</p>
+<pre><code><span class="xml"><span class="tag">线程开始：线程<span class="attribute">A</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">4</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">4</span></span></span>
+</code></pre><p>我们会发现这些都是顺序执行的，并没有相互运行，说明我们的调用方法不对。JDK的文档中可以发现，一旦调用start()方法，则会通过JVM找到run()方法，下面启动start()方法<br>启动线程：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> TestMyThread{
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        MyThread mA=<span class="keyword">new</span> MyThread(<span class="string">"线程A"</span>);
+        MyThread mB=<span class="keyword">new</span> MyThread(<span class="string">"线程B"</span>);
+        mA.start();
+        mB.start();
+    }
+}
+</code></pre><p>执行的结果：</p>
+<pre><code><span class="xml"><span class="tag">线程开始：线程<span class="attribute">B</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">4</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">4</span></span></span>
+</code></pre><p>这样程序可以正常完成交互式运行。那么为啥非要使用start();方法启动多线程呢？<br>找到java.lang.Thread中的start()方法的定义，可以发现此方法中使用了private native void start0();其中native关键字表示可以调用操作系统的底层函数，因为多线程的实现需要本地操作系统的支持,那么这样的技术成为JNI技术（java Native Interface）</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">start</span>() {
+    <span class="javadoc">/**
+ * This method is not invoked for the main method thread or "system"
+ * group threads created/set up by the VM. Any new functionality added 
+ * to this method in the future may have to also be added to the VM.
+ *
+ * A zero status value corresponds to state "NEW".
+     */</span>
+    <span class="keyword">if</span> (threadStatus != <span class="number">0</span> || <span class="keyword">this</span> != me)
+        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalThreadStateException();
+    group.add(<span class="keyword">this</span>);
+    start0();
+    <span class="keyword">if</span> (stopBeforeStart) {
+        stop0(throwableFromStop);
+    }
+}
+<span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">start0</span>();
+</code></pre><h3 id="实现java-lang-Runnable接口">实现java.lang.Runnable接口</h3>
+<p>在实际开发中一个多线程的操作很少使用Thread类，而是通过Runnable接口完成。<br>但是在使用Runnable实现类时则使用Thread的构造方法，通过Thread来启动Runnable实现多线程：</p>
+<ul>
+<li>Thread(Runnable target) </li>
+<li>Thread(Runnable target, String name) </li>
+<li>Thread(ThreadGroup group, Runnable target) </li>
+<li>Thread(ThreadGroup group, Runnable target, String name) </li>
+<li>Thread(ThreadGroup group, Runnable target, String name, long stackSize)</li>
+</ul>
+<hr>
+<p>Runnable接口如下：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">interface</span> Runnable{  
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>();  
+} 
+</code></pre><p>例子代码：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Thread</span>{</span>
+    <span class="keyword">private</span> String name;
+    <span class="keyword">public</span> <span class="title">MyThread</span>(){}
+    <span class="keyword">public</span> <span class="title">MyThread</span>(String name){
+        <span class="keyword">super</span>();
+        <span class="keyword">this</span>.name=name;
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++){
+            <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;<span class="number">1000000</span>;k++);<span class="comment">//为了能够清楚看到多线效果</span>
+            System.out.println(<span class="string">"线程开始："</span>+<span class="keyword">this</span>.name+<span class="string">"="</span>+i)
+        }
+    }
+}
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMyThread</span>{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        MyThread mA=<span class="keyword">new</span> MyThread(<span class="string">"线程A"</span>);
+        MyThread mB=<span class="keyword">new</span> MyThread(<span class="string">"线程B"</span>);
+        <span class="keyword">new</span> Thread(mA).start();
+        <span class="keyword">new</span> Thread(mB).start();
+    }
+}
+</code></pre><p>执行结果：</p>
+<pre><code><span class="xml"><span class="tag">线程开始：线程<span class="attribute">A</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">4</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">4</span></span></span>
+</code></pre><p>使用实现接口 Runnable 的对象创建一个线程时，启动该线程将导致在独立执行的线程中<br>调用对象的 run 方法。方法 run 的常规协定是，它可能执行任何所需的操作。</p>
+<h3 id="启动线程">启动线程</h3>
+<p>在线程的Thread对象上调用start()方法，而不是run()或者别的方法。<br>在调用start()方法之前：线程处于新状态中，新状态指有一个Thread对象，但还没有<br>一个真正的线程。</p>
+<p>在调用start()方法之后：发生了一系列复杂的事情</p>
+<ul>
+<li>启动新的执行线程（具有新的调用栈）</li>
+<li>该线程从新状态转移到可运行状态</li>
+<li>当该线程获得机会执行时，其目标run()方法将运行</li>
+</ul>
+<p>注意：对Java来说，run()方法没有任何特别之处。像main()方法一样，它只是新线程知道<br>调用的方法名称(和签名)。因此，在Runnable上或者Thread上调用run方法是合法的。但并<br>不启动新的线程。</p>
+<h3 id="两种实现方式的区别和联系">两种实现方式的区别和联系</h3>
+<p>在程序开发中只要是多线程肯定永远以实现Runnable接口为主，因为实现Runnable接口相比继承Thread类有如下好处：</p>
+<ul>
+<li>避免点继承的局限，一个类可以继承多个接口</li>
+<li>适合于资源的共享</li>
+</ul>
+<hr>
+<p>以卖票程序为例，通过Thread类完成：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span>{</span>  
+    <span class="keyword">private</span> <span class="keyword">int</span> ticket=<span class="number">10</span>;  
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){  
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++){  
+            <span class="keyword">if</span>(<span class="keyword">this</span>.ticket&gt;<span class="number">0</span>){  
+                System.out.println(<span class="string">"卖票：ticket"</span>+<span class="keyword">this</span>.ticket--);  
+            }  
+        }  
+    }  
+}
+</code></pre><p>下面通过三个线程对象，同时卖票：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> ThreadTicket {  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {  
+        MyThread mt1=<span class="keyword">new</span> MyThread();  
+        MyThread mt2=<span class="keyword">new</span> MyThread();  
+        MyThread mt3=<span class="keyword">new</span> MyThread();  
+        mt1.start();<span class="comment">//每个线程都各卖了10张，共卖了30张票  </span>
+        mt2.start();<span class="comment">//但实际只有10张票，每个线程都卖自己的票  </span>
+        mt3.start();<span class="comment">//没有达到资源共享  </span>
+    }  
+}  
+</code></pre><p>如果用Runnable就可以实现资源共享，下面看例子：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span>{</span>  
+    <span class="keyword">private</span> <span class="keyword">int</span> ticket=<span class="number">10</span>;  
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){  
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++){  
+            <span class="keyword">if</span>(<span class="keyword">this</span>.ticket&gt;<span class="number">0</span>){  
+                System.out.println(<span class="string">"卖票：ticket"</span>+<span class="keyword">this</span>.ticket--);  
+            }  
+        }                 
+    }  
+}  
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunnableTicket</span> {</span>  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {  
+        MyThread mt=<span class="keyword">new</span> MyThread();  
+        <span class="keyword">new</span> Thread(mt).start();<span class="comment">//同一个mt，但是在Thread中就不可以，</span>
+        如果用同一个实例化对象mt，就会出现异常   
+        <span class="keyword">new</span> Thread(mt).start(); 
+        <span class="keyword">new</span> Thread(mt).start();  
+    }  
+}
+</code></pre><h3 id="总结">总结</h3>
+<p>实现Runnable接口比继承Thread类所具有的优势：</p>
+<ul>
+<li>适合多个相同的程序代码的线程去处理同一个资源</li>
+<li>可以避免java中的单继承的限制</li>
+<li>增加程序的健壮性，代码可以被多个线程共享，代码和数据独立。</li>
+</ul>
+<p>main方法其实也是一个线程。在java中所以的线程都是同时启动的，至于什么时候，哪个先执行，完全看谁先得到CPU的资源。<br>在java中，每次程序运行至少启动2个线程。一个是main线程，一个是垃圾收集线程。因为每当使用java命令执行一个类的时候，实际上都会启动一个JVM，每一个JVM实习在就是在操作系统中启动了一个进程。<br>主线程也有可能在子线程结束之前结束。并且子线程不受影响，不会因为主线程的结束而结束。</p>
+
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/06/18/java-thread-002/">java线程：创建与启动</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/线程/" class="label label-success" itemprop="url"><span itemprop="title">线程</span></a></span> | <span class="time">最近更新:<time title="2014-06-18 21:54:05"datetime="2014-06-18 21:54:05"> 6月 18 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/18/java-thread-002/#comments" class="ds-thread-count comment-link" data-thread-key="java-thread-002" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/06/18/java-thread-002/" title="">&larr; </a></li>
+  
+  
+  <li class="next"><a href="/2014/06/18/java-thread-001/" title="java线程：概念与原理">java线程：概念与原理 &rarr;</a></li>
+  
+</ul></div><div class="widget" id="widget_after_post_related_posts>">
+<ul class="list-group"><li class="list-group-item"><a href="/2014/06/18/java-thread-002/">java线程：创建与启动</a></li><li class="list-group-item"><a href="/2014/06/14/java-event-driver-program/">这样写java事件驱动编程，是否可以</a></li><li class="list-group-item"><a href="/2014/06/13/java-write-file-in-thread/">一个句柄无效引发的思考</a></li><li class="list-group-item"><a href="/2014/06/18/java-thread-003/">java线程：生命周期和状态控制</a></li><li class="list-group-item"><a href="/2014/06/18/java-thread-001/">java线程：概念与原理</a></li></ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="java-thread-002"  data-url="http://www.haozi520.com/2014/06/18/java-thread-002/" data-title="java线程：创建与启动"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget panel panel-primary">
+    <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="search">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:www.haozi520.com">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_tagcloud" class="widget panel panel-primary">
+  <div class="panel-heading">标签云</div>  <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_latest_update_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近更新</div>  <div data-src='latest_update_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_random_posts" class="widget panel panel-primary">
+  <div class="panel-heading">随机文章</div>  <div class='hexo_random_posts' data-count=8></div></div>
+
+<div id="widget_google_sidebar" class="widget panel panel-primary">
+  <div class="panel-heading">赞助商</div>  <div style="margin-top:0">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- 侧边栏广告 -->
+	<ins class="adsbygoogle"
+	     style="display:inline-block;width:250px;height:250px"
+	     data-ad-client="ca-pub-2783023736003892"
+	     data-ad-slot="6006336369"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div></div>
+
+<div id="widget_links" class="widget panel panel-primary">
+  <div class="panel-heading">喜欢站点</div>  <div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="http://www.tuicool.com" title="推酷">推酷</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.tuicool.com" title="51CTO">51CTO</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://studygolang.com/" title="Golang中文社区(Go语言构建)">Golang中文社区(Go语言构建)</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.36kr.com/" title="36氪 | 关注互联网创业">36氪 | 关注互联网创业</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://coolshell.cn/" title="酷壳 – CoolShell.cn">酷壳 – CoolShell.cn</a>
+        </li>
+    </ul>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2013-2014 lauking
+  
+    &nbsp;&nbsp;</span>
+  
+  <span id='analytics-51la'></span><span id='analytics-google'>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-46059111-1']);
+  _gaq.push(['_trackPageview']);
+  _js2load.push({src:('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'});
+</script></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000210742'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D1000210742%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-18 21:54:05</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haozi520"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://www.haozi520.com/2014/06/18/java-thread-002/";
+    var wumiiTitle = "java线程：创建与启动";
+    var wumiiTags = "java,线程";
+    var wumiiCategories = ["java"];
+    var wumiiSitePrefix = "http://www.haozi520.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      if (alt){
+        $(this).before('<span class="caption">' + alt + '</span>');
+      }
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />');
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script type="text/javascript" src="/js/chenall.js"></script>
+  </body>
+</html>
