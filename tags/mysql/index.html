@@ -103,6 +103,51 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/08/30/mysql-alert-ignore-index/">MySQL建立唯一索引去重失效</a></h1>
+      
+        <span>发表于<time datetime="2014-08-30T09:37:12.000Z"> <a href="/2014/08/30/mysql-alert-ignore-index/">8月 30 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <h3 id="建立唯一索引">建立唯一索引</h3>
+<p>数据库在处理重复数据时经常会用到建立字段的唯一索引或联合索引</p>
+<pre><code>例如，user表中有user_id,user_name两个字段，如果不希望有两条一摸一样的的user_id和user_name，我们可以给user表添加两个字段的联合唯一索引：
+<span class="operator"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">user</span> <span class="keyword">add</span> <span class="keyword">unique</span> index(user_id,user_name);</span>
+这样当向表中添加相同记录的时候，会返回1062的添加失败信息。
+但是有一种情况是表中已经有n个重复的记录，这时候我们才想起来要添加唯一索引，再执行上面的操作时，数据库会告诉你已经有重复的记录了，建立索引失败，这时候，我们可以用下面的操作：
+<span class="operator"><span class="keyword">alter</span> ignore <span class="keyword">table</span> <span class="keyword">user</span> <span class="keyword">add</span> <span class="keyword">unique</span> index(user_id,user_name);</span>
+它会删除重复的记录（别怕，会保留一条），然后建立唯一索引，高效而且人性化。
+</code></pre><h3 id="问题">问题</h3>
+<p>在5.1版本中在5.1版本时创建唯一去重索引是会失效，网上说有人提交了bug，而mysql官方并没有对此进行快速修改，直到5.6版本才修正此bug。只好用临时方案解决此bug。就是在执行创建唯一去重索引语句前现执行：</p>
+<pre><code>mysql&gt;<span class="built_in">set</span> session old_alter_table =<span class="command"><span class="keyword">on</span>;</span>
+</code></pre><p>然后在执行创建唯一去重索引语句<br>关闭命令窗口后此次设置的session old_alter_table =on; 将失效</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/mysql/" itemprop="url"><span itemprop="title" >mysql</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/mysql/" class="label label-primary" itemprop="url"><span itemprop="title">mysql</span></a><a href="/tags/索引/" class="label label-success" itemprop="url"><span itemprop="title">索引</span></a><a href="/tags/去重/" class="label label-info" itemprop="url"><span itemprop="title">去重</span></a></span> | <span class="time">最近更新:<time title="2014-08-30 18:00:37"datetime="2014-08-30 18:00:37"> 8月 30 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/08/30/mysql-alert-ignore-index/#comments" class="ds-thread-count comment-link" data-thread-key="mysql-alert-ignore-index" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></h1>
       
         <span>发表于<time datetime="2014-05-08T02:23:12.000Z"> <a href="/2014/05/08/mysql-copy-struct-data-sql/">5月 8 2014</a></time></span>      
@@ -354,7 +399,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-18 22:31:20</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-30 18:02:20</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

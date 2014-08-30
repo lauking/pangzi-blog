@@ -103,6 +103,47 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/20/java-thread-004/"></a></h1>
+      
+        <span>发表于<time datetime="2014-06-20T05:37:49.000Z"> <a href="/2014/06/20/java-thread-004/">6月 20 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>title: java线程锁、同步、通讯<br>date: 2014-06-20 13:44:00<br>tags:</p>
+<ul>
+<li>java</li>
+<li>线程<br>categories: java<br>keywords: 胖浩网，java线程学习，线程同步、同步锁、死锁、线程通信、线程组和<br>未处理异常、Callable和Future<br>description: 胖浩网,java线程学习，线程同步、同步锁、死锁、线程通信、线程组和<br>未处理异常、Callable和Future</li>
+</ul>
+<hr>
+<p>上篇<a href="http://www.haozi520.com/2014/06/18/java-thread-003/index.html" target="_blank">《java线程:生命周期和状态控制》</a>学习到了线程的生命周期和状态的控制，这次我来学习线程的<br>锁，同步，通讯这些概念</p>
+<h3 id="锁的原理">锁的原理</h3>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <span class="time">最近更新:<time title="2014-06-20 13:58:49"datetime="2014-06-20 13:58:49"> 6月 20 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/20/java-thread-004/#comments" class="ds-thread-count comment-link" data-thread-key="java-thread-004" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/18/js-jquery-plugin-dev/">这是你要的jQuery插件开发吗？</a></h1>
       
         <span>发表于<time datetime="2014-06-18T14:21:00.000Z"> <a href="/2014/06/18/js-jquery-plugin-dev/">6月 18 2014</a></time></span>      
@@ -871,82 +912,6 @@ $(<span class="string">"a"</span>).greenify().addClass(<span class="string">"gre
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/18/apache-ab-test-concurrency/">apache的ab工具测试结果说明</a></h1>
-      
-        <span>发表于<time datetime="2014-06-18T04:31:00.000Z"> <a href="/2014/06/18/apache-ab-test-concurrency/">6月 18 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>Apache服务器自带了ab压力测试工具，可以用来测试网站性能，使用简单方便。有时也可以用来测试写的web服务的并发性能。ab进行一切测试的本质都是基于HTTP的，所以可以说ab对于Web服务器软件的黑盒性能测试，获得的一切数据和计算结果，都是可以通过HTTP来解释的。</p>
-<h3 id="ab位置">ab位置</h3>
-<h4 id="window系统下">window系统下</h4>
-<p>打开apache服务的安装路径，在bin目录中有一个ab.exe的可执行程序，这个就是ab测试<br>工具</p>
-<h4 id="linux系统下">linux系统下</h4>
-<p>用whereis ab找到ab工具，一般在/usr/bin目录下</p>
-<h3 id="用法及参数含义">用法及参数含义</h3>
-<h4 id="用法">用法</h4>
-<blockquote>
-<p>ab [options] [<a href="http://]hostname[:port]/path" target="_blank">http://]hostname[:port]/path</a><br>eg:ab -n 5000 -c 200 <a href="http://localhost/index.php" target="_blank">http://localhost/index.php</a><br>上例表示总共访问<a href="http://localhost/index.php这个脚本5000次，200并发同时执行。" target="_blank">http://localhost/index.php这个脚本5000次，200并发同时执行。</a></p>
-</blockquote>
-<h3 id="参数含义">参数含义</h3>
-<p>在ab工具目录下，直接运行ab会打印出ab所有的参数说明不过是英文的。如下图</p>
-<ul>
-<li>-n：总共的请求执行数，缺省是1；</li>
-<li>-c：并发数，缺省是1；</li>
-<li>-t：测试所进行的总时间，秒为单位，缺省50000s</li>
-<li>-p：POST时的数据文件</li>
-<li>-w: 以HTML表的格式输出结果</li>
-</ul>
-<p><img src="http://haozi520.u.qiniudn.com/20140618114818.png" alt=""></p>
-<h3 id="使用ab工具">使用ab工具</h3>
-<p>测试一个线上的服务，输入命令<br><img src="http://haozi520.u.qiniudn.com/20140618115536.png" alt=""></p>
-<p>我把结果输出到一个html文件中，结果如下图</p>
-<p><img src="http://haozi520.u.qiniudn.com/20140618114921.png" alt=""></p>
-<ul>
-<li>Server Software 表示被测试的Web服务器软件名称</li>
-<li>Server Hostname 表示请求的URL主机名</li>
-<li>Server Port 表示被测试的Web服务器软件的监听端口</li>
-<li>Document Path 表示请求的URL中的根绝对路径，通过该文件的后缀名，<br>我们一般可以了解该请求的类型</li>
-<li>Document Length 表示HTTP响应数据的正文长度</li>
-<li>Concurrency Level 表示并发用户数，这是我们设置的参数之一</li>
-<li>Time taken for tests 表示所有这些请求被处理完成所花费的总时间</li>
-<li>Complete requests 表示总请求数量，这是我们设置的参数之一</li>
-<li>Failed requests 表示失败的请求数量，这里的失败是指请求在连接服务器、发送数据等环节发生异常，以及无响应后超时的情况。如果接收到的HTTP响应数据的头信息中含有2XX以外的状态码，则会在测试结果中显示另一个名为“Non-2xx responses”的统计项，<br>用于统计这部分请求数，这些请求并不算在失败的请求中。</li>
-<li>Total transferred 表示所有请求的响应数据长度总和，包括每个HTTP响应数据的头信息和正文数据的长度。注意这里不包括HTTP请求数据的长度，仅仅为web服务器流向用户PC的应用层数据总长度。</li>
-<li>HTML transferred 表示所有请求的响应数据中正文数据的总和，也就是减去了Total transferred中HTTP响应数据中的头信息的长度。</li>
-<li>Requests per second 吞吐率，计算公式：Complete requests / Time taken for tests</li>
-<li>Time per request 用户平均请求等待时间，计算公式：Time token for tests/（Complete requests/Concurrency Level）</li>
-<li>Time per requet(across all concurrent request) 服务器平均请求等待时间，<br>计算公式：Time taken for tests/Complete requests，正好是吞吐率的倒数。也可<br>以这么统计：Time per request/Concurrency Level</li>
-<li>Transfer rate 表示这些请求在单位时间内从服务器获取的数据长度，计算公式：<br>Total trnasferred/ Time taken for tests，这个统计很好的说明服务器的处理能<br>力达到极限时，其出口宽带的需求量。</li>
-<li>Percentage of requests served within a certain time（ms） 这部分数据用于描述每个请求处理时间的分布情况，比如以上测试，80%的请求处理时间都不超过6ms，这个处理时间是指前面的Time per request，即对于单个用户而言，平均每个请求的处理时间。</li>
-</ul>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/有技术/" itemprop="url"><span itemprop="title" >有技术</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/ab测试/" class="label label-primary" itemprop="url"><span itemprop="title">ab测试</span></a><a href="/tags/ab/" class="label label-success" itemprop="url"><span itemprop="title">ab</span></a></span> | <span class="time">最近更新:<time title="2014-06-18 12:34:39"datetime="2014-06-18 12:34:39"> 6月 18 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/18/apache-ab-test-concurrency/#comments" class="ds-thread-count comment-link" data-thread-key="apache-ab-test-concurrency" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
   <li class="active"><li><span class="page-number current">1</span></li></li><li><a class="page-number" href="/archives/2014/06/page/2/">2</a></li><li><a class="page-number" href="/archives/2014/06/page/4/">4</a></li><li><a class="page-number" href="/archives/2014/06/page/5/">5</a></li><li><a class="extend next" href="/archives/2014/06/page/2/">&raquo;</a></li>
@@ -1040,7 +1005,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-06-18 22:31:19</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-08-30 18:02:19</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
