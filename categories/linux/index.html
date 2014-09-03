@@ -103,6 +103,122 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/03/linux-nginx-global-variable/">Nginx全局变量含义整理</a></h1>
+      
+        <span>发表于<time datetime="2014-09-03T02:23:00.000Z"> <a href="/2014/09/03/linux-nginx-global-variable/">9月 3 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>linux下配置nginx经常要用到他的全局变量，了解和弄清楚他的含义使用起来就得心应手了</p>
+<p><strong>$remote_addr</strong>            客户端ip,如：192.168.4.2<br><strong>$binary_remote_addr</strong>     客户端ip（二进制)<br><strong>$remote_port</strong>            客户端port，如：50472<br><strong>$remote_user</strong>            已经经过Auth Basic Module验证的用户名<br><strong>$host</strong>                请求主机头字段，否则为服务器名称，如:dwz.stamhe.com<br><strong>$request</strong>                用户请求信息，如：GET /?_a=index&amp;_m=show&amp;count=10 HTTP/1.1<br><strong>$request_filename</strong>       当前请求的文件的路径名，由root或alias和URI<br>                        request组合而成，如：/webserver/htdocs/dwz/index.php<br><strong>$status</strong>                 请求的响应状态码,如:200<br><strong>$body_bytes_sent</strong>        响应时送出的body字节数数量。即使连接中断，<br>                        这个数据也是精确的,如：40<br><strong>$content_length</strong>         请求头中的Content-length字段<br><strong>$content_type</strong>           请求头中的Content-Type字段<br><strong>$http_referer</strong>           引用地址<br><strong>$http_user_agent</strong>        客户端agent信息,如：Mozilla/5.0 (Windows NT 6.1;<br>                        WOW64) AppleWebKit/536.11 (KHTML, like Gecko)<br>                        Chrome/20.0.1132.57 Safari/536.11<br><strong>$args</strong>                   如：_a=index&amp;_m=show&amp;count=10<br><strong>$document_uri</strong>           与$uri相同,如：/index.php<br><strong>$document_root</strong>          针对当前请求的根路径设置值,如：/webserver/htdocs/dwz<br><strong>$hostname</strong>               如：centos53.localdomain<br><strong>$http_cookie</strong>            客户端cookie信息<br><strong>$cookie_COOKIE</strong>          cookie COOKIE变量的值<br><strong>$is_args</strong>                如果有$args参数，这个变量等于”?”，否则等于””，<br> 空值，如?<br><strong>$limit_rate</strong>             这个变量可以限制连接速率，0表示不限速<br><strong>$query_string</strong>           与$args相同,如：_a=index&amp;_m=show&amp;count=10<br><strong>$realpath_root</strong>          如：/webserver/htdocs/dwz<br><strong>$request_body</strong>          记录POST过来的数据信息<br><strong>$request_body_file</strong>     客户端请求主体信息的临时文件名<br><strong>$request_method</strong>       客户端请求的动作，通常为GET或POST,如：GET<br><strong>$request_uri</strong>           包含请求参数的原始URI，不包含主机名，<br> 如：”/foo/bar.php?arg=baz”。不能修改。如：/index.php?_a=index&amp;_m=show&amp;count=10<br><strong>$scheme</strong>                HTTP方法（如http，https）,如：http<br><strong>$uri</strong>                   如：/index.php<br><strong>$request_completion</strong>    如果请求结束，设置为OK. 当请求未结束或如果<br>  该请求不是请求链串的最后一个时，为空(Empty)，如：OK<br><strong>$server_protocol</strong>       请求使用的协议，通常是HTTP/1.0或HTTP/1.1，如：HTTP/1.1<br><strong>$server_addr</strong>           服务器地址，在完成一次系统调用后可以<br>                       确定这个值，如：192.168.4.129<br><strong>$server_name</strong>          服务器名称，如：dwz.stamhe.com<br><strong>$server_port</strong>           请求到达服务器的端口号,如：80</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nginx/" class="label label-primary" itemprop="url"><span itemprop="title">nginx</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-03 14:36:44"datetime="2014-09-03 14:36:44"> 9月 3 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/03/linux-nginx-global-variable/#comments" class="ds-thread-count comment-link" data-thread-key="linux-nginx-global-variable" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/08/31/linux-nginx-setup/">nginx在linux下的安装</a></h1>
+      
+        <span>发表于<time datetime="2014-08-31T02:23:00.000Z"> <a href="/2014/08/31/linux-nginx-setup/">8月 31 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>学好nginx，在linux下安装nginx是关键，动手自己配置才是最好的学习方法，今天我来编安装变记录安装的步骤:</p>
+<h3 id="下载nginx安装包">下载nginx安装包</h3>
+<p>到<a href="http://nginx.org/en/download.html" target="_blank">nginx官网</a>下载,下载稳定版（Stable Version）</p>
+<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># wget http://nginx.org/download/nginx-1.6.1.tar.gz</span>
+</code></pre><h3 id="解压">解压</h3>
+<p>使用linux解压命令tar</p>
+<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf nginx-1.6.1.tar.gz</span>
+[root<span class="variable">@localhost</span> download]<span class="comment"># cd nginx-1.6.1</span>
+[root<span class="variable">@localhost</span> nginx-<span class="number">1.6</span>.<span class="number">1</span>]<span class="comment"># ./configure </span>
+</code></pre><p>执行./configure命令时会报 gcc、ssl、rewrite、gzip 模块需要依赖库<br><strong>gcc</strong>     只要在linux执行yum install -y gcc-c++ 即可安装<br><strong>gzip</strong>    模块需要 <a href="http://zlib.net/zlib-1.2.8.tar.gz" target="_blank">zlib</a>库<br><strong>rewrite</strong> 模块需要 <a href="http://jaist.dl.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz" target="_blank">pcre</a>库<br><strong>ssl</strong>     功能需要 <a href="http://www.openssl.org/source/openssl-fips-2.0.5.tar.gz" target="_blank">openssl</a>库</p>
+<p><strong>下载依赖库</strong></p>
+<pre><code><span class="array"># wget http</span>:<span class="comment">//www.openssl.org/source/openssl-fips-2.0.5.tar.gz</span>
+<span class="array"># wget http</span>:<span class="comment">//zlib.net/zlib-1.2.8.tar.gz</span>
+<span class="array"># wget http</span>:<span class="comment">//jaist.dl.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz</span>
+</code></pre><p>依次安装openssl-fips-2.0.5.tar.gz、zlib-1.2.8.tar.gz、pcre-8.35.tar.gz、nginx-1.6.1.tar.gz</p>
+<h3 id="安装">安装</h3>
+<p><strong>安装openssl-fips-2.0.5.tar.gz</strong></p>
+<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf openssl-fips-2.0.5.tar.gz</span>
+[root<span class="variable">@localhost</span> download]<span class="comment"># cd openssl-fips-2.0.5</span>
+[root<span class="variable">@localhost</span> openssl-fips-<span class="number">2.0</span>.<span class="number">5</span>]<span class="comment"># ./config</span>
+[root<span class="variable">@localhost</span> openssl-fips-<span class="number">2.0</span>.<span class="number">5</span>]<span class="comment"># make &amp;&amp; make install</span>
+</code></pre><p><strong>安装zlib-1.2.8.tar.gz</strong></p>
+<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf zlib-1.2.8.tar.gz</span>
+[root<span class="variable">@localhost</span> download]<span class="comment"># cd  zlib-1.2.8</span>
+[root<span class="variable">@localhost</span> zlib-<span class="number">1.2</span>.<span class="number">8</span>]<span class="comment"># ./configure</span>
+[root<span class="variable">@localhost</span> zlib-<span class="number">1.2</span>.<span class="number">8</span>]<span class="comment"># make &amp;&amp; make install</span>
+</code></pre><p><strong>安装pcre-8.35.tar.gz</strong></p>
+<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf pcre-8.35.tar.gz</span>
+[root<span class="variable">@localhost</span> download]<span class="comment"># cd pcre-8.35</span>
+[root<span class="variable">@localhost</span> pcre-<span class="number">8.35</span>]<span class="comment"># ./configure</span>
+</code></pre><p><strong>继续安装nginx</strong> </p>
+<pre><code>[root<span class="keyword">@localhost</span> download]#root<span class="keyword">@localhost</span> nginx-<span class="number">1.6</span>.1]# ./configure --<span class="keyword">with</span>-pcre=../pcre-<span class="number">8.35</span> --<span class="keyword">with</span>-zlib=../zlib-<span class="number">1.2</span>.8 --<span class="keyword">with</span>-openssl=../openssl-fips-<span class="number">2.0</span>.5
+[root<span class="keyword">@localhost</span> nginx-<span class="number">1.6</span>.1]# make &amp;&amp; make install
+</code></pre><h3 id="检测是否安装成功">检测是否安装成功</h3>
+<pre><code>[root@localhost nginx-<span class="number">1.6</span><span class="number">.1</span>]<span class="comment"># cd /usr/local/nginx/sbin/</span>
+[root@localhost sbin]<span class="comment"># ./nginx -t</span>
+nginx: <span class="keyword">the</span> configuration <span class="type">file</span> /usr/<span class="keyword">local</span>/nginx/conf/nginx.conf syntax <span class="keyword">is</span> ok
+nginx: configuration <span class="type">file</span> /usr/<span class="keyword">local</span>/nginx/conf/nginx.conf test <span class="keyword">is</span> successful
+[root@localhost sbin]<span class="comment"># </span>
+</code></pre><p>出现上面提示说明安装成功<br><strong>启动nginx：</strong></p>
+<pre><code>[root<span class="variable">@localhost</span> sbin]<span class="comment"># ./nginx </span>
+</code></pre><p><strong>查看端口：</strong></p>
+<pre><code>[root<span class="variable">@localhost</span> sbin]<span class="comment"># netstat -ntlp</span>
+<span class="constant">Active</span> <span class="constant">Internet</span> connections (only servers)
+<span class="constant">Proto</span> <span class="constant">Recv</span>-<span class="constant">Q</span> <span class="constant">Send</span>-<span class="constant">Q</span> <span class="constant">LocalAddress</span> <span class="constant">ForeignAddress</span> <span class="constant">State</span>  <span class="constant">PID</span>/<span class="constant">Program</span> name   
+tcp   <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:</span><span class="number">80</span>   <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:*</span>      <span class="constant">LISTEN</span> <span class="number">19160</span>/nginx      
+tcp   <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:</span><span class="number">22</span>     <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:*</span>    <span class="constant">LISTEN</span> <span class="number">988</span>/sshd    
+</code></pre><p>说明安装成功<br>打开浏览器访问:<a href="http://192.168.1.180,出现如下图" target="_blank">http://192.168.1.180,出现如下图</a><br><img src="http://haozi520.u.qiniudn.com/20140903134527.png" alt=""></p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nginx/" class="label label-primary" itemprop="url"><span itemprop="title">nginx</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-03 13:49:40"datetime="2014-09-03 13:49:40"> 9月 3 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/08/31/linux-nginx-setup/#comments" class="ds-thread-count comment-link" data-thread-key="linux-nginx-setup" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></h1>
       
         <span>发表于<time datetime="2014-06-12T02:54:00.000Z"> <a href="/2014/06/12/linux-crontab-configuration/">6月 12 2014</a></time></span>      
@@ -472,7 +588,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-02 19:12:22</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-03 14:37:40</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

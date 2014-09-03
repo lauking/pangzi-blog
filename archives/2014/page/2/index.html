@@ -103,6 +103,596 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/18/java-thread-003/">java线程：生命周期和状态控制</a></h1>
+      
+        <span>发表于<time datetime="2014-06-18T09:44:00.000Z"> <a href="/2014/06/18/java-thread-003/">6月 18 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>上一篇整理了<a href="http://www.haozi520.com/2014/06/18/java-thread-002/index.html" target="_blank">《java线程：创建与启动》</a>,介绍了怎样扩展Thread类和实现Runnable接口的多线程方法，<br>这篇将整理线程的生命周期和状态控制。<br>线程的状态转换是线程控制的基础。线程状态总的可分为五大状态：分别是生、死、可运行、运行、等待/阻塞。</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140618180812.png" alt="线程的状态转换"></p>
+<h3 id="新建状态">新建状态</h3>
+<p>用new关键字和Thread类或其子类建立一个线程对象后，该线程对象就处于新生状态。处于新生状态的线程有自己的内存空间，通过调用start方法进入就绪状态（runnable）。<br>注意：不能对已经启动的线程再次调用start()方法，否则会出现java.lang.IllegalThreadStateException异常。</p>
+<h3 id="就绪状态">就绪状态</h3>
+<p>处于就绪状态的线程已经具备了运行条件，但还没有分配到CPU，处于线程就绪队列（尽管是采用队列形式，事实上，把它称为可运行池而不是可运行队列。因为cpu的调度不一定是按照先进先出的顺序来调度的），等待系统为其分配CPU。等待状态并不是执行状态，当系统选定一个等待执行的Thread对象后，它就会从等待执行状态进入执行状态，系统挑选的动作称之为“cpu调度”。一旦获得CPU，线程就进入运行状态并自动调用自己的run方法。<br>提示：如果希望子线程调用start()方法后立即执行，可以使用Thread.sleep()方式使主线程睡眠一伙儿，转去执行子线程。</p>
+<h3 id="运行状态">运行状态</h3>
+<p>处于运行状态的线程最为复杂，它可以变为阻塞状态、就绪状态和死亡状态。<br>处于就绪状态的线程，如果获得了cpu的调度，就会从就绪状态变为运行状态，执行run()方法中的任务。如果该线程失去了cpu资源，就会又从运行状态变为就绪状态。重新等待系统分配资源。也可以对在运行状态的线程调用yield()方法，它就会让出cpu资源，再次变为就绪状态。</p>
+<p>当发生如下情况是，线程会从运行状态变为阻塞状态：</p>
+<ul>
+<li>线程调用sleep方法主动放弃所占用的系统资源</li>
+<li>线程调用一个阻塞式IO方法，在该方法返回之前，该线程被阻塞</li>
+<li>线程试图获得一个同步监视器，但更改同步监视器正被其他线程所持有</li>
+<li>线程在等待某个通知（notify）</li>
+<li>程序调用了线程的suspend方法将线程挂起。不过该方法容易导致死锁，所以程序应该尽量避免使用该方法。</li>
+</ul>
+<p>当线程的run()方法执行完，或者被强制性地终止，例如出现异常，或者调用了stop()、desyory()方法等等，就会从运行状态转变为死亡状态。</p>
+<h3 id="阻塞状态">阻塞状态</h3>
+<p>处于运行状态的线程在某些情况下，如执行了sleep（睡眠）方法，或等待I/O设备等资源，将让出CPU并暂时停止自己的运行，进入阻塞状态。<br>在阻塞状态的线程不能进入就绪队列。只有当引起阻塞的原因消除时，如睡眠时间已到，或等待的I/O设备空闲下来，线程便转入就绪状态，重新到就绪队列中排队等待，被系统选中后从原来停止的位置开始继续运行,有三种方法可以暂停Threads执行：</p>
+<h3 id="死亡状态">死亡状态</h3>
+<p>当线程的run()方法执行完，或者被强制性地终止，就认为它死去。这个线程对象也许是活的，但是，它已经不是一个单独执行的线程。线程一旦死亡，就不能复生。 如果在一个死去的线程上调用start()方法，会抛出java.lang.IllegalThreadStateException异常。</p>
+<h3 id="线程状态的控制">线程状态的控制</h3>
+<p>Java提供了一些便捷的方法用于会线程状态的控制。 .</p>
+<ul>
+<li>void  destroy() 已过时。 该方法最初用于破坏该线程，但不作任何清除。它所保持的任何监视器都会保持锁定状态。不过，该方法决不会被实现。即使要实现，它也极有可能以suspend() 方式被死锁。如果目标线程被破坏时保持一个保护关键系统资源的锁，则任何线程在任何时候都无法再次访问该资源。如果另一个线程曾试图锁定该资源，则会出现死锁。这类死锁通常会证明它们自己是“冻结”的进程。</li>
+<li>void  interrupt() 中断线程。</li>
+<li>void  join() 等待该线程终止。</li>
+<li>void  join(long millis) 等待该线程终止的时间最长为 millis 毫秒。</li>
+<li>void  join(long millis, int nanos) 等待该线程终止的时间最长为 millis 毫秒 + nanos 纳秒。</li>
+<li>void  resume()已过时。该方法只与suspend()一起使用，但suspend() 已经遭到反对，<br>因为它具有死锁倾向。</li>
+<li>void  setDaemon(boolean on)将该线程标记为守护线程或用户线程。</li>
+<li>void  setPriority(int newPriority)更改线程的优先级。</li>
+<li>static void sleep(long millis)在指定的毫秒数内让当前正在执行的线程休眠（暂停执行），此操作受到系统计时器和调度程序精度和准确性的影响。</li>
+<li>static void sleep(long millis, int nanos)在指定的毫秒数加指定的纳秒数内让当前正在执行的线程休眠（暂停执行），此操作受到系统计时器和调度程序精度和准确性的影响。</li>
+<li>void  start() 使该线程开始执行；Java 虚拟机调用该线程的 run 方法。</li>
+<li>void  stop() 已过时。 该方法具有固有的不安全性。用Thread.stop来终止线程将释放它已经锁定的所有监视器（作为沿堆栈向上传播的未检查ThreadDeath 异常的一个自然后果）。如果以前受这些监视器保护的任何对象都处于一种不一致的状态，则损坏的对象将对其他线程可见，这有可能导致任意的行为。stop 的许多使用都应由只修改某些变量以指示目标线程应该停止运行的代码来取代。目标线程应定期检查该变量，并且如果该变量指示它要停止运行，则从其运行方法依次返回。如果目标线程等待很长时间（例如基于一个条件变量），则应使用interrupt 方法来中断该等待。</li>
+<li>void  stop(Throwable obj)已过时。该方法具有固有的不安全性。有关详细信息</li>
+<li>请参阅stop()。该方法的附加危险是它可用于生成目标线程未准备处理的异常（包括<br>若没有该方法该线程不太可能抛出的已检查的异常）。</li>
+<li>void  suspend()已过时。 该方法已经遭到反对，因为它具有固有的死锁倾向。如果目标线程挂起时在保护关键系统资源的监视器上保持有锁，则在目标线程重新开始以前任何线程都不能访问该资源。如果重新开始目标线程的线程想在调用resume 之前锁定该监视器，则会发生死锁。这类死锁通常会证明自己是“冻结”的进程。</li>
+<li>static void yield()暂停当前正在执行的线程对象，并执行其他线程。<br>可以看到很多方法，已经标注为过时的，我们应该尽可能的避免使用它们，而应该重点关注start()、interrupt()、join()、sleep()、yield()等直接控制方法，和setDaemon()、setPriority()等间接控制方法。</li>
+</ul>
+<h4 id="线程睡眠——sleep">线程睡眠——sleep</h4>
+<p>如果我们需要让当前正在执行的线程暂停一段时间，并进入阻塞状态，则可以通过调用Thread的sleep方法，从上面可以看到sleep方法有两种重载的形式，但是使用方法一样。<br>比如，我们想要使主线程每休眠100毫秒，然后再打印出数字：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Test1 {  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) throws InterruptedException {  
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++){  
+            System.<span class="keyword">out</span>.println(<span class="string">"main"</span>+i);  
+            Thread.sleep(<span class="number">100</span>);  
+        }  
+    }  
+}  
+</code></pre><p>可以明显看到打印的数字在时间上有些许的间隔。</p>
+<p>注意如下几点问题<br>1、sleep是静态方法，最好不要用Thread的实例对象调用它，因为它睡眠的始终是当前正在运行的线程，而不是调用它的线程对象，它只对正在运行状态的线程对象有效。看下面的例子：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Test1 {  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) throws InterruptedException {  
+        System.<span class="keyword">out</span>.println(Thread.currentThread().getName());  
+        MyThread myThread=<span class="keyword">new</span> MyThread();  
+        myThread.start();  
+        myThread.sleep(<span class="number">1000</span>);<span class="comment">//这里sleep的就是main线程，而非myThread线程  </span>
+        Thread.sleep(<span class="number">10</span>);  
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">100</span>;i++){  
+            System.<span class="keyword">out</span>.println(<span class="string">"main"</span>+i);  
+        }  
+    }  
+}  
+</code></pre><p>2、Java线程调度是Java多线程的核心，只有良好的调度，才能充分发挥系统的性能，提高程序的执行效率。但是不管程序员怎么编写调度，只能最大限度的影响线程执行的次序，而不能做到精准控制。因为使用sleep方法之后，线程是进入阻塞状态的，只有当睡眠的时间结束，才会重新进入到就绪状态，而就绪状态进入到运行状态，是由系统控制的，我们不可能精准的去干涉它，所以如果调用Thread.sleep(1000)使得线程睡眠1秒，可能结果会大于1秒。</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test1</span> {</span>  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws InterruptedException {  
+        <span class="keyword">new</span> MyThread().start();  
+        <span class="keyword">new</span> MyThread().start();  
+    }  
+}  
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+    @Override  
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) {  
+            System.out.println(<span class="keyword">this</span>.getName()+<span class="string">"线程"</span> + i + <span class="string">"次执行！"</span>);  
+            <span class="keyword">try</span> {  
+                Thread.sleep(<span class="number">50</span>);  
+            } <span class="keyword">catch</span> (InterruptedException e) {  
+                e.printStackTrace();  
+            }  
+        }  
+    }  
+}  
+</code></pre><p>看某一次的运行结果：</p>
+<pre><code><span class="keyword">Thread</span>-<span class="number">0</span>线程<span class="number">0</span>次执行！  
+<span class="keyword">Thread</span>-<span class="number">1</span>线程<span class="number">0</span>次执行！  
+<span class="keyword">Thread</span>-<span class="number">1</span>线程<span class="number">1</span>次执行！  
+<span class="keyword">Thread</span>-<span class="number">0</span>线程<span class="number">1</span>次执行！  
+<span class="keyword">Thread</span>-<span class="number">0</span>线程<span class="number">2</span>次执行！  
+<span class="keyword">Thread</span>-<span class="number">1</span>线程<span class="number">2</span>次执行！  
+</code></pre><p>可以看到，线程0首先执行，然后线程1执行一次，又了执行一次。可以看到它并不是按照sleep的顺序执行的。</p>
+<h4 id="线程让步——yield">线程让步——yield</h4>
+<p>yield()方法和sleep()方法有点相似，它也是Thread类提供的一个静态的方法，它也可以让当前正在执行的线程暂停，让出cpu资源给其他的线程。但是和sleep()方法不同的是，它不会进入到阻塞状态，而是进入到就绪状态。yield()方法只是让当前线程暂停一下，重新进入就绪的线程池中，让系统的线程调度器重新调度器重新调度一次，完全可能出现这样的情况：当某个线程调用yield()方法之后，线程调度器又将其调度出来重新进入到运行状态执行。<br>实际上，当某个线程调用了yield()方法暂停之后，优先级与当前线程相同，或者优先级比当前线程更高的就绪状态的线程更有可能获得执行的机会，当然，只是有可能，因为我们不可能精确的干涉cpu调度线程。<br>yield的用法：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test1</span> {</span>  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws InterruptedException {  
+        <span class="keyword">new</span> MyThread(<span class="string">"低级"</span>, <span class="number">1</span>).start();  
+        <span class="keyword">new</span> MyThread(<span class="string">"中级"</span>, <span class="number">5</span>).start();  
+        <span class="keyword">new</span> MyThread(<span class="string">"高级"</span>, <span class="number">10</span>).start();  
+    }  
+}  
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+    <span class="keyword">public</span> MyThread(String name, <span class="keyword">int</span> pro) {  
+        <span class="keyword">super</span>(name);<span class="comment">// 设置线程的名称  </span>
+        <span class="keyword">this</span>.setPriority(pro);<span class="comment">// 设置优先级  </span>
+    }  
+    @Override  
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">30</span>; i++) {  
+            System.out.println(<span class="keyword">this</span>.getName() + <span class="string">"线程第"</span> + i + <span class="string">"次执行！"</span>);  
+            <span class="keyword">if</span> (i % <span class="number">5</span> == <span class="number">0</span>)  
+                Thread.yield();  
+        }  
+    }  
+}  
+</code></pre><h4 id="关于sleep()方法和yield()方的区别如下：">关于sleep()方法和yield()方的区别如下：</h4>
+<ul>
+<li>sleep方法暂停当前线程后，会进入阻塞状态，只有当睡眠时间到了，才会转入就绪状态。而yield方法调用后 ，是直接进入就绪状态，所以有可能刚进入就绪状态，又被调度到运行状态。</li>
+<li>sleep方法声明抛出了InterruptedException，所以调用sleep方法的时候要捕获该异常，或者显示声明抛出该异常。而yield方法则没有声明抛出任务异常。</li>
+<li>sleep方法比yield方法有更好的可移植性，通常不要依靠yield方法来控制并发线程的执行。</li>
+</ul>
+<h4 id="线程合并——join">线程合并——join</h4>
+<p>线程的合并的含义就是将几个并行线程的线程合并为一个单线程执行，应用场景是当一个线程必须等待另一个线程执行完毕才能执行时，Thread类提供了join方法来完成这个功能，注意，它不是静态方法。<br>从上面的方法的列表可以看到，它有3个重载的方法：</p>
+<ul>
+<li>void join()  当前线程等该加入该线程后面，等待该线程终止。    </li>
+<li>void join(long millis)  当前线程等待该线程终止的时间最长为 millis 毫秒。 如果在millis时间内，该线程没有执行完，那么当前线程进入就绪状态，重新等待cpu调度 </li>
+<li><p>void join(long millis,int nanos)  等待该线程终止的时间最长为 millis 毫秒 + nanos 纳秒。如果在millis时间内，该线程没有执行完，那么当前线程进入就绪状态，重新等待cpu调度<br>例子：</p>
+<p>  public class Test1 {  </p>
+<pre><code>  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) throws InterruptedException {  
+      MyThread thread=<span class="keyword">new</span> MyThread();  
+      thread.start();  
+      thread.<span class="keyword">join</span>(<span class="number">1</span>);<span class="comment">//将主线程加入到子线程后面，不过如果子线程在1毫秒时间内没执行完，则主线程便不再等待它执行完，进入就绪状态，等待cpu调度  </span>
+      <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">30</span>;i++){  
+          System.<span class="keyword">out</span>.println(Thread.currentThread().getName() + <span class="string">"线程第"</span> + i + <span class="string">"次执行！"</span>);  
+      }  
+  }  
+</code></pre><p>  }<br>  class MyThread extends Thread {  </p>
+<pre><code>  @Override  
+  <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {  
+      <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++) {  
+          System.<span class="keyword">out</span>.println(<span class="keyword">this</span>.getName() + <span class="string">"线程第"</span> + i + <span class="string">"次执行！"</span>);  
+      }  
+  }  
+</code></pre><p>  }  </p>
+</li>
+</ul>
+<p>在这个例子中，在主线程中调用thread.join(); 就是将主线程加入到thread子线程后面等待执行。不过有时间限制，为1毫秒。</p>
+<h3 id="线程的优先级">线程的优先级</h3>
+<p>每个线程执行时都有一个优先级的属性，优先级高的线程可以获得较多的执行机会，而优先级低的线程则获得较少的执行机会。与线程休眠类似，线程的优先级仍然无法保障线程的执行次序。只不过，优先级高的线程获取CPU资源的概率较大，优先级低的也并非没机会执行。<br>每个线程默认的优先级都与创建它的父线程具有相同的优先级，在默认情况下，main线程具有普通优先级。<br>Thread类提供了setPriority(int newPriority)和getPriority()方法来设置和返回一个指定线程的优先级，其中setPriority方法的参数是一个整数，范围是1~·0之间，也可以使用Thread类提供的三个静态常量：<br>MAX_PRIORITY   =10<br>MIN_PRIORITY   =1<br>NORM_PRIORITY   =5<br>例子：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test1</span> {</span>  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws InterruptedException {  
+        <span class="keyword">new</span> MyThread(<span class="string">"高级"</span>, <span class="number">10</span>).start();  
+        <span class="keyword">new</span> MyThread(<span class="string">"低级"</span>, <span class="number">1</span>).start();  
+    }  
+}  
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+    <span class="keyword">public</span> MyThread(String name,<span class="keyword">int</span> pro) {  
+        <span class="keyword">super</span>(name);<span class="comment">//设置线程的名称  </span>
+        setPriority(pro);<span class="comment">//设置线程的优先级  </span>
+    }  
+    @Override  
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100</span>; i++) {  
+            System.out.println(<span class="keyword">this</span>.getName() + <span class="string">"线程第"</span> + i + <span class="string">"次执行！"</span>);  
+        }  
+    }  
+}  
+</code></pre><p>从结果可以看到 ，一般情况下，高级线程更显执行完毕。<br>注意一点：虽然Java提供了10个优先级别，但这些优先级别需要操作系统的支持。不同的操作系统的优先级并不相同，而且也不能很好的和Java的10个优先级别对应。所以我们应该使用MAX_PRIORITY、MIN_PRIORITY和NORM_PRIORITY三个静态常量来设定优先级，这样才能保证程序最好的可移植性。</p>
+<h3 id="守护线程">守护线程</h3>
+<p>守护线程与普通线程写法上基本么啥区别，调用线程对象的方法setDaemon(true)，则可以将其设置为守护线程。</p>
+<p>守护线程使用的情况较少，但并非无用，举例来说，JVM的垃圾回收、内存管理等线程都是守护线程。还有就是在做数据库应用时候，使用的数据库连接池，连接池本身也包含着很多后台线程，监控连接个数、超时时间、状态等等。</p>
+<p>setDaemon方法的详细说明：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">setDaemon</span>(<span class="keyword">boolean</span> on)
+</code></pre><p>将该线程标记为守护线程或用户线程。当正在运行的线程都是守护线程时，Java 虚拟机退出。<br>该方法必须在启动线程前调用。 该方法首先调用该线程的 checkAccess 方法，且不带任何参数。这可能抛出 SecurityException（在当前线程中）。<br>参数：<br>    on - 如果为 true，则将该线程标记为守护线程。<br>抛出：<br>    IllegalThreadStateException - 如果该线程处于活动状态。<br>    SecurityException - 如果当前线程无法修改该线程。</p>
+<pre><code><span class="comment">/** 
+* Java线程：线程的调度-守护线程 
+*/</span>  
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> {</span>  
+        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) {  
+                Thread t1 = <span class="keyword">new</span> MyCommon();  
+                Thread t2 = <span class="keyword">new</span> Thread(<span class="keyword">new</span> MyDaemon());  
+                t2.setDaemon(<span class="keyword">true</span>);        <span class="comment">//设置为守护线程  </span>
+
+                t2.start();  
+                t1.start();  
+        }  
+}  
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyCommon</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+        <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">5</span>; i++) {  
+                        System.out.println(<span class="string">"线程1第"</span> + i + <span class="string">"次执行！"</span>);  
+                        <span class="keyword">try</span> {  
+                                Thread.sleep(<span class="number">7</span>);  
+                        } <span class="keyword">catch</span> (InterruptedException e) {  
+                                e.printStackTrace();  
+                        }  
+                }  
+        }  
+}  
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyDaemon</span> <span class="inheritance"><span class="keyword">implements</span></span> <span class="title">Runnable</span> {</span>  
+        <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+                <span class="keyword">for</span> (<span class="keyword">long</span> i = <span class="number">0</span>; i &lt; <span class="number">9999999</span>L; i++) {  
+                        System.out.println(<span class="string">"后台线程第"</span> + i + <span class="string">"次执行！"</span>);  
+                        <span class="keyword">try</span> {  
+                                Thread.sleep(<span class="number">7</span>);  
+                        } <span class="keyword">catch</span> (InterruptedException e) {  
+                                e.printStackTrace();  
+                        }  
+                }  
+        }  
+}  
+</code></pre><p>执行结果：</p>
+<pre><code>后台线程第0次执行！  
+线程1第0次执行！  
+线程1第1次执行！  
+后台线程第1次执行！  
+后台线程第2次执行！  
+线程1第2次执行！  
+线程1第3次执行！  
+后台线程第3次执行！  
+线程1第4次执行！  
+后台线程第4次执行！  
+后台线程第5次执行！  
+后台线程第6次执行！  
+后台线程第7次执行！   
+</code></pre><p>从上面的执行结果可以看出：前台线程是保证执行完毕的，后台线程还没有执行完毕就退出了。</p>
+<p>实际上：JRE判断程序是否执行结束的标准是所有的前台执线程行完毕了，而不管后台线程的状态，因此，在使用后台县城时候一定要注意这个问题。</p>
+<p>守护线程的用途：</p>
+<blockquote>
+<p>守护线程通常用于执行一些后台作业，例如在你的应用程序运行时播放背景音乐，在文字编辑器里做自动语法检查、自动保存等功能。Java的垃圾回收也是一个守护线程。守护线<br>的好处就是你不需要关心它的结束问题。例如你在你的应用程序运行的时候希望播放背景音乐，如果将这个播放背景音乐的线程设定为非守护线程，那么在用户请求退出的时候，<br>不仅要退出主线程，还要通知播放背景音乐的线程退出；如果设定为守护线程则不需要了。</p>
+</blockquote>
+<h3 id="如何结束一个线程">如何结束一个线程</h3>
+<p>Thread.stop()、Thread.suspend、Thread.resume、Runtime.runFinalizersOnExit这些终止线程运行的方法已经被废弃了，使用它们是极端不安全的！想要安全有效的结束一个线程，可以使用下面的方法。</p>
+<h4 id="正常执行完run方法，然后结束掉">正常执行完run方法，然后结束掉</h4>
+<h4 id="控制循环条件和判断条件的标识符来结束掉线程">控制循环条件和判断条件的标识符来结束掉线程</h4>
+<p>比如说run方法这样写：</p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+    <span class="keyword">int</span> i=<span class="number">0</span>;  
+    @Override  
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+        <span class="keyword">while</span> (<span class="keyword">true</span>) {  
+            <span class="keyword">if</span>(i==<span class="number">10</span>)  
+                <span class="keyword">break</span>;  
+            i++;  
+            System.out.println(i);  
+
+        }  
+    }  
+}  
+</code></pre><p>或者</p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+    <span class="keyword">int</span> i=<span class="number">0</span>;  
+    <span class="keyword">boolean</span> next=<span class="keyword">true</span>;  
+    @Override  
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+        <span class="keyword">while</span> (next) {  
+            <span class="keyword">if</span>(i==<span class="number">10</span>)  
+                next=<span class="keyword">false</span>;  
+            i++;  
+            System.out.println(i);  
+        }  
+    }  
+}  
+</code></pre><p>或者</p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+    <span class="keyword">int</span> i=<span class="number">0</span>;  
+    @Override  
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+        <span class="keyword">while</span> (<span class="keyword">true</span>) {  
+            <span class="keyword">if</span>(i==<span class="number">10</span>)  
+                <span class="keyword">return</span>;  
+            i++;  
+            System.out.println(i);  
+        }  
+    }  
+}  
+</code></pre><p>只要保证在一定的情况下，run方法能够执行完毕即可。而不是while(true)的无线循环。</p>
+<h4 id="使用interrupt结束一个线程。">使用interrupt结束一个线程。</h4>
+<p>诚然，使用第2中方法的标识符来结束一个线程，是一个不错的方法，但是如果，该线程是处于sleep、wait、join的状态的时候，while循环就不会执行，那么我们的标识符就无用武之地了，当然也不能再通过它来结束处于这3种状态的线程了。<br>可以使用interrupt这个巧妙的方式结束掉这个线程。<br>我们看看sleep、wait、join方法的声明：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">wait</span>() <span class="keyword">throws</span> InterruptedException  
+<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">sleep</span>(<span class="keyword">long</span> millis) <span class="keyword">throws</span> InterruptedException  
+<span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">join</span>() <span class="keyword">throws</span> InterruptedException  
+</code></pre><p>可以看到，这三者有一个共同点，都抛出了一个InterruptedException的异常。<br>在什么时候会产生这样一个异常呢？<br>每个Thread都有一个中断状状态，默认为false。可以通过Thread对象的isInterrupted()方法来判断该线程的中断状态。可以通过Thread对象的interrupt()方法将中断状态设置为true。<br>当一个线程处于sleep、wait、join这三种状态之一的时候，如果此时他的中断状态为true，那么它就会抛出一个InterruptedException的异常，并将中断状态重新设置为false。<br>看下面的简单的例子：<br>    public class Test1 {<br>        public static void main(String[] args) throws InterruptedException {<br>            MyThread thread=new MyThread();<br>            thread.start();<br>        }<br>    }<br>    class MyThread extends Thread {<br>        int i=1;<br>        @Override<br>        public void run() {<br>            while (true) {<br>                System.out.println(i);<br>                System.out.println(this.isInterrupted());<br>                try {<br>                    System.out.println(“我马上去sleep了”);<br>                    Thread.sleep(2000);<br>                    this.interrupt();<br>                } catch (InterruptedException e) {<br>                    System.out.println(“异常捕获了”+this.isInterrupted());<br>                    return;<br>                }<br>                i++;<br>            }<br>        }<br>    }<br>测试结果：</p>
+<pre><code><span class="number">1</span>  
+<span class="literal">false</span>  
+我马上去sleep了  
+<span class="number">2</span>  
+<span class="literal">true</span>  
+我马上去sleep了  
+异常捕获了<span class="literal">false</span>  
+</code></pre><p>可以看到，首先执行第一次while循环，在第一次循环中，睡眠2秒，然后将中断状态设置为true。当进入到第二次循环的时候，中断状态就是第一次设置的true，当它再次进入sleep的时候，马上就抛出了InterruptedException异常，然后被我们捕获了。然后中断状态又被重新自动设置为false了（从最后一条输出可以看出来）。</p>
+<p>所以，我们可以使用interrupt方法结束一个线程。具体使用如下：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test1</span> {</span>  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws InterruptedException {  
+        MyThread thread=<span class="keyword">new</span> MyThread();  
+        thread.start();  
+        Thread.sleep(<span class="number">3000</span>);  
+        thread.interrupt();  
+    }  
+}  
+
+<span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="inheritance"><span class="keyword">extends</span></span> <span class="title">Thread</span> {</span>  
+    <span class="keyword">int</span> i=<span class="number">0</span>;  
+    @Override  
+    <span class="keyword">public</span> <span class="keyword">void</span> run() {  
+        <span class="keyword">while</span> (<span class="keyword">true</span>) {  
+            System.out.println(i);  
+            <span class="keyword">try</span> {  
+                Thread.sleep(<span class="number">1000</span>);  
+            } <span class="keyword">catch</span> (InterruptedException e) {  
+                System.out.println(<span class="string">"中断异常被捕获了"</span>);  
+                <span class="keyword">return</span>;  
+            }  
+            i++;  
+        }  
+    }  
+}  
+</code></pre><p>多测试几次，会发现一般有两种执行结果：</p>
+<pre><code>0  
+1  
+2  
+中断异常被捕获了  
+</code></pre><p>或者</p>
+<pre><code>0  
+1  
+2  
+3  
+中断异常被捕获了  
+</code></pre><p>这两种结果恰恰说明了,只要一个线程的中断状态一旦为true，只要它进入sleep等状态，或者处于sleep状态，立马回抛出InterruptedException异常。<br>第一种情况，是当主线程从3秒睡眠状态醒来之后，调用了子线程的interrupt方法，此时子线程正处于sleep状态，立马抛出InterruptedException异常。<br>第一种情况，是当主线程从3秒睡眠状态醒来之后，调用了子线程的interrupt方法，此时子线程还没有处于sleep状态。然后再第3次while循环的时候，在此进入sleep状态，立马抛出InterruptedException异常。</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/线程/" class="label label-success" itemprop="url"><span itemprop="title">线程</span></a></span> | <span class="time">最近更新:<time title="2014-06-18 21:48:57"datetime="2014-06-18 21:48:57"> 6月 18 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/18/java-thread-003/#comments" class="ds-thread-count comment-link" data-thread-key="java-thread-003" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/18/java-thread-002/">java线程：创建与启动</a></h1>
+      
+        <span>发表于<time datetime="2014-06-18T08:03:00.000Z"> <a href="/2014/06/18/java-thread-002/">6月 18 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>上一篇整理了<a href="http://www.haozi520.com/2014/06/18/java-thread-001/index.html" target="_blank">《java线程：概念与原理》</a>,介绍了线程与进程的关系，这篇将整理线程的创建与启动。<br>在java中可有两种方式实现多线程，一种是继承Thread类，一种是实现Runnable接口；Thread类是在java.lang包中定义的。一个类只要继承了Thread类同时覆写了本类中的run()方法就可以实现多线程操作了，但是一个类只能继承一个父类，这是此方法的局限。</p>
+<h3 id="扩展java-lang-Thread类">扩展java.lang.Thread类</h3>
+<p>实例化线程时直接new出来，并调用start方法可以实现线程交互运行，不能直接调用run方法</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span>{</span>
+    <span class="keyword">private</span> String name;
+    <span class="keyword">public</span> <span class="title">MyThread</span>(){}
+    <span class="keyword">public</span> <span class="title">MyThread</span>(String name){
+        <span class="keyword">super</span>();
+        <span class="keyword">this</span>.name=name;
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++){
+            <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;<span class="number">1000000</span>;k++);<span class="comment">//为了能够清楚看到多线效果</span>
+            System.out.println(<span class="string">"线程开始："</span>+<span class="keyword">this</span>.name+<span class="string">"="</span>+i)
+        }
+    }
+}
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMyThread</span>{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        MyThread mA=<span class="keyword">new</span> MyThread(<span class="string">"线程A"</span>);
+        MyThread mB=<span class="keyword">new</span> MyThread(<span class="string">"线程B"</span>);
+        mA.run();
+        mB.run();
+    }
+}
+</code></pre><p>执行的结果：</p>
+<pre><code><span class="xml"><span class="tag">线程开始：线程<span class="attribute">A</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">4</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">4</span></span></span>
+</code></pre><p>我们会发现这些都是顺序执行的，并没有相互运行，说明我们的调用方法不对。JDK的文档中可以发现，一旦调用start()方法，则会通过JVM找到run()方法，下面启动start()方法<br>启动线程：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> TestMyThread{
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        MyThread mA=<span class="keyword">new</span> MyThread(<span class="string">"线程A"</span>);
+        MyThread mB=<span class="keyword">new</span> MyThread(<span class="string">"线程B"</span>);
+        mA.start();
+        mB.start();
+    }
+}
+</code></pre><p>执行的结果：</p>
+<pre><code><span class="xml"><span class="tag">线程开始：线程<span class="attribute">B</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">4</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">4</span></span></span>
+</code></pre><p>这样程序可以正常完成交互式运行。那么为啥非要使用start();方法启动多线程呢？<br>找到java.lang.Thread中的start()方法的定义，可以发现此方法中使用了private native void start0();其中native关键字表示可以调用操作系统的底层函数，因为多线程的实现需要本地操作系统的支持,那么这样的技术成为JNI技术（java Native Interface）</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">start</span>() {
+    <span class="javadoc">/**
+ * This method is not invoked for the main method thread or "system"
+ * group threads created/set up by the VM. Any new functionality added 
+ * to this method in the future may have to also be added to the VM.
+ *
+ * A zero status value corresponds to state "NEW".
+     */</span>
+    <span class="keyword">if</span> (threadStatus != <span class="number">0</span> || <span class="keyword">this</span> != me)
+        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalThreadStateException();
+    group.add(<span class="keyword">this</span>);
+    start0();
+    <span class="keyword">if</span> (stopBeforeStart) {
+        stop0(throwableFromStop);
+    }
+}
+<span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title">start0</span>();
+</code></pre><h3 id="实现java-lang-Runnable接口">实现java.lang.Runnable接口</h3>
+<p>在实际开发中一个多线程的操作很少使用Thread类，而是通过Runnable接口完成。<br>但是在使用Runnable实现类时则使用Thread的构造方法，通过Thread来启动Runnable实现多线程：</p>
+<ul>
+<li>Thread(Runnable target) </li>
+<li>Thread(Runnable target, String name) </li>
+<li>Thread(ThreadGroup group, Runnable target) </li>
+<li>Thread(ThreadGroup group, Runnable target, String name) </li>
+<li>Thread(ThreadGroup group, Runnable target, String name, long stackSize)</li>
+</ul>
+<hr>
+<p>Runnable接口如下：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">interface</span> Runnable{  
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>();  
+} 
+</code></pre><p>例子代码：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Thread</span>{</span>
+    <span class="keyword">private</span> String name;
+    <span class="keyword">public</span> <span class="title">MyThread</span>(){}
+    <span class="keyword">public</span> <span class="title">MyThread</span>(String name){
+        <span class="keyword">super</span>();
+        <span class="keyword">this</span>.name=name;
+    }
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">5</span>;i++){
+            <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;<span class="number">1000000</span>;k++);<span class="comment">//为了能够清楚看到多线效果</span>
+            System.out.println(<span class="string">"线程开始："</span>+<span class="keyword">this</span>.name+<span class="string">"="</span>+i)
+        }
+    }
+}
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestMyThread</span>{</span>
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
+        MyThread mA=<span class="keyword">new</span> MyThread(<span class="string">"线程A"</span>);
+        MyThread mB=<span class="keyword">new</span> MyThread(<span class="string">"线程B"</span>);
+        <span class="keyword">new</span> Thread(mA).start();
+        <span class="keyword">new</span> Thread(mB).start();
+    }
+}
+</code></pre><p>执行结果：</p>
+<pre><code><span class="xml"><span class="tag">线程开始：线程<span class="attribute">A</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">0</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">1</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">2</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">3</span>
+线程开始：线程<span class="attribute">A</span>=<span class="value">4</span>
+线程开始：线程<span class="attribute">B</span>=<span class="value">4</span></span></span>
+</code></pre><p>使用实现接口 Runnable 的对象创建一个线程时，启动该线程将导致在独立执行的线程中<br>调用对象的 run 方法。方法 run 的常规协定是，它可能执行任何所需的操作。</p>
+<h3 id="启动线程">启动线程</h3>
+<p>在线程的Thread对象上调用start()方法，而不是run()或者别的方法。<br>在调用start()方法之前：线程处于新状态中，新状态指有一个Thread对象，但还没有<br>一个真正的线程。</p>
+<p>在调用start()方法之后：发生了一系列复杂的事情</p>
+<ul>
+<li>启动新的执行线程（具有新的调用栈）</li>
+<li>该线程从新状态转移到可运行状态</li>
+<li>当该线程获得机会执行时，其目标run()方法将运行</li>
+</ul>
+<p>注意：对Java来说，run()方法没有任何特别之处。像main()方法一样，它只是新线程知道<br>调用的方法名称(和签名)。因此，在Runnable上或者Thread上调用run方法是合法的。但并<br>不启动新的线程。</p>
+<h3 id="两种实现方式的区别和联系">两种实现方式的区别和联系</h3>
+<p>在程序开发中只要是多线程肯定永远以实现Runnable接口为主，因为实现Runnable接口相比继承Thread类有如下好处：</p>
+<ul>
+<li>避免点继承的局限，一个类可以继承多个接口</li>
+<li>适合于资源的共享</li>
+</ul>
+<hr>
+<p>以卖票程序为例，通过Thread类完成：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span>{</span>  
+    <span class="keyword">private</span> <span class="keyword">int</span> ticket=<span class="number">10</span>;  
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){  
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++){  
+            <span class="keyword">if</span>(<span class="keyword">this</span>.ticket&gt;<span class="number">0</span>){  
+                System.out.println(<span class="string">"卖票：ticket"</span>+<span class="keyword">this</span>.ticket--);  
+            }  
+        }  
+    }  
+}
+</code></pre><p>下面通过三个线程对象，同时卖票：</p>
+<pre><code><span class="keyword">public</span> <span class="keyword">class</span> ThreadTicket {  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {  
+        MyThread mt1=<span class="keyword">new</span> MyThread();  
+        MyThread mt2=<span class="keyword">new</span> MyThread();  
+        MyThread mt3=<span class="keyword">new</span> MyThread();  
+        mt1.start();<span class="comment">//每个线程都各卖了10张，共卖了30张票  </span>
+        mt2.start();<span class="comment">//但实际只有10张票，每个线程都卖自己的票  </span>
+        mt3.start();<span class="comment">//没有达到资源共享  </span>
+    }  
+}  
+</code></pre><p>如果用Runnable就可以实现资源共享，下面看例子：</p>
+<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span>{</span>  
+    <span class="keyword">private</span> <span class="keyword">int</span> ticket=<span class="number">10</span>;  
+    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>(){  
+        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">20</span>;i++){  
+            <span class="keyword">if</span>(<span class="keyword">this</span>.ticket&gt;<span class="number">0</span>){  
+                System.out.println(<span class="string">"卖票：ticket"</span>+<span class="keyword">this</span>.ticket--);  
+            }  
+        }                 
+    }  
+}  
+<span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunnableTicket</span> {</span>  
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {  
+        MyThread mt=<span class="keyword">new</span> MyThread();  
+        <span class="keyword">new</span> Thread(mt).start();<span class="comment">//同一个mt，但是在Thread中就不可以，</span>
+        如果用同一个实例化对象mt，就会出现异常   
+        <span class="keyword">new</span> Thread(mt).start(); 
+        <span class="keyword">new</span> Thread(mt).start();  
+    }  
+}
+</code></pre><h3 id="总结">总结</h3>
+<p>实现Runnable接口比继承Thread类所具有的优势：</p>
+<ul>
+<li>适合多个相同的程序代码的线程去处理同一个资源</li>
+<li>可以避免java中的单继承的限制</li>
+<li>增加程序的健壮性，代码可以被多个线程共享，代码和数据独立。</li>
+</ul>
+<p>main方法其实也是一个线程。在java中所以的线程都是同时启动的，至于什么时候，哪个先执行，完全看谁先得到CPU的资源。<br>在java中，每次程序运行至少启动2个线程。一个是main线程，一个是垃圾收集线程。因为每当使用java命令执行一个类的时候，实际上都会启动一个JVM，每一个JVM实习在就是在操作系统中启动了一个进程。<br>主线程也有可能在子线程结束之前结束。并且子线程不受影响，不会因为主线程的结束而结束。</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/线程/" class="label label-success" itemprop="url"><span itemprop="title">线程</span></a></span> | <span class="time">最近更新:<time title="2014-06-18 21:54:05"datetime="2014-06-18 21:54:05"> 6月 18 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/18/java-thread-002/#comments" class="ds-thread-count comment-link" data-thread-key="java-thread-002" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/18/java-thread-001/">java线程：概念与原理</a></h1>
       
         <span>发表于<time datetime="2014-06-18T07:41:00.000Z"> <a href="/2014/06/18/java-thread-001/">6月 18 2014</a></time></span>      
@@ -285,188 +875,6 @@
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/15/poor-boy-raised-nutrient-rich-girl/">你对男孩穷养女孩富养有不同看法吗</a></h1>
-      
-        <span>发表于<time datetime="2014-06-15T01:04:00.000Z"> <a href="/2014/06/15/poor-boy-raised-nutrient-rich-girl/">6月 15 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>从来富贵多淑女，自古纨绔少伟男。自古以来，男孩穷养，女孩富养。这是中国人养儿育女的“金科玉律”。 穷养男孩，就是要苦其心志，劳其筋骨，这样的男孩才可以担当大任!富养女孩，就是要在物质上开阔其视野，精神上丰富其思想，这样的女孩才能独立自主、见多识广、高雅睿智、一生幸福！（<a href="http://baike.baidu.com/view/2338366.htm?fr=aladdin" target="_blank">参考百度</a>）<br><img src="http://haozi520.u.qiniudn.com/20140615093612.jpg" alt=""><br>李轶君写的《男孩穷养，女孩富养》这本书中分了好几篇幅来阐述为什么要男孩穷养女孩富养。<br>第一章阐述了男孩与女孩大脑结构的差异</p>
-<blockquote>
-<p>科学研究证明，男孩与女孩的大脑，无论是化学组织还是结构组织，先天就存在很多差异，比如，男孩大脑的发育速度明显慢于女孩大脑的发育速度。另外，男孩和女孩大脑结构上的一个明显差别是：男孩大脑的左右半球之间的联系要少于女孩的。在许多情况下，这些差异影响了男孩、女孩对环境的反应方式，以及因应压力事件的方式与记忆。</p>
-</blockquote>
-<p>第二章男孩的生长蓝图</p>
-<blockquote>
-<p>如果你有一个男孩，那么你真该好好了解他。男孩和女孩有很大不同，无论4岁、14岁还是24岁，男孩就是男孩，他们的世界根本就是另一个样子——充满挑战、争斗与危险。他们的想法、他们的做法、他们的需要以及该给他们什么，这些你都需要了解。这样你才能帮助他勾画好贯穿他生命的蓝图。</p>
-</blockquote>
-<p>第三章女孩的生长蓝图</p>
-<blockquote>
-<p>如果你有一个女孩，你一定希望她长得乖巧、可爱，生活得平安、幸福。可是，女孩的世界并不像表面看上去那么平静美丽，她们的生活中也有很多苦恼哀愁，她们的世界也时常暗流汹涌、充满危机。要想帮助你的女孩平安、健康地成长，就不能不了解她们的成长历程、知道她们需要什么，从而考虑给予她们怎样的帮助。</p>
-</blockquote>
-<p>书中用了很多篇幅来阐述来怎么培养一个了不起的儿子和怎样培养最完美的女儿不过有人持不同看法，<a href="http://www.xlxcn.net/archives/2860" target="_blank">世纪心里沙龙网</a>的<a href="http://weibo.com/chiyukai" target="_blank">迟毓凯</a>博士有以下看法：</p>
-<blockquote>
-<p>男女的不同养法根源在于社会分工，通俗点说，男人重在工作，穷养一些，让其知生活艰辛，有所担当，日后才能勤奋斗，干事业；女人重在家庭，富养一些，才能自我珍惜，自尊自爱，不过早受诱惑而堕落，最终嫁个好人家。从这个意义上说，穷养男孩，富养女孩是有一定道理的。</p>
-<p>然而，任何教育命题的成立都有其前提条件，穷养男孩，富养女孩也不是适用于任何家庭中的任何小孩。有条件的家庭富养男孩，没条件的家庭穷养女孩亦有其成功者；而男孩穷养，也易生贪财势利的小人；女孩富养，也可成眼高手低之货色。网上有一个很有意思的案例：一对龙凤胎，男孩穷养，女孩富养。结果长大后，女孩娇生惯养，谁都看不上，大学毕业在家啃老；男孩，则直接让富婆给包养了。</p>
-<p>穷养富养，要知其利弊，教育之事不能一概而论，不能按照标语口号育儿。教育孩子，因材施教才是王道。当然，做到这一点不容易，不过学校教育重点在于针对大多数，多顾及普遍性；而家庭教育之道才更应考虑根据自己孩子特点来找出应对之策，从这个意义上说，家长更难做，教育责任更重。</p>
-</blockquote>
-<p><strong>献给养育孩子的父母们</strong></p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/有知识/" itemprop="url"><span itemprop="title" >有知识</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/有文化/" class="label label-primary" itemprop="url"><span itemprop="title">有文化</span></a><a href="/tags/有知识/" class="label label-success" itemprop="url"><span itemprop="title">有知识</span></a><a href="/tags/有内涵/" class="label label-info" itemprop="url"><span itemprop="title">有内涵</span></a></span> | <span class="time">最近更新:<time title="2014-06-15 09:43:53"datetime="2014-06-15 09:43:53"> 6月 15 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/15/poor-boy-raised-nutrient-rich-girl/#comments" class="ds-thread-count comment-link" data-thread-key="poor-boy-raised-nutrient-rich-girl" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/14/java-event-driver-program/">这样写java事件驱动编程，是否可以</a></h1>
-      
-        <span>发表于<time datetime="2014-06-14T10:19:00.000Z"> <a href="/2014/06/14/java-event-driver-program/">6月 14 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>java事件驱动模型主要是在swing上体现的比较多，但是现在在JDk和软件业发展迅速的情况下，事件驱动编程的需求也越来越或不可缺。作为一直用java编程的程序员，使用事件编程是理由有的思路。<br>思路：</p>
-<ul>
-<li>定义事件</li>
-<li>定义监听器</li>
-<li>定义事件源</li>
-</ul>
-<hr>
-<h3 id="定义事件">定义事件</h3>
-<p>在JDK API中java.util.EventObject,所有事件状态对象都将从其派生的根类。<br>所有 Event 在构造时都引用了对象 “source”，在逻辑上认为该对象是最初发生有关 Event 的对象。我们定义自己的事件状态对象继承java.util.EventObject</p>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AEvent</span> <span class="keyword">extends</span> <span class="title">EventObject</span> {</span>
-    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1</span>L;
-    <span class="comment">//事件名称</span>
-    <span class="keyword">private</span> String eName;
-    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source) {
-        <span class="keyword">this</span>(source, <span class="keyword">null</span>);
-    }
-    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source, String eName) {
-        <span class="keyword">super</span>(source);
-        <span class="keyword">this</span>.eName = eName;
-    }
-    <span class="keyword">public</span> String <span class="title">getEName</span>() {
-        <span class="keyword">return</span> <span class="keyword">this</span>.eName;
-    }
-}
-</code></pre><h3 id="定义监听器">定义监听器</h3>
-<p>在JDK API中java.util.EventListener接口，JDK是这样描述的“所有事件侦听器接口必须扩展的标记接口”，我们定义一个事件监听器接口继承EventListener</p>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AListener</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">util</span>.<span class="title">EventListener</span>{</span>
-    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e);
-}
-</code></pre><h3 id="定义事件源">定义事件源</h3>
-<p>定义一个ASource，用Map来存储监听器<br>事件源：</p>
-<ul>
-<li>可以增加、删除事件</li>
-<li>可以监听事件</li>
-<li>可以触发被监听到的事件</li>
-</ul>
-<hr>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ASource</span>{</span>
-    <span class="keyword">private</span> 
-    Map&lt;String, AListener&gt; alisteners = <span class="keyword">new</span> HashMap&lt;String, AListener&gt;();
-    <span class="javadoc">/**
-    *模拟出发事件
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trigger</span>(String eName) {
-        <span class="keyword">if</span> (alisteners.containsKey(eName)) {
-            AEvent evt = <span class="keyword">new</span> AEvent(<span class="keyword">this</span>, eName);
-            <span class="comment">// 如果值改变的话,就触发事件</span>
-            fireAEvent(evt, eName);
-        }
-    }
-    <span class="javadoc">/**
-    *定义出发事件
-    */</span>
-    <span class="keyword">public</span> Map&lt;String, AListener&gt; <span class="title">getAllAListener</span>() {
-        <span class="keyword">return</span> <span class="keyword">this</span>.alisteners;
-    }
-    <span class="javadoc">/**
-    *获取事件监听器
-    */</span>
-    <span class="keyword">public</span> AListener <span class="title">getAListener</span>(String eName) {
-        <span class="keyword">return</span> alisteners.get(eName);
-    }
-    <span class="javadoc">/**
-    *添加事件
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addAListener</span>(String eName, AListener a) {
-        <span class="keyword">if</span> (eName != <span class="keyword">null</span> &amp;&amp; !<span class="string">""</span>.equals(eName.trim()) &amp;&amp; a != <span class="keyword">null</span>) {
-            alisteners.put(eName, a);
-        }
-    }
-    <span class="javadoc">/**
-    *删除监听器
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeAListener</span>(String eName) {
-        alisteners.remove(eName);
-    }
-    <span class="javadoc">/**
-    *调用监听器处理事件
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fireAEvent</span>(AEvent evt, String eName) {
-        alisteners.get(eName).performed(evt);
-    }
-}
-</code></pre><h3 id="编写测试">编写测试</h3>
-<p>编写个测试类Test</p>
-<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Test{
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
-        ASource <span class="keyword">as</span>=<span class="keyword">new</span> ASource();
-        <span class="keyword">as</span>.addAListener(<span class="string">"add"</span>,<span class="keyword">new</span> AListener(){
-            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e) {
-                System.<span class="keyword">out</span>.println(e.getEName());
-            }
-        });
-        <span class="comment">//模拟出发事件</span>
-        <span class="keyword">as</span>.trigger(<span class="string">"add"</span>);
-    }
-}
-</code></pre>
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/事件驱动/" class="label label-success" itemprop="url"><span itemprop="title">事件驱动</span></a></span> | <span class="time">最近更新:<time title="2014-06-14 21:23:36"datetime="2014-06-14 21:23:36"> 6月 14 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/14/java-event-driver-program/#comments" class="ds-thread-count comment-link" data-thread-key="java-event-driver-program" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
   <li><a class="extend prev" href="/archives/2014/">&laquo;</a></li><li><a class="page-number" href="/archives/2014/">1</a></li><li class="active"><li><span class="page-number current">2</span></li></li><li><a class="page-number" href="/archives/2014/page/3/">3</a></li><li><a class="page-number" href="/archives/2014/page/4/">4</a></li><li><a class="page-number" href="/archives/2014/page/5/">5</a></li><li><a class="page-number" href="/archives/2014/page/6/">6</a></li><li><a class="page-number" href="/archives/2014/page/7/">7</a></li><li><a class="extend next" href="/archives/2014/page/3/">&raquo;</a></li>
@@ -560,7 +968,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-02 19:12:22</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-03 14:37:40</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

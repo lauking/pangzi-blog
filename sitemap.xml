@@ -2,6 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.haozi520.com/2014/09/03/linux-nginx-global-variable/</loc>
+    <lastmod>2014-09-03T06:36:44.000Z</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://www.haozi520.com/2014/08/31/linux-nginx-setup/</loc>
+    <lastmod>2014-09-03T05:49:40.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.haozi520.com/2014/08/30/mysql-date-function/</loc>
     <lastmod>2014-09-02T11:09:17.000Z</lastmod>
   </url>
