@@ -103,6 +103,121 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/05/26/php-exec-linux-shell/">php在linux中利用exec执行shell脚本</a></h1>
+      
+        <span>发表于<time datetime="2014-05-26T07:42:12.000Z"> <a href="/2014/05/26/php-exec-linux-shell/">5月 26 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>今天刚好看到php在linux中利用exec方法执行shell脚本的blog，觉得很有意思，就想能不能写一个程序定时去检测某个服务是否还在跑，如果服务已挂则执行重启脚本。</p>
+<p>现在使用jetty容器来模拟。</p>
+<h3 id="编写重启已挂服务的shell脚本">编写重启已挂服务的shell脚本</h3>
+<pre>
+cd $1 //执行程序的目录
+ps -ef |grep start.jar |grep -v grep |cut -c 9-15 |xargs kill -s 9
+java -jar -Xmx768m -Xms512m $1/start.jar >/dev/null 2>&1 &
+</pre>
+脚本编写后放在jetty的根目录下,保存文件名为runjetty.sh,并执行以下命令使其成为可执行文件
+<pre>
+chmod 775 runjetty.sh
+</pre>
+
+<h3 id="编写php脚本">编写php脚本</h3>
+<p>新建TestServer.php文件，在&lt;?php和?&gt;中加入以下代码：</p>
+<p><pre><br>$flag=0;<br>try{<br>    $ch = curl_init();<br>    $url=”<a href="http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162" target="_blank">http://xxxx:port/pay/GetIpLocal.php?ip=117.135.139.162</a>“;<br>    curl_setopt($ch, CURLOPT_URL, $url);<br>    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);<br>    curl_setopt($ch, CURLOPT_HEADER, 0);<br>    $output = curl_exec($ch);<br>    curl_close($ch);<br>    if(empty($output)){<br>        $flag=1;<br>    }else{<br>        echo $output;<br>        if(strpos($output,”ip=117.135.139.162”)&gt;0){<br>            $flag=0;<br>        }else{<br>            $flag=1;<br>        }<br>    }<br>}catch(Exception $e){<br>    $flag=1;<br>    echo $e;<br>}<br>if($flag){<br>   $ecommand=”/data/soft/jetty/runjetty.sh /data/soft/jetty”;<br>   exec($ecommand,$output,$result);<br>   if($result!=0){<br>    exec($ecommand,$output,$result);<br>   }<br>}<br></pre></p>
+<h3 id="运行php脚本">运行php脚本</h3>
+<p>首先我们确认jetty服务是否启动<br>在console上运行</p>
+<p><pre><br>ps -ef | grep start.jar<br></pre><br>输出如下结果则说明服务是启动：<br><img src="http://haozi520.u.qiniudn.com/20140526162811.png" alt="已启动jetty服务"><br>我们修改TestServer.php文件中的url请求地址，修改成服务中没有的接口。例如<br>$url=”<a href="http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：" target="_blank">http://xxxx:port/pay/GetIpLocal2.php?ip=117.135.139.162&quot;，我们在console中继续执行：</a></p>
+<p><pre><br>php TestServer.php<br></pre><br>执行结束后，查看jetty进程号是否改变<br><img src="http://haozi520.u.qiniudn.com/20140526163403.png" alt="查看进程是否改变"><br>我们发现进程号发生了变化，说明我们的php脚本执行shell是成功的。</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/php/" itemprop="url"><span itemprop="title" >php</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/php/" class="label label-primary" itemprop="url"><span itemprop="title">php</span></a><a href="/tags/shell/" class="label label-success" itemprop="url"><span itemprop="title">shell</span></a><a href="/tags/linux/" class="label label-info" itemprop="url"><span itemprop="title">linux</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:21:03"datetime="2014-05-27 18:21:03"> 5月 27 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/26/php-exec-linux-shell/#comments" class="ds-thread-count comment-link" data-thread-key="php-exec-linux-shell" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/05/23/nodejs-for-windows-bulding/">nodejs for windows 环境搭建</a></h1>
+      
+        <span>发表于<time datetime="2014-05-23T10:06:12.000Z"> <a href="/2014/05/23/nodejs-for-windows-bulding/">5月 23 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <h3 id="下载">下载</h3>
+<p>登录nodejs.org的<a href="http://nodejs.org/" target="_blank">官网</a>可以下载到最新版本的安装包<br><img src="http://haozi520.u.qiniudn.com/20140526132719.png" alt="1.下载nodejs安装包"></p>
+<h3 id="安装并设置环境变量">安装并设置环境变量</h3>
+<p>我的电脑是32位的所以下载到的安装包是<em>node-v0.10.28-x86.msi</em>，双击<br>这个msi文件，会自动运行安装，在选在安装目录时选择自己需要的目录安装，默认安装在C:\Program Files\nodejs下面,程序安装结束后会自动设定系统环境变量PATH<br><img src="http://haozi520.u.qiniudn.com/20140526135740.png" alt="2.自动设置环境变量"></p>
+<h3 id="检查安装是否成功">检查安装是否成功</h3>
+<p>进入CDM窗口，输入node -v：</p>
+<pre>node -v</pre>
+
+<p>输出：v0.10.28,说明nodejs安装成功<br>输入npm -v，检查npm是否安装，一般都是被一起安装到nodejs目录下</p>
+<pre>npm -v</pre>
+输出：1.4.9，说明npm安装成功
+
+### 测试
+随便一个目录创建一个js文件，例如hello.js,编写如下代码
+<pre>console.log("hello,world!");</pre>
+在CMD窗口中进入hello.js文件目录，运行node hello.js
+<pre>
+>node hello.js
+ hello,world!
+ </pre>
+
+<h3 id="附带整理">附带整理</h3>
+<p>如果要安装别的模块可以在工程目录下运行：</p>
+<pre> 
+ npm install express //安装在当前目录
+ npm install express -g //安装在系统下
+</pre>
+
+
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/nodejs/" itemprop="url"><span itemprop="title" >nodejs</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nodejs/" class="label label-primary" itemprop="url"><span itemprop="title">nodejs</span></a><a href="/tags/window/" class="label label-success" itemprop="url"><span itemprop="title">window</span></a><a href="/tags/node环境/" class="label label-info" itemprop="url"><span itemprop="title">node环境</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:10:02"datetime="2014-05-27 18:10:02"> 5月 27 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/23/nodejs-for-windows-bulding/#comments" class="ds-thread-count comment-link" data-thread-key="nodejs-for-windows-bulding" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></h1>
       
         <span>发表于<time datetime="2014-05-08T02:23:12.000Z"> <a href="/2014/05/08/mysql-copy-struct-data-sql/">5月 8 2014</a></time></span>      
@@ -229,122 +344,9 @@
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2013/12/17/GOLang连接Mysql/">GOLang连接mysql</a></h1>
-      
-        <span>发表于<time datetime="2013-12-17T13:42:12.000Z"> <a href="/2013/12/17/GOLang连接Mysql/">12月 17 2013</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>昨天想着写下go连接mysql数据，以为使用<br><code>database/sql</code><br>这个包就可以连接成功，后来在cnblog上查了下，需要使用到<br><code>github.com/go-sql-driver/mysql</code><br>这个驱动包。好心人都会写明在哪怎么下载这个包，运行:<br><code>go get github.com/go-sql-driver/mysql</code><br><img src="http://haozi520.u.qiniudn.com/20131217-gogetmysql.png" alt=""><br>会下载到你的GOPATH路径的src 下</p>
-<h3 id="实例代码如下：">实例代码如下：</h3>
-<pre><code><span class="keyword">package</span> main
-<span class="keyword">import</span> (
-<span class="string">"database/sql"</span>
-<span class="string">"fmt"</span>
-_ <span class="string">"github.com/go-sql-driver/mysql"</span>
-)
-<span class="keyword">func</span> testSelect() {
-    db, err := sql.Open(<span class="string">"mysql"</span>, <span class="string">"root:111111@tcp(127.0.0.1:3333)/showme?charset=utf8"</span>)
-    <span class="keyword">if</span> err != <span class="constant">nil</span> {
-      fmt.Printf(<span class="string">"connect err"</span>)
-    }
-   rows, err1 := db.Query(<span class="string">"select userid,username from tb_user limit 0,5"</span>)
-   <span class="keyword">if</span> err1 != <span class="constant">nil</span> {
-      fmt.Println(err1.Error())
-      <span class="keyword">return</span>
-   }
-   <span class="keyword">defer</span> rows.Close()
-   fmt.Println(<span class="string">""</span>)
-   cols, _ := rows.Columns()
-   <span class="keyword">for</span> i := <span class="keyword">range</span> cols {
-      fmt.Print(cols[i])
-      fmt.Print(<span class="string">"\t"</span>)
-   }
-   fmt.Println(<span class="string">""</span>)
-   <span class="keyword">var</span> userid <span class="typename">int</span>
-   <span class="keyword">var</span> username <span class="typename">string</span>
-    <span class="keyword">for</span> rows.Next() {
-    <span class="keyword">if</span> err := rows.Scan(&amp;amp;userid, &amp;amp;username); err == <span class="constant">nil</span> {
-        fmt.Print(userid)
-        fmt.Print(<span class="string">"\t"</span>)
-        fmt.Print(username)
-        fmt.Print(<span class="string">"\t\r\n"</span>)
-    }
-}
-}
-<span class="keyword">func</span> main() {
-   testSelect()
-}
-</code></pre><p><img src="http://haozi520.u.qiniudn.com/20131217_dbtest.png" alt=""><br>总结:多看文档，多动手谢谢！</p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a><a href="/tags/mysql/" class="label label-info" itemprop="url"><span itemprop="title">mysql</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 15:31:46"datetime="2014-06-07 15:31:46"> 6月 7 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2013/12/17/GOLang连接Mysql/#comments" class="ds-thread-count comment-link" data-thread-key="GOLang连接Mysql" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2013/12/07/golang-eclipce-build-env/">eclipse下Go的开发配置</a></h1>
-      
-        <span>发表于<time datetime="2013-12-07T09:18:00.000Z"> <a href="/2013/12/07/golang-eclipce-build-env/">12月 7 2013</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <h5 id="1、进入help-&gt;Install_New_Software_在弹出框中">1、进入help-&gt;Install New Software 在弹出框中</h5>
-<h5 id="2、选择Add">2、选择Add</h5>
-<h5 id="3、在name中输入go_plugin，在location中输入：http://goclipse-googlecode-com/svn/trunk/goclipse-update-site/*，OK退出。">3、在name中输入go plugin，在location中输入：<a href="http://goclipse.googlecode.com/svn/trunk/goclipse-update-site/*，OK退出。" target="_blank">http://goclipse.googlecode.com/svn/trunk/goclipse-update-site/*，OK退出。</a></h5>
-<h5 id="4、等待一会，出现GoClipse，选择后Next">4、等待一会，出现GoClipse，选择后Next</h5>
-<h5 id="5、引导安装完成后，配置Go的preference">5、引导安装完成后，配置Go的preference</h5>
-<h5 id="6、配置完成后，就可以建立Go工程，编写go代码了">6、配置完成后，就可以建立Go工程，编写go代码了</h5>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/eclipse/" class="label label-primary" itemprop="url"><span itemprop="title">eclipse</span></a><a href="/tags/go/" class="label label-success" itemprop="url"><span itemprop="title">go</span></a></span> | <span class="time">最近更新:<time title="2014-06-13 17:54:17"datetime="2014-06-13 17:54:17"> 6月 13 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2013/12/07/golang-eclipce-build-env/#comments" class="ds-thread-count comment-link" data-thread-key="golang-eclipce-build-env" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
-  <li><a class="extend prev" href="/archives/page/6/">&laquo;</a></li><li><a class="page-number" href="/archives/">1</a></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><span class="space">&hellip;</span></li><li><a class="page-number" href="/archives/page/4/">4</a></li><li><a class="page-number" href="/archives/page/5/">5</a></li><li><a class="page-number" href="/archives/page/6/">6</a></li><li class="active"><li><span class="page-number current">7</span></li></li>
+  <li><a class="extend prev" href="/archives/page/6/">&laquo;</a></li><li><a class="page-number" href="/archives/">1</a></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><span class="space">&hellip;</span></li><li><a class="page-number" href="/archives/page/4/">4</a></li><li><a class="page-number" href="/archives/page/5/">5</a></li><li><a class="page-number" href="/archives/page/6/">6</a></li><li class="active"><li><span class="page-number current">7</span></li></li><li><a class="page-number" href="/archives/page/8/">8</a></li><li><a class="extend next" href="/archives/page/8/">&raquo;</a></li>
   <div class="clearfix"></div>
 </ul></div><!--wapper-->
        </div><!-- ID main-col END -->
@@ -435,7 +437,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-03 14:37:40</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-10 15:20:30</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

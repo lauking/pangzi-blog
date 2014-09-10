@@ -103,6 +103,137 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/10/java-c3p0-configurationl/">c3p0数据库连接池配置</a></h1>
+      
+        <span>发表于<time datetime="2014-09-10T06:23:00.000Z"> <a href="/2014/09/10/java-c3p0-configurationl/">9月 10 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>使用java操作数据库时，都会想到使用数据库连接池，而c3p0是比较早的数据库连接池库，配置好数据源你只要从其中获取数据库连接，关闭连接就可以，其中关闭连接并未真正关闭，而是等到过了最大空闲时间才会关闭。</p>
+<h3 id="官方文档">官方文档</h3>
+<p><a href="http://www.mchange.com/projects/c3p0/index.html" target="_blank">http://www.mchange.com/projects/c3p0/index.html</a><br><img src="http://haozi520.u.qiniudn.com/20140910145039.png" alt=""></p>
+<h3 id="参数说明">参数说明</h3>
+<p><strong>acquireIncrement：</strong><br>当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3<br><strong>acquireRetryAttempts：</strong><br>定义在从数据库获取新连接失败后重复尝试的次数。<br>Default: 30<br><strong>acquireRetryDelay：</strong><br>两次连接中间隔时间，单位毫秒。Default: 1000<br><strong>autoCommitOnClose：</strong><br>连接关闭时默认将所有未提交的操作回滚。Default: false<br><strong>automaticTestTable：</strong><br>c3p0将建一张名为Test的空表，并使用其自带的查询语句进行测试。如果定义了这个参数那么属性preferredTestQuery将被忽略。你不能在这张Test表上进行任何操作，它将只供c3p0测试使用。Default: null<br><strong>breakAfterAcquireFailure：</strong><br>获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试获取连接失败后该数据源将申明已断开并永久关闭。Default: false<br><strong>checkoutTimeout：</strong><br>当连接池用完时客户端调用getConnection()后等待获取新连接的时间，<br>超时后将抛出SQLException,如设为0则无限期等待。单位毫秒。Default: 0<br><strong>connectionTesterClassName：</strong><br>通过实现ConnectionTester或QueryConnectionTester的类来测试连接。类名需制定全路径。Default: com.mchange.v2.c3p0.impl.DefaultConnectionTester<br><strong>factoryClassLocation：</strong><br>指定c3p0 libraries的路径，如果（通常都是这样）<br>在本地即可获得那么无需设置，默认null即可，Default: null<br><strong>forceIgnoreUnresolvedTransactions：</strong><br>作者强烈建议不使用的一个属性<br><strong>idleConnectionTestPeriod：</strong><br>每60秒检查所有连接池中的空闲连接。Default: 0<br><strong>initialPoolSize：</strong><br>初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3<br><strong>maxIdleTime：</strong><br>最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0<br><strong>maxPoolSize：</strong><br>连接池中保留的最大连接数。Default: 15<br><strong>maxStatements：</strong><br>JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0<br><strong>maxStatementsPerConnection：</strong><br>maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。Default: 0<br><strong>numHelperThreads：</strong><br>c3p0是异步操作的，缓慢的JDBC操作通过帮助进程完成。扩展这些操作可以有效的提升性能通过多线程实现多个操作同时被执行。Default: 3<br><strong>overrideDefaultUser：</strong><br>当用户调用getConnection()时使root用户成为去获取连接<br>的用户。主要用于连接池连接非c3p0的数据源时。Default: null<br><strong>overrideDefaultPassword：</strong><br>与overrideDefaultUser参数对应使用的一个参数。<br>Default: null<br><strong>password：</strong><br>密码。Default: null<br><strong>preferredTestQuery：</strong><br>定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。select id from test where id=1 注意：<br>测试的表必须在初始数据源的时候就存在。Default: null<br><strong>propertyCycle：</strong><br>用户修改系统配置参数执行前最多等待300秒。Default: 300<br><strong>testConnectionOnCheckout：</strong><br>因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的<br>时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable<br>等方法来提升连接测试的性能。Default: false<br><strong>testConnectionOnCheckin：</strong><br>如果设为true那么在取得连接的同时将校验连接的有效性。Default: false<br><strong>user：</strong><br>用户名。Default: null<br><strong>usesTraditionalReflectiveProxies：</strong><br>早期的c3p0版本对JDBC接口采用动态反射代理。在早期版本用途广泛的情况下这个参数<br>允许用户恢复到动态反射代理以解决不稳定的故障。最新的非反射代理更快并且已经开始<br>广泛的被使用，所以这个参数未必有用。现在原先的动态反射与新的非反射代理同时受到<br>支持，但今后可能的版本可能不支持动态反射代理。Default: false</p>
+<h3 id="配置项">配置项</h3>
+<pre><code>jdbc<span class="preprocessor">.driverClass</span>=<span class="keyword">com</span><span class="preprocessor">.mysql</span><span class="preprocessor">.jdbc</span><span class="preprocessor">.Driver</span>
+jdbc<span class="preprocessor">.jdbcUrl</span> = jdbc:mysql://localhost:<span class="number">3333</span>/panghaowang
+jdbc<span class="preprocessor">.user</span> = phroot
+jdbc<span class="preprocessor">.password</span> = <span class="number">123456</span>
+jdbc<span class="preprocessor">.miniPoolSize</span> = <span class="number">2</span>
+jdbc<span class="preprocessor">.maxPoolSize</span> = <span class="number">60</span>
+jdbc<span class="preprocessor">.initialPoolSize</span> =<span class="number">2</span>
+jdbc<span class="preprocessor">.maxIdleTime</span> = <span class="number">25000</span>
+jdbc<span class="preprocessor">.acquireIncrement</span> = <span class="number">2</span>
+
+jdbc<span class="preprocessor">.acquireRetryAttempts</span> = <span class="number">30</span>
+jdbc<span class="preprocessor">.acquireRetryDelay</span> = <span class="number">1000</span>
+jdbc<span class="preprocessor">.testConnectionOnCheckin</span> = true
+jdbc<span class="preprocessor">.automaticTestTable</span> = tb_test
+jdbc<span class="preprocessor">.idleConnectionTestPeriod</span> = <span class="number">18000</span>
+jdbc<span class="preprocessor">.checkoutTimeout</span>=<span class="number">3000</span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a><a href="/tags/c3p0/" class="label label-info" itemprop="url"><span itemprop="title">c3p0</span></a><a href="/tags/数据库连接池/" class="label label-warning" itemprop="url"><span itemprop="title">数据库连接池</span></a></span> | <span class="time">最近更新:<time title="2014-09-10 15:20:15"datetime="2014-09-10 15:20:15"> 9月 10 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/10/java-c3p0-configurationl/#comments" class="ds-thread-count comment-link" data-thread-key="java-c3p0-configurationl" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/10/java-system-properties/">java获取操作系统参数</a></h1>
+      
+        <span>发表于<time datetime="2014-09-10T02:23:00.000Z"> <a href="/2014/09/10/java-system-properties/">9月 10 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>很多时候多需要获取系统的参数，在编写多线程操作时，有时需要获取机器的CPU个数，操作系统的位数，用户的当前工作目录，用户的主目录，用户的账户名称，行分隔符，路径分隔符，Java 类路径等一些操作</p>
+<h3 id="获取机器CPU个数">获取机器CPU个数</h3>
+<pre><code>Runtime<span class="preprocessor">.getRuntime</span>()<span class="preprocessor">.availableProcessors</span>()<span class="comment">;</span>
+</code></pre><h3 id="通过System-getProperties()来获取系统参数">通过System.getProperties()来获取系统参数</h3>
+<p>当你不知道java能获取哪些系统参数时你可以编写一下代码</p>
+<pre><code>import java.util.Properties;
+
+<span class="keyword">public</span> <span class="keyword">class</span> Test {
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        Properties props=System.getProperties();
+        props.list(System.<span class="keyword">out</span>);
+    }
+}
+</code></pre><p>以下对某些参数说明并打印出来</p>
+<pre><code>Properties props=System<span class="preprocessor">.getProperties</span>()<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的运行环境版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的运行环境供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vendor"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java供应商的URL："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vendor.url"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的安装路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.home"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机规范版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.specification.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机规范供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.specification.vendor"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机规范名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.specification.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机实现版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机实现供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.vendor"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机实现名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java运行时环境规范版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.specification.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java运行时环境规范供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.specification.vender"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java运行时环境规范名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.specification.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的类格式版本号："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.class.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的类路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.class.path"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"加载库时搜索的路径列表："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.library.path"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"默认的临时文件路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.io.tmpdir"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"一个或多个扩展目录的路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.ext.dirs"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"操作系统的名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"os.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"操作系统的构架："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"os.arch"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"操作系统的版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"os.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"文件分隔符："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"file.separator"</span>))<span class="comment">;   //在 unix 系统中是＂／＂</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"路径分隔符："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"path.separator"</span>))<span class="comment">;   //在 unix 系统中是＂:＂</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"行分隔符："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"line.separator"</span>))<span class="comment">;   //在 unix 系统中是＂/n＂</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"用户的账户名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"user.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"用户的主目录："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"user.home"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"用户的当前工作目录："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"user.dir"</span>))<span class="comment">;</span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-10 14:39:11"datetime="2014-09-10 14:39:11"> 9月 10 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/10/java-system-properties/#comments" class="ds-thread-count comment-link" data-thread-key="java-system-properties" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/18/java-thread-003/">java线程：生命周期和状态控制</a></h1>
       
         <span>发表于<time datetime="2014-06-18T09:44:00.000Z"> <a href="/2014/06/18/java-thread-003/">6月 18 2014</a></time></span>      
@@ -735,431 +866,11 @@
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/14/java-event-driver-program/">这样写java事件驱动编程，是否可以</a></h1>
-      
-        <span>发表于<time datetime="2014-06-14T10:19:00.000Z"> <a href="/2014/06/14/java-event-driver-program/">6月 14 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>java事件驱动模型主要是在swing上体现的比较多，但是现在在JDk和软件业发展迅速的情况下，事件驱动编程的需求也越来越或不可缺。作为一直用java编程的程序员，使用事件编程是理由有的思路。<br>思路：</p>
-<ul>
-<li>定义事件</li>
-<li>定义监听器</li>
-<li>定义事件源</li>
-</ul>
-<hr>
-<h3 id="定义事件">定义事件</h3>
-<p>在JDK API中java.util.EventObject,所有事件状态对象都将从其派生的根类。<br>所有 Event 在构造时都引用了对象 “source”，在逻辑上认为该对象是最初发生有关 Event 的对象。我们定义自己的事件状态对象继承java.util.EventObject</p>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AEvent</span> <span class="keyword">extends</span> <span class="title">EventObject</span> {</span>
-    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">1</span>L;
-    <span class="comment">//事件名称</span>
-    <span class="keyword">private</span> String eName;
-    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source) {
-        <span class="keyword">this</span>(source, <span class="keyword">null</span>);
-    }
-    <span class="keyword">public</span> <span class="title">AEvent</span>(Object source, String eName) {
-        <span class="keyword">super</span>(source);
-        <span class="keyword">this</span>.eName = eName;
-    }
-    <span class="keyword">public</span> String <span class="title">getEName</span>() {
-        <span class="keyword">return</span> <span class="keyword">this</span>.eName;
-    }
-}
-</code></pre><h3 id="定义监听器">定义监听器</h3>
-<p>在JDK API中java.util.EventListener接口，JDK是这样描述的“所有事件侦听器接口必须扩展的标记接口”，我们定义一个事件监听器接口继承EventListener</p>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AListener</span> <span class="keyword">extends</span> <span class="title">java</span>.<span class="title">util</span>.<span class="title">EventListener</span>{</span>
-    <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e);
-}
-</code></pre><h3 id="定义事件源">定义事件源</h3>
-<p>定义一个ASource，用Map来存储监听器<br>事件源：</p>
-<ul>
-<li>可以增加、删除事件</li>
-<li>可以监听事件</li>
-<li>可以触发被监听到的事件</li>
-</ul>
-<hr>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ASource</span>{</span>
-    <span class="keyword">private</span> 
-    Map&lt;String, AListener&gt; alisteners = <span class="keyword">new</span> HashMap&lt;String, AListener&gt;();
-    <span class="javadoc">/**
-    *模拟出发事件
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">trigger</span>(String eName) {
-        <span class="keyword">if</span> (alisteners.containsKey(eName)) {
-            AEvent evt = <span class="keyword">new</span> AEvent(<span class="keyword">this</span>, eName);
-            <span class="comment">// 如果值改变的话,就触发事件</span>
-            fireAEvent(evt, eName);
-        }
-    }
-    <span class="javadoc">/**
-    *定义出发事件
-    */</span>
-    <span class="keyword">public</span> Map&lt;String, AListener&gt; <span class="title">getAllAListener</span>() {
-        <span class="keyword">return</span> <span class="keyword">this</span>.alisteners;
-    }
-    <span class="javadoc">/**
-    *获取事件监听器
-    */</span>
-    <span class="keyword">public</span> AListener <span class="title">getAListener</span>(String eName) {
-        <span class="keyword">return</span> alisteners.get(eName);
-    }
-    <span class="javadoc">/**
-    *添加事件
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addAListener</span>(String eName, AListener a) {
-        <span class="keyword">if</span> (eName != <span class="keyword">null</span> &amp;&amp; !<span class="string">""</span>.equals(eName.trim()) &amp;&amp; a != <span class="keyword">null</span>) {
-            alisteners.put(eName, a);
-        }
-    }
-    <span class="javadoc">/**
-    *删除监听器
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeAListener</span>(String eName) {
-        alisteners.remove(eName);
-    }
-    <span class="javadoc">/**
-    *调用监听器处理事件
-    */</span>
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">fireAEvent</span>(AEvent evt, String eName) {
-        alisteners.get(eName).performed(evt);
-    }
-}
-</code></pre><h3 id="编写测试">编写测试</h3>
-<p>编写个测试类Test</p>
-<pre><code><span class="keyword">public</span> <span class="keyword">class</span> Test{
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args){
-        ASource <span class="keyword">as</span>=<span class="keyword">new</span> ASource();
-        <span class="keyword">as</span>.addAListener(<span class="string">"add"</span>,<span class="keyword">new</span> AListener(){
-            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">performed</span>(AEvent e) {
-                System.<span class="keyword">out</span>.println(e.getEName());
-            }
-        });
-        <span class="comment">//模拟出发事件</span>
-        <span class="keyword">as</span>.trigger(<span class="string">"add"</span>);
-    }
-}
-</code></pre>
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/事件驱动/" class="label label-success" itemprop="url"><span itemprop="title">事件驱动</span></a></span> | <span class="time">最近更新:<time title="2014-06-14 21:23:36"datetime="2014-06-14 21:23:36"> 6月 14 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/14/java-event-driver-program/#comments" class="ds-thread-count comment-link" data-thread-key="java-event-driver-program" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/13/java-write-file-in-thread/">一个句柄无效引发的思考</a></h1>
-      
-        <span>发表于<time datetime="2014-06-13T04:22:00.000Z"> <a href="/2014/06/13/java-write-file-in-thread/">6月 13 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>今天在用java多线模拟并发用户请求，想把报告写到文件中后分析，可是写完代码后总是报“java.io.IOException: 句柄无效”，可能是多线程的原因</p>
-<h3 id="有问题的代码如下">有问题的代码如下</h3>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpPressTest</span> {</span>
-    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) <span class="keyword">throws</span> Exception {
-        HttpPressTest h=<span class="keyword">new</span> HttpPressTest();
-        h.commit();
-        h.closeExe();
-    }
-    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
-        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
-        exec = Executors.newFixedThreadPool(cpu);
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>(){
-        <span class="keyword">final</span> FileOutputStream os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(
-                    <span class="string">"D:\\temp\\report.txt"</span>));
-            <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">1000000</span>; index++) {
-                <span class="keyword">final</span> <span class="keyword">int</span> NO = index;
-                Runnable run = <span class="keyword">new</span> Runnable() {
-                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
-                        <span class="keyword">try</span> {
-                            <span class="keyword">long</span> time1 = System.currentTimeMillis();
-                            URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
-                            InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(
-                                    url.openStream());
-                            <span class="keyword">long</span> time2 = System.currentTimeMillis();
-                            os.write((<span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1) + <span class="string">"ms\n"</span>)
-                                    .getBytes());
-                            os.flush();
-                            BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
-                            String str;
-                            <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
-                                System.out.println(str);
-                            }
-                            br.close();
-                            isr.close();
-                        } <span class="keyword">catch</span> (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                exec.execute(run);
-            }
-        os.flush();
-        os.close();
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
-        exec.shutdown();
-    }
-}
-</code></pre><p>这段代码看似没问题，但是你执行后就会告诉你“java.io.IOException: 句柄无效”，分析了下Runnable实例run在ExecutorService执行时是异步的，还没等到所有的Runnable执行完毕FileOutputStream就Close掉了造成IO异常。既然os放在外面会因为关闭而导致异常，那能不能放在里面呢？我测了一下</p>
-<h3 id="第一次修改">第一次修改</h3>
-<pre><code><span class="keyword">public</span> <span class="keyword">class</span> HttpPressTest {
-    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) throws Exception {
-        HttpPressTest h=<span class="keyword">new</span> HttpPressTest();
-        h.commit();
-        h.closeExe();
-    }
-    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
-        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
-        exec = Executors.newFixedThreadPool(cpu);
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>(){
-        <span class="keyword">int</span> cpu=Runtime.getRuntime().availableProcessors();
-        ExecutorService exec = Executors.newFixedThreadPool(cpu);
-            <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">100000</span>; index++) {
-                final <span class="keyword">int</span> NO = index;
-                Runnable run = <span class="keyword">new</span> Runnable() {
-                    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span>() {
-                        OutputStream os = <span class="keyword">null</span>;
-                        <span class="keyword">try</span> {
-                            os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(
-                                    <span class="string">"D:\\temp\\report.txt"</span>),<span class="keyword">true</span>);
-                            <span class="keyword">long</span> time1 = System.currentTimeMillis();
-                            URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
-                            InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(
-                                    url.openStream());
-                            <span class="keyword">long</span> time2 = System.currentTimeMillis();
-                            os.write((<span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1) + <span class="string">"ms\n"</span>)
-                                    .getBytes());
-                            os.flush();
-                            os.close();
-                            BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
-                            String str;
-                            <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
-                                System.<span class="keyword">out</span>.println(str);
-                            }
-                            br.close();
-                            isr.close();
-                        } <span class="keyword">catch</span> (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-                exec.execute(run);
-            }
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
-        exec.shutdown();
-    }
-}
-</code></pre><p>这样修改后确实没问题，但是代码里面使用的文件流一开一关造成了IO资源的浪费，可能会造成以后高并发暂用资源，影响测试准确率，有没有别的办法修改这种情况呢？</p>
-<p>多线程中有个submit方法返回Future能判断线程是否执行完毕，只要执行完毕的我们就把报告写道文件中，为完毕的等待。</p>
-<h3 id="第二次修改">第二次修改</h3>
-<pre><code><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpPressTest</span> {</span>
-    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
-    <span class="keyword">private</span> List&lt;Future&lt;String&gt;&gt; list = <span class="keyword">new</span> ArrayList&lt;Future&lt;String&gt;&gt;();
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) <span class="keyword">throws</span> Exception {
-        HttpPressTest h = <span class="keyword">new</span> HttpPressTest();
-        h.commit();
-    }
-    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
-        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
-        exec = Executors.newFixedThreadPool(cpu);
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>() {
-        <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; <span class="number">100000</span>; index++) {
-            <span class="keyword">final</span> <span class="keyword">int</span> NO = index;
-            Future&lt;String&gt; f = exec.submit(<span class="keyword">new</span> Callable&lt;String&gt;() {
-                <span class="annotation">@Override</span>
-                <span class="keyword">public</span> String <span class="title">call</span>() <span class="keyword">throws</span> Exception {
-                    <span class="keyword">try</span> {
-                        <span class="keyword">long</span> time1 = System.currentTimeMillis();
-                        URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
-                        InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(url
-                                .openStream());
-                        <span class="keyword">long</span> time2 = System.currentTimeMillis();
-                        BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
-                        String str;
-                        <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
-                            System.out.println(str);
-                        }
-                        br.close();
-                        isr.close();
-                        <span class="keyword">return</span> <span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1)
-                                + <span class="string">"ms\n"</span>;
-                    } <span class="keyword">catch</span> (Exception e) {
-                        e.printStackTrace();
-                    }
-                    <span class="keyword">return</span> <span class="keyword">null</span>;
-                }
-            });
-            list.add(f);
-        }
-        writeFile();
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeFile</span>() {
-        FileOutputStream os = <span class="keyword">null</span>;
-        <span class="keyword">try</span> {
-            os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(<span class="string">"D:\\temp\\report.txt"</span>));
-            <span class="keyword">for</span> (Future&lt;String&gt; fs : list) {
-                os.write(fs.get().getBytes());
-                os.flush();
-            }
-        } <span class="keyword">catch</span> (Exception e) {
-            e.printStackTrace();
-        } <span class="keyword">finally</span> {
-            <span class="keyword">if</span> (os != <span class="keyword">null</span>) {
-                <span class="keyword">try</span> {
-                    os.flush();
-                    os.close();
-                } <span class="keyword">catch</span> (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
-        exec.shutdown();
-    }
-}
-</code></pre><p>在刚在的例子中，writeFile()方法的实现过程中，迭代了Future的数组，如果任务还没有完成则当前线程会阻塞，如果我们希望任意字任务完成后就把其结果写到文件中，而不用依次等待每个任务完成，可以使CompletionService。生产者submit()执行的任务。使用者take()已完成的任务，并按照完成这些任务的顺序处理它们的结果。也就是调用CompletionService的take方法是，会返回按完成顺序放回任务的结果，CompletionService内部维护了一个阻塞队列BlockingQueue，如果没有任务完成，take()方法也会阻塞。修改刚才的例子使用CompletionService</p>
-<h3 id="第三次修改">第三次修改</h3>
-<pre><code><span class="keyword">public</span> <span class="keyword">class</span> HttpPressTest {
-    <span class="keyword">private</span> ExecutorService exec = <span class="keyword">null</span>;
-    <span class="keyword">private</span> <span class="keyword">int</span> MAX = <span class="number">1000000</span>;
-    <span class="keyword">private</span> ExecutorCompletionService&lt;String&gt; completionService = <span class="keyword">null</span>;
-    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) throws Exception {
-        HttpPressTest h = <span class="keyword">new</span> HttpPressTest();
-        h.commit();
-        h.closeExe();
-    }
-    <span class="keyword">public</span> <span class="keyword">class</span> InnerPressTest implements Callable&lt;String&gt; {
-        <span class="keyword">private</span> <span class="keyword">int</span> NO;
-        <span class="keyword">public</span> <span class="title">InnerPressTest</span>(<span class="keyword">int</span> index) {
-            NO = index;
-        }
-        @Override
-        <span class="keyword">public</span> String <span class="title">call</span>() throws Exception {
-            <span class="keyword">try</span> {
-                <span class="keyword">long</span> time1 = System.currentTimeMillis();
-                URL url = <span class="keyword">new</span> URL(<span class="string">"http://127.0.0.1:8080/hello"</span>);
-                InputStreamReader isr = <span class="keyword">new</span> InputStreamReader(url.openStream());
-                <span class="keyword">long</span> time2 = System.currentTimeMillis();
-                BufferedReader br = <span class="keyword">new</span> BufferedReader(isr);
-                String str;
-                <span class="keyword">while</span> ((str = br.readLine()) != <span class="keyword">null</span>) {
-                    System.<span class="keyword">out</span>.println(str);
-                }
-                br.close();
-                isr.close();
-                <span class="keyword">return</span> <span class="string">"Thread "</span> + NO + <span class="string">" time:"</span> + (time2 - time1) + <span class="string">"ms\n"</span>;
-            } <span class="keyword">catch</span> (Exception e) {
-                e.printStackTrace();
-            }
-            <span class="keyword">return</span> <span class="keyword">null</span>;
-        }
-    }
-    <span class="keyword">public</span> <span class="title">HttpPressTest</span>() {
-        <span class="keyword">int</span> cpu = Runtime.getRuntime().availableProcessors();
-        exec = Executors.newFixedThreadPool(cpu);
-        completionService = <span class="keyword">new</span> ExecutorCompletionService&lt;String&gt;(exec);
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span>() {
-        <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; MAX; index++) {
-            InnerPressTest innerPressTest = <span class="keyword">new</span> InnerPressTest(index);
-            <span class="keyword">if</span> (!exec.isShutdown()) {
-                completionService.submit(innerPressTest);
-            }
-        }
-        writeFile();
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">writeFile</span>() {
-        FileOutputStream os = <span class="keyword">null</span>;
-        <span class="keyword">try</span> {
-            os = <span class="keyword">new</span> FileOutputStream(<span class="keyword">new</span> File(<span class="string">"D:\\temp\\report.txt"</span>));
-            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; MAX; i++) {
-                os.write(completionService.take().<span class="keyword">get</span>().getBytes());
-                os.flush();
-            }
-        } <span class="keyword">catch</span> (Exception e) {
-            e.printStackTrace();
-        } <span class="keyword">finally</span> {
-            <span class="keyword">if</span> (os != <span class="keyword">null</span>) {
-                <span class="keyword">try</span> {
-                    os.flush();
-                    os.close();
-                } <span class="keyword">catch</span> (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title">closeExe</span>() {
-        exec.shutdown();
-    }
-}
-</code></pre><h3 id="总结">总结</h3>
-<p>多线程是好用，但是要理解其中的原理，整理下多线程特性</p>
-<h4 id="创建线程池">创建线程池</h4>
-<p>Executors类，提供了一系列工厂方法用于创先线程池，返回的线程池都实现了ExecutorService接口。</p>
-<ul>
-<li>public static ExecutorService newFixedThreadPool(int nThreads) public static - ExecutorService newFixedThreadPool(int nThreads) 创建固定数目线程的线程池。</li>
-<li>public static ExecutorService newCachedThreadPool() 创建一个可缓存的线程池，调用execute将重用以前构造的线程（如果线程可用）。如果现有线程没有可用的，则创建一个新线程并添加到池中。终止并从缓存中移除那些已有 60 秒钟未被使用的线程。</li>
-<li>public static ExecutorService newSingleThreadExecutor()创建一个单线程化的<br>Executor。</li>
-<li>public static ScheduledExecutorService newScheduledThreadPool(int corePoolSize)创建一个支持定时及周期性的任务执行的线程池，多数情况下可用来</li>
-<li>替代Timer类。</li>
-</ul>
-<h4 id="ExecutorService与生命周期">ExecutorService与生命周期</h4>
-<p>ExecutorService扩展了Executor并添加了一些生命周期管理的方法。一个Executor的生命周期有三种状态，运行，关闭，终止。Executor创建时处于运行状态。当调用ExecutorService.shutdown()后，处于关闭状态，isShutdown()方法返回true。这时，不应该再想Executor中添加任务，所有已添加的任务执行完毕后，Executor处于终止状态，isTerminated()返回true。如果Executor处于关闭状态，往Executor提交任务会抛出unchecked exception RejectedExecutionException。</p>
-<h4 id="使用Callable，Future返回结果">使用Callable，Future返回结果</h4>
-<p>Future<V>代表一个异步执行的操作，通过get()方法可以获得操作的结果，如果异步操作<br>还没有完成，则get()会使当前线程阻塞。FutureTask<V>实现了Future<V>和Runable<V>。<br>Callable代表一个有返回值得操作。<br>ExecutoreService提供了submit()方法，传递一个Callable，或Runnable，返回Future。如果Executor后台线程池还没有完成Callable的执行，这调用返回Future对象的get()方法，会阻塞直到执行完成</p>
-<h4 id="CompletionService">CompletionService</h4>
-<p>如果我们希望任意任务完成后就把其结果处理掉，而不用依次等待每个任务完成，可以使CompletionService。生产者submit()执行的任务。使用者take()已完成的任务，并按照完成这些任务的顺序处理它们的结果。也就是调用CompletionService的take方法是，会返回按完成顺序放回任务的结果，CompletionService内部维护了一个阻塞队列BlockingQueue，如果没有任务完成，take()方法也会阻塞</p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/线程/" class="label label-success" itemprop="url"><span itemprop="title">线程</span></a><a href="/tags/文件/" class="label label-info" itemprop="url"><span itemprop="title">文件</span></a><a href="/tags/句柄无效/" class="label label-warning" itemprop="url"><span itemprop="title">句柄无效</span></a></span> | <span class="time">最近更新:<time title="2014-06-13 14:36:50"datetime="2014-06-13 14:36:50"> 6月 13 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/13/java-write-file-in-thread/#comments" class="ds-thread-count comment-link" data-thread-key="java-write-file-in-thread" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article></div><!--wapper-->
+<ul id="pagination" class="pagination pagination-lg">
+  <li class="active"><li><span class="page-number current">1</span></li></li><li><a class="page-number" href="/tags/java/page/2/">2</a></li><li><a class="extend next" href="/tags/java/page/2/">&raquo;</a></li>
+  <div class="clearfix"></div>
+</ul></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_search" class="widget panel panel-primary">
@@ -1248,7 +959,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-03 14:37:41</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-10 15:20:31</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

@@ -103,6 +103,137 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/10/java-c3p0-configurationl/">c3p0数据库连接池配置</a></h1>
+      
+        <span>发表于<time datetime="2014-09-10T06:23:00.000Z"> <a href="/2014/09/10/java-c3p0-configurationl/">9月 10 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>使用java操作数据库时，都会想到使用数据库连接池，而c3p0是比较早的数据库连接池库，配置好数据源你只要从其中获取数据库连接，关闭连接就可以，其中关闭连接并未真正关闭，而是等到过了最大空闲时间才会关闭。</p>
+<h3 id="官方文档">官方文档</h3>
+<p><a href="http://www.mchange.com/projects/c3p0/index.html" target="_blank">http://www.mchange.com/projects/c3p0/index.html</a><br><img src="http://haozi520.u.qiniudn.com/20140910145039.png" alt=""></p>
+<h3 id="参数说明">参数说明</h3>
+<p><strong>acquireIncrement：</strong><br>当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3<br><strong>acquireRetryAttempts：</strong><br>定义在从数据库获取新连接失败后重复尝试的次数。<br>Default: 30<br><strong>acquireRetryDelay：</strong><br>两次连接中间隔时间，单位毫秒。Default: 1000<br><strong>autoCommitOnClose：</strong><br>连接关闭时默认将所有未提交的操作回滚。Default: false<br><strong>automaticTestTable：</strong><br>c3p0将建一张名为Test的空表，并使用其自带的查询语句进行测试。如果定义了这个参数那么属性preferredTestQuery将被忽略。你不能在这张Test表上进行任何操作，它将只供c3p0测试使用。Default: null<br><strong>breakAfterAcquireFailure：</strong><br>获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试获取连接失败后该数据源将申明已断开并永久关闭。Default: false<br><strong>checkoutTimeout：</strong><br>当连接池用完时客户端调用getConnection()后等待获取新连接的时间，<br>超时后将抛出SQLException,如设为0则无限期等待。单位毫秒。Default: 0<br><strong>connectionTesterClassName：</strong><br>通过实现ConnectionTester或QueryConnectionTester的类来测试连接。类名需制定全路径。Default: com.mchange.v2.c3p0.impl.DefaultConnectionTester<br><strong>factoryClassLocation：</strong><br>指定c3p0 libraries的路径，如果（通常都是这样）<br>在本地即可获得那么无需设置，默认null即可，Default: null<br><strong>forceIgnoreUnresolvedTransactions：</strong><br>作者强烈建议不使用的一个属性<br><strong>idleConnectionTestPeriod：</strong><br>每60秒检查所有连接池中的空闲连接。Default: 0<br><strong>initialPoolSize：</strong><br>初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3<br><strong>maxIdleTime：</strong><br>最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0<br><strong>maxPoolSize：</strong><br>连接池中保留的最大连接数。Default: 15<br><strong>maxStatements：</strong><br>JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0<br><strong>maxStatementsPerConnection：</strong><br>maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。Default: 0<br><strong>numHelperThreads：</strong><br>c3p0是异步操作的，缓慢的JDBC操作通过帮助进程完成。扩展这些操作可以有效的提升性能通过多线程实现多个操作同时被执行。Default: 3<br><strong>overrideDefaultUser：</strong><br>当用户调用getConnection()时使root用户成为去获取连接<br>的用户。主要用于连接池连接非c3p0的数据源时。Default: null<br><strong>overrideDefaultPassword：</strong><br>与overrideDefaultUser参数对应使用的一个参数。<br>Default: null<br><strong>password：</strong><br>密码。Default: null<br><strong>preferredTestQuery：</strong><br>定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。select id from test where id=1 注意：<br>测试的表必须在初始数据源的时候就存在。Default: null<br><strong>propertyCycle：</strong><br>用户修改系统配置参数执行前最多等待300秒。Default: 300<br><strong>testConnectionOnCheckout：</strong><br>因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的<br>时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable<br>等方法来提升连接测试的性能。Default: false<br><strong>testConnectionOnCheckin：</strong><br>如果设为true那么在取得连接的同时将校验连接的有效性。Default: false<br><strong>user：</strong><br>用户名。Default: null<br><strong>usesTraditionalReflectiveProxies：</strong><br>早期的c3p0版本对JDBC接口采用动态反射代理。在早期版本用途广泛的情况下这个参数<br>允许用户恢复到动态反射代理以解决不稳定的故障。最新的非反射代理更快并且已经开始<br>广泛的被使用，所以这个参数未必有用。现在原先的动态反射与新的非反射代理同时受到<br>支持，但今后可能的版本可能不支持动态反射代理。Default: false</p>
+<h3 id="配置项">配置项</h3>
+<pre><code>jdbc<span class="preprocessor">.driverClass</span>=<span class="keyword">com</span><span class="preprocessor">.mysql</span><span class="preprocessor">.jdbc</span><span class="preprocessor">.Driver</span>
+jdbc<span class="preprocessor">.jdbcUrl</span> = jdbc:mysql://localhost:<span class="number">3333</span>/panghaowang
+jdbc<span class="preprocessor">.user</span> = phroot
+jdbc<span class="preprocessor">.password</span> = <span class="number">123456</span>
+jdbc<span class="preprocessor">.miniPoolSize</span> = <span class="number">2</span>
+jdbc<span class="preprocessor">.maxPoolSize</span> = <span class="number">60</span>
+jdbc<span class="preprocessor">.initialPoolSize</span> =<span class="number">2</span>
+jdbc<span class="preprocessor">.maxIdleTime</span> = <span class="number">25000</span>
+jdbc<span class="preprocessor">.acquireIncrement</span> = <span class="number">2</span>
+
+jdbc<span class="preprocessor">.acquireRetryAttempts</span> = <span class="number">30</span>
+jdbc<span class="preprocessor">.acquireRetryDelay</span> = <span class="number">1000</span>
+jdbc<span class="preprocessor">.testConnectionOnCheckin</span> = true
+jdbc<span class="preprocessor">.automaticTestTable</span> = tb_test
+jdbc<span class="preprocessor">.idleConnectionTestPeriod</span> = <span class="number">18000</span>
+jdbc<span class="preprocessor">.checkoutTimeout</span>=<span class="number">3000</span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a><a href="/tags/c3p0/" class="label label-info" itemprop="url"><span itemprop="title">c3p0</span></a><a href="/tags/数据库连接池/" class="label label-warning" itemprop="url"><span itemprop="title">数据库连接池</span></a></span> | <span class="time">最近更新:<time title="2014-09-10 15:20:15"datetime="2014-09-10 15:20:15"> 9月 10 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/10/java-c3p0-configurationl/#comments" class="ds-thread-count comment-link" data-thread-key="java-c3p0-configurationl" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/10/java-system-properties/">java获取操作系统参数</a></h1>
+      
+        <span>发表于<time datetime="2014-09-10T02:23:00.000Z"> <a href="/2014/09/10/java-system-properties/">9月 10 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>很多时候多需要获取系统的参数，在编写多线程操作时，有时需要获取机器的CPU个数，操作系统的位数，用户的当前工作目录，用户的主目录，用户的账户名称，行分隔符，路径分隔符，Java 类路径等一些操作</p>
+<h3 id="获取机器CPU个数">获取机器CPU个数</h3>
+<pre><code>Runtime<span class="preprocessor">.getRuntime</span>()<span class="preprocessor">.availableProcessors</span>()<span class="comment">;</span>
+</code></pre><h3 id="通过System-getProperties()来获取系统参数">通过System.getProperties()来获取系统参数</h3>
+<p>当你不知道java能获取哪些系统参数时你可以编写一下代码</p>
+<pre><code>import java.util.Properties;
+
+<span class="keyword">public</span> <span class="keyword">class</span> Test {
+
+    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(String[] args) {
+        Properties props=System.getProperties();
+        props.list(System.<span class="keyword">out</span>);
+    }
+}
+</code></pre><p>以下对某些参数说明并打印出来</p>
+<pre><code>Properties props=System<span class="preprocessor">.getProperties</span>()<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的运行环境版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的运行环境供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vendor"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java供应商的URL："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vendor.url"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的安装路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.home"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机规范版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.specification.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机规范供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.specification.vendor"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机规范名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.specification.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机实现版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机实现供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.vendor"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的虚拟机实现名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.vm.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java运行时环境规范版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.specification.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java运行时环境规范供应商："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.specification.vender"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java运行时环境规范名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.specification.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的类格式版本号："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.class.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"Java的类路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.class.path"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"加载库时搜索的路径列表："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.library.path"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"默认的临时文件路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.io.tmpdir"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"一个或多个扩展目录的路径："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"java.ext.dirs"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"操作系统的名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"os.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"操作系统的构架："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"os.arch"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"操作系统的版本："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"os.version"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"文件分隔符："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"file.separator"</span>))<span class="comment">;   //在 unix 系统中是＂／＂</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"路径分隔符："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"path.separator"</span>))<span class="comment">;   //在 unix 系统中是＂:＂</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"行分隔符："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"line.separator"</span>))<span class="comment">;   //在 unix 系统中是＂/n＂</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"用户的账户名称："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"user.name"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"用户的主目录："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"user.home"</span>))<span class="comment">;</span>
+System<span class="preprocessor">.out</span><span class="preprocessor">.println</span>(<span class="string">"用户的当前工作目录："</span>+props<span class="preprocessor">.getProperty</span>(<span class="string">"user.dir"</span>))<span class="comment">;</span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-10 14:39:11"datetime="2014-09-10 14:39:11"> 9月 10 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/10/java-system-properties/#comments" class="ds-thread-count comment-link" data-thread-key="java-system-properties" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/09/03/linux-nginx-global-variable/">Nginx全局变量含义整理</a></h1>
       
         <span>发表于<time datetime="2014-09-03T02:23:00.000Z"> <a href="/2014/09/03/linux-nginx-global-variable/">9月 3 2014</a></time></span>      
@@ -299,7 +430,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-03 14:37:41</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-10 15:20:31</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
