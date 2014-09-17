@@ -103,6 +103,46 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">用nodejs对数据进行加密</a></h1>
+      
+        <span>发表于<time datetime="2014-05-27T10:18:12.000Z"> <a href="/2014/05/27/nodejs-Crypto-for-DES-MD5/">5月 27 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>在使用nodejs加解密的时候 有时候不知道有没有自己要用的加密方式<br>使用如下代码<br>require(‘crypto’).getHashes()<br>可以知道支持的那些哈希算法<br>或者<br> require(‘crypto’).getCiphers()<br>可以知道支持的那些非哈希算法</p>
+<h3 id="MD5加密算法使用">MD5加密算法使用</h3>
+<p>代码如下</p>
+<p><pre><br>var  MD5=function (data) {<br>   var _encrymd5 = require(‘crypto’).createHash(‘md5’);<br>   _encrymd5.update(data);<br>   return _encrymd5.digest(‘hex’);<br>}<br></pre><br>因为md5是哈希算法 ,一般哈希算法都是不可逆的吧<br>-用CreateHash创建一个对象<br>-用update来加密<br>-用digest来输出结果<br>-参数是输出的编码格式</p>
+<h3 id="DES加解密算法使用">DES加解密算法使用</h3>
+<p>因为DES不是哈希所以加密用createCipheriv解密用createDecipheriv的方法<br>代码如下：</p>
+<p><pre><br> var cipheriv = function (en, code, data) {<br>      var buf1 = en.update(data, code), buf2 = en.final();<br>      var r = new Buffer(buf1.length + buf2.length);<br>      buf1.copy(r); buf2.copy(r, buf1.length);<br>      return r;<br>};<br>var  EncryptDES=function (data, key, vi) {<br>      return data = cipheriv(_crypto.createCipheriv(‘des’, key, vi), ‘utf8’, data).toString(‘base64’);<br>};<br>var DecryptDES: function (data, key, vi) {<br>     return cipheriv(_crypto.createDecipheriv(‘des’, key, vi), ‘base64’, data) .toString(‘utf8’);<br>};<br></pre><br>因为都有加解密来填充和输出串,所以写一个公共的方法<br>-data是加解密的数据<br>-key是密钥<br>-vi是密钥向量<br>-EncryptDES是加密<br>-DecryptDES是解密</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/nodejs/" itemprop="url"><span itemprop="title" >nodejs</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nodejs/" class="label label-primary" itemprop="url"><span itemprop="title">nodejs</span></a><a href="/tags/md5/" class="label label-success" itemprop="url"><span itemprop="title">md5</span></a><a href="/tags/des/" class="label label-info" itemprop="url"><span itemprop="title">des</span></a><a href="/tags/加密/" class="label label-warning" itemprop="url"><span itemprop="title">加密</span></a><a href="/tags/解密/" class="label label-primary" itemprop="url"><span itemprop="title">解密</span></a></span> | <span class="time">最近更新:<time title="2014-05-27 18:20:19"datetime="2014-05-27 18:20:19"> 5月 27 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/27/nodejs-Crypto-for-DES-MD5/#comments" class="ds-thread-count comment-link" data-thread-key="nodejs-Crypto-for-DES-MD5" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/05/26/php-exec-linux-shell/">php在linux中利用exec执行shell脚本</a></h1>
       
         <span>发表于<time datetime="2014-05-26T07:42:12.000Z"> <a href="/2014/05/26/php-exec-linux-shell/">5月 26 2014</a></time></span>      
@@ -310,40 +350,6 @@ chmod 775 runjetty.sh
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/02/26/only-come-from-love/">只源于：爱</a></h1>
-      
-        <span>发表于<time datetime="2014-02-26T11:51:12.000Z"> <a href="/2014/02/26/only-come-from-love/">2月 26 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>一个男人，最大的骄傲，是有一个女人在深夜里，无论多晚都会等候你、牵挂你。<br>    一个女人，最大的骄傲，是有一个男人在忙碌完，无论多晚多累都会想着回家，因为他知道，有个傻丫头在牵挂着、等着他。 一个家，两个人，需要的是包容、理解、鼓励、珍惜。<br>    这一切的一切，只源于：爱。<br>    所以，男人怕老婆的家庭都很容易富裕。<br>    所谓＂怕＂不是畏惧，是珍惜、疼爱、尊重和舍不得她受委屈。<br>这里奉上大爱图<br><img src="http://haozi520.u.qiniudn.com/20140226194703.jpg" alt="只源于爱"></p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/体悟生活/" itemprop="url"><span itemprop="title" >体悟生活</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/生活/" class="label label-primary" itemprop="url"><span itemprop="title">生活</span></a></span> | <span class="time">最近更新:<time title="2014-05-28 17:12:36"datetime="2014-05-28 17:12:36"> 5月 28 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/02/26/only-come-from-love/#comments" class="ds-thread-count comment-link" data-thread-key="only-come-from-love" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
   <li><a class="extend prev" href="/archives/page/6/">&laquo;</a></li><li><a class="page-number" href="/archives/">1</a></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><span class="space">&hellip;</span></li><li><a class="page-number" href="/archives/page/4/">4</a></li><li><a class="page-number" href="/archives/page/5/">5</a></li><li><a class="page-number" href="/archives/page/6/">6</a></li><li class="active"><li><span class="page-number current">7</span></li></li><li><a class="page-number" href="/archives/page/8/">8</a></li><li><a class="extend next" href="/archives/page/8/">&raquo;</a></li>
@@ -437,7 +443,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-10 15:20:30</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-17 16:20:42</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

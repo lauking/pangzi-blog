@@ -103,6 +103,134 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/17/linux-kernel-core-paramater/">高可用性linux系统内核参数修改</a></h1>
+      
+        <span>发表于<time datetime="2014-09-17T06:23:00.000Z"> <a href="/2014/09/17/linux-kernel-core-paramater/">9月 17 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>linux系统在做高并发处理是都需要最linux的内核参数和网络参数进行修改，主要是调整文件打开数据、套接字缓存、应用程序打开端口范围和资源使用等等，主要是对/etc/sysctl.conf和/etc/security/limits.conf进行修改</p>
+<h3 id="我的内核配置">我的内核配置</h3>
+<h1 id="/etc/sysctl-conf">/etc/sysctl.conf</h1>
+<pre><code>kernel<span class="preprocessor">.sysrq</span> = <span class="number">0</span>
+kernel<span class="preprocessor">.core</span>_uses_pid = <span class="number">1</span>
+net<span class="preprocessor">.bridge</span><span class="preprocessor">.bridge</span>-nf-<span class="keyword">call</span>-ip6tables = <span class="number">0</span>
+net<span class="preprocessor">.bridge</span><span class="preprocessor">.bridge</span>-nf-<span class="keyword">call</span>-iptables = <span class="number">0</span>
+net<span class="preprocessor">.bridge</span><span class="preprocessor">.bridge</span>-nf-<span class="keyword">call</span>-arptables = <span class="number">0</span>
+kernel<span class="preprocessor">.msgmnb</span> = <span class="number">65536</span>
+kernel<span class="preprocessor">.msgmax</span> = <span class="number">65536</span>
+kernel<span class="preprocessor">.shmmax</span> = <span class="number">68719476736</span>
+kernel<span class="preprocessor">.shmall</span> = <span class="number">4294967296</span>
+kernel<span class="preprocessor">.sem</span> = <span class="number">250</span> <span class="number">32000</span> <span class="number">100</span> <span class="number">128</span>
+fs<span class="preprocessor">.file</span>-max = <span class="number">1048576</span>
+fs<span class="preprocessor">.aio</span>-max-nr = <span class="number">1048576</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.netdev</span>_max_backlog = <span class="number">32768</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.somaxconn</span> = <span class="number">32768</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_default = <span class="number">8388608</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_default = <span class="number">8388608</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_max = <span class="number">16777216</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_max = <span class="number">16777216</span>
+//网络配置
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_syncookies = <span class="number">1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_max_syn_backlog = <span class="number">65536</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.ip</span>_forward = <span class="number">0</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.conf</span><span class="preprocessor">.default</span><span class="preprocessor">.rp</span>_filter = <span class="number">1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.conf</span><span class="preprocessor">.default</span><span class="preprocessor">.accept</span>_source_route = <span class="number">0</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_timestamps = <span class="number">0</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_synack_retries = <span class="number">2</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_syn_retries = <span class="number">2</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_tw_recycle = <span class="number">1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_tw_reuse = <span class="number">1</span>
+<span class="preprocessor">#net.ipv4.tcp_tw_len = 1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_mem = <span class="number">786432</span> <span class="number">2097152</span> <span class="number">3145728</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_rmem = <span class="number">4096</span> <span class="number">4096</span> <span class="number">16777216</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_wmem = <span class="number">4096</span> <span class="number">4096</span> <span class="number">16777216</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_max_orphans = <span class="number">3276800</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_fin_timeout = <span class="number">30</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_keeplive_time= <span class="number">1200</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.ip</span>_local_port_range = <span class="number">1024</span> <span class="number">65535</span>
+</code></pre><h1 id="/ect/security/limits-conf">/ect/security/limits.conf</h1>
+<pre><code><span class="bullet">* </span>soft nofile 1048576
+<span class="bullet">* </span>hard nofile 1048576
+</code></pre><h3 id="内核参数说明">内核参数说明</h3>
+<pre><code>kernel<span class="preprocessor">.shmall</span> = <span class="number">4294967296</span> <span class="preprocessor">#可以使用的共享内存的总量。</span>
+kernel<span class="preprocessor">.shmmax</span> = <span class="number">68719476736</span> <span class="preprocessor">#最大共享内存段大小。</span>
+kernel<span class="preprocessor">.shmmni</span> = <span class="number">4096</span> <span class="preprocessor"># 整个系统共享内存段的最大数目。</span>
+kernel<span class="preprocessor">.sem</span> = <span class="number">250</span> <span class="number">32000</span> <span class="number">100</span> <span class="number">128</span> <span class="preprocessor"># 每个信号对象集的最大信号对象数；系统范围内最大信号对象数；每个信号对象支持的最大操作数；系统范围内最大信号对象集数。</span>
+fs<span class="preprocessor">.file</span>-max = <span class="number">1048576</span> <span class="preprocessor"># 系统中所允许的文件句柄最大数目。</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_default = <span class="number">8388608</span> <span class="preprocessor"># 套接字接收缓冲区大小的缺省值</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_max = <span class="number">16777216</span> <span class="preprocessor"># 套接字接收缓冲区大小的最大值</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_default = <span class="number">8388608</span> <span class="preprocessor"># 套接字发送缓冲区大小的缺省值</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_max = <span class="number">16777216</span> <span class="preprocessor"># 套接字发送缓冲区大小的最大值</span>
+fs<span class="preprocessor">.aio</span>-max-nr = <span class="number">1048576</span> 文件系统最大异步io
+</code></pre><p><strong>这里，对每个参数值做个简要的解释和说明</strong></p>
+<ul>
+<li>kernel.shmmax：表示单个共享内存段的最大值，以字节为单位，缺省为32M,此值一般为物理内存的一半，不过大一点也没关系，这里设定的为4GB，即”4294967295/1024/1024/1024=4G”。</li>
+<li>kernel.shmmni：表示单个共享内存段的最小值，一般为4kB，即4096bit。</li>
+<li>kernel.shmall：表示可用共享内存的总量，单位是页，在32位系统上一页等于4kB，也就是4096字节。</li>
+<li>kernel.sem：表示设置的信号量，这4个参数内容大小固定。</li>
+<li>fs.file-max：表示文件句柄的最大数量,文件句柄表示在Linux系统中可以打开的<br>文件数量。</li>
+<li>net.core.rmem_default：表示接收套接字缓冲区大小的缺省值（以字节为单位）。</li>
+<li>net.core.rmem_max ：表示接收套接字缓冲区大小的最大值（以字节为单位）</li>
+<li>net.core.wmem_default：表示发送套接字缓冲区大小的缺省值（以字节为单位）。</li>
+<li>net.core.wmem_max：表示发送套接字缓冲区大小的最大值（以字节为单位）。</li>
+</ul>
+<h3 id="高负载系统，网络参数调整">高负载系统，网络参数调整</h3>
+<p><strong>net.ipv4.tcp_syncookies = 1</strong><br>表示开启SYN Cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；<br><strong>net.ipv4.tcp_tw_reuse = 1</strong><br>表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；<br><strong>net.ipv4.tcp_tw_recycle = 1</strong><br>表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。<br><strong>net.ipv4.tcp_fin_timeout = 30</strong><br>表示如果套接字由本端要求关闭，这个参数决定了它保持在FIN-WAIT-2状态的时间。<br><strong>net.ipv4.tcp_keepalive_time = 1200</strong><br>表示当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时，改为20分钟。<br><strong>net.ipv4.ip_local_port_range = 1024 65000</strong><br>表示用于向外连接的端口范围。缺省情况下很小：32768到61000，改为1024到65000。<br><strong>net.ipv4.tcp_max_syn_backlog = 8192</strong><br>表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数。 </p>
+<p><strong>如果高负载系统使用了netfilter/iptables，调整以下参数</strong><br><strong>net.ipv4.ip_conntrack_max = 655360</strong><br>在内核内存中netfilter可以同时处理的“任务”（连接跟踪条目）<br><strong>net.ipv4.netfilter.ip_conntrack_tcp_timeout_established = 180</strong><br>跟踪的连接超时结束时间 </p>
+<h3 id="资源使用参数调整">资源使用参数调整</h3>
+<p>为了限制用户对资源的使用，需要对/etc/security/limits.conf文件进行修改，<br>imits.conf的格式如下：</p>
+<pre><code>domain       <span class="class"><span class="keyword">type</span>    <span class="title">item</span>      <span class="title">value</span></span>
+</code></pre><p><strong>domain：</strong>设置需要被限制的用户名，组名前面加@和用户名区别。也可以用通配符<em>来做所有用户的限制<br><strong>type：</strong>有 soft，hard 和 -，soft 指的是当前系统生效的设置值。hard 表明系统中<br>所能设定的最大值。soft的限制不能比hard限制高。用 <strong>-</strong> 就表明同时设置了soft和 hard的值。<br><em>*item：</em></em></p>
+<ul>
+<li>core 限制内核文件的大小</li>
+<li>date 最大数据大小</li>
+<li>fsize 最大文件大小</li>
+<li>memlock 最大锁定内存地址空间</li>
+<li>nofile 打开文件的最大数目</li>
+<li>rss 最大持久设置大小</li>
+<li>stack 最大栈大小</li>
+<li>cpu 以分钟为单位的最多 CPU 时间</li>
+<li>noproc 进程的最大数目</li>
+<li>as 地址空间限制</li>
+<li>maxlogins 此用户允许登录的最大数目</li>
+<li>priority 用户优先运行的进程</li>
+<li>locks 用户拥文件锁的数量</li>
+<li>sigpending 等待信号的大小</li>
+<li>msgqueue POSIX 信息队列的内存使用量</li>
+<li>nice 最好优先提升值： [-20, 19]</li>
+<li>rtprio 实时优先级</li>
+</ul>
+<p><strong>value</strong>:都是数字<br>例如：</p>
+<pre><code> * <span class="keyword">soft</span> nofile <span class="number">1048576</span>
+ * hard nofile <span class="number">1048576</span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/linux内核参数/" class="label label-success" itemprop="url"><span itemprop="title">linux内核参数</span></a><a href="/tags/有技术/" class="label label-info" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-17 16:19:54"datetime="2014-09-17 16:19:54"> 9月 17 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/17/linux-kernel-core-paramater/#comments" class="ds-thread-count comment-link" data-thread-key="linux-kernel-core-paramater" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></h1>
       
         <span>发表于<time datetime="2014-06-12T02:54:00.000Z"> <a href="/2014/06/12/linux-crontab-configuration/">6月 12 2014</a></time></span>      
@@ -525,7 +653,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-10 15:20:31</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-17 16:20:44</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

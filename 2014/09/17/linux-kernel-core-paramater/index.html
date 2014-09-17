@@ -1,0 +1,435 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+<meta name="wumiiVerification" content="eaeee5f8-f47e-44b2-b042-3fe25f5ee8fd" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>高可用性linux系统内核参数修改 | 胖浩网</title>
+<meta name="author" content="lauking">
+
+<meta name="description" content="linux系统在做高并发处理是都需要最linux的内核参数和网络参数进行修改，主要是调整文件打开数据、套接字缓存、应用程序打开端口范围等等，主要是对/etc/sysctl.conf和/etc/security/limits.conf进行修改">
+
+<meta name="keywords" content="胖浩网，linux,高负载，linux高负载，linux网络参数，linux内核参数修改,，测试服务器修改内核参数，有技术">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="高可用性linux系统内核参数修改"/>
+<meta property="og:site_name" content="胖浩网"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css"><![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="胖浩网 Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.staticfile.org/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+      <header id="header" class="container"><nav id="main-nav" class="navbar navbar-default navbar-fixed-top " role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">胖浩网</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+  
+        <li><a href="/categories/go" title="GoLang">GoLang</a></li>      
+        <li><a href="/categories/java" title="Java">Java</a></li>      
+        <li><a href="/categories/php" title="PHP">PHP</a></li>      
+        <li><a href="/categories/nodejs" title="Nodejs">Nodejs</a></li>      
+        <li><a href="/categories/mysql" title="MySql">MySql</a></li>      
+        <li><a href="/categories/linux" title="Linux">Linux</a></li>      
+        <li><a href="/categories/有理想" title="有理想">有理想</a></li>      
+        <li><a href="/categories/有知识" title="有知识">有知识</a></li>      
+        <li><a href="/categories/有技术" title="有技术">有技术</a></li>      
+        <li><a href="/categories/有文化" title="有文化">有文化</a></li>      
+        <li><a href="/categories/收藏" title="收藏">收藏</a></li>      
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/lauking">github</a></li>
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id='content' class="container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>胖浩网 <small>做一个有知识，有文化、有技术、有内涵、有梦想的人</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title">高可用性linux系统内核参数修改</h1>
+      
+        <span>发表于<time datetime="2014-09-17T06:23:00.000Z"> <a href="/2014/09/17/linux-kernel-core-paramater/">9月 17 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry">
+      
+        <p>linux系统在做高并发处理是都需要最linux的内核参数和网络参数进行修改，主要是调整文件打开数据、套接字缓存、应用程序打开端口范围和资源使用等等，主要是对/etc/sysctl.conf和/etc/security/limits.conf进行修改</p>
+<h3 id="我的内核配置">我的内核配置</h3>
+<h1 id="/etc/sysctl-conf">/etc/sysctl.conf</h1>
+<pre><code>kernel<span class="preprocessor">.sysrq</span> = <span class="number">0</span>
+kernel<span class="preprocessor">.core</span>_uses_pid = <span class="number">1</span>
+net<span class="preprocessor">.bridge</span><span class="preprocessor">.bridge</span>-nf-<span class="keyword">call</span>-ip6tables = <span class="number">0</span>
+net<span class="preprocessor">.bridge</span><span class="preprocessor">.bridge</span>-nf-<span class="keyword">call</span>-iptables = <span class="number">0</span>
+net<span class="preprocessor">.bridge</span><span class="preprocessor">.bridge</span>-nf-<span class="keyword">call</span>-arptables = <span class="number">0</span>
+kernel<span class="preprocessor">.msgmnb</span> = <span class="number">65536</span>
+kernel<span class="preprocessor">.msgmax</span> = <span class="number">65536</span>
+kernel<span class="preprocessor">.shmmax</span> = <span class="number">68719476736</span>
+kernel<span class="preprocessor">.shmall</span> = <span class="number">4294967296</span>
+kernel<span class="preprocessor">.sem</span> = <span class="number">250</span> <span class="number">32000</span> <span class="number">100</span> <span class="number">128</span>
+fs<span class="preprocessor">.file</span>-max = <span class="number">1048576</span>
+fs<span class="preprocessor">.aio</span>-max-nr = <span class="number">1048576</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.netdev</span>_max_backlog = <span class="number">32768</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.somaxconn</span> = <span class="number">32768</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_default = <span class="number">8388608</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_default = <span class="number">8388608</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_max = <span class="number">16777216</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_max = <span class="number">16777216</span>
+//网络配置
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_syncookies = <span class="number">1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_max_syn_backlog = <span class="number">65536</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.ip</span>_forward = <span class="number">0</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.conf</span><span class="preprocessor">.default</span><span class="preprocessor">.rp</span>_filter = <span class="number">1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.conf</span><span class="preprocessor">.default</span><span class="preprocessor">.accept</span>_source_route = <span class="number">0</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_timestamps = <span class="number">0</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_synack_retries = <span class="number">2</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_syn_retries = <span class="number">2</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_tw_recycle = <span class="number">1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_tw_reuse = <span class="number">1</span>
+<span class="preprocessor">#net.ipv4.tcp_tw_len = 1</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_mem = <span class="number">786432</span> <span class="number">2097152</span> <span class="number">3145728</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_rmem = <span class="number">4096</span> <span class="number">4096</span> <span class="number">16777216</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_wmem = <span class="number">4096</span> <span class="number">4096</span> <span class="number">16777216</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_max_orphans = <span class="number">3276800</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_fin_timeout = <span class="number">30</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.tcp</span>_keeplive_time= <span class="number">1200</span>
+net<span class="preprocessor">.ipv</span>4<span class="preprocessor">.ip</span>_local_port_range = <span class="number">1024</span> <span class="number">65535</span>
+</code></pre><h1 id="/ect/security/limits-conf">/ect/security/limits.conf</h1>
+<pre><code><span class="bullet">* </span>soft nofile 1048576
+<span class="bullet">* </span>hard nofile 1048576
+</code></pre><h3 id="内核参数说明">内核参数说明</h3>
+<pre><code>kernel<span class="preprocessor">.shmall</span> = <span class="number">4294967296</span> <span class="preprocessor">#可以使用的共享内存的总量。</span>
+kernel<span class="preprocessor">.shmmax</span> = <span class="number">68719476736</span> <span class="preprocessor">#最大共享内存段大小。</span>
+kernel<span class="preprocessor">.shmmni</span> = <span class="number">4096</span> <span class="preprocessor"># 整个系统共享内存段的最大数目。</span>
+kernel<span class="preprocessor">.sem</span> = <span class="number">250</span> <span class="number">32000</span> <span class="number">100</span> <span class="number">128</span> <span class="preprocessor"># 每个信号对象集的最大信号对象数；系统范围内最大信号对象数；每个信号对象支持的最大操作数；系统范围内最大信号对象集数。</span>
+fs<span class="preprocessor">.file</span>-max = <span class="number">1048576</span> <span class="preprocessor"># 系统中所允许的文件句柄最大数目。</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_default = <span class="number">8388608</span> <span class="preprocessor"># 套接字接收缓冲区大小的缺省值</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.rmem</span>_max = <span class="number">16777216</span> <span class="preprocessor"># 套接字接收缓冲区大小的最大值</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_default = <span class="number">8388608</span> <span class="preprocessor"># 套接字发送缓冲区大小的缺省值</span>
+net<span class="preprocessor">.core</span><span class="preprocessor">.wmem</span>_max = <span class="number">16777216</span> <span class="preprocessor"># 套接字发送缓冲区大小的最大值</span>
+fs<span class="preprocessor">.aio</span>-max-nr = <span class="number">1048576</span> 文件系统最大异步io
+</code></pre><p><strong>这里，对每个参数值做个简要的解释和说明</strong></p>
+<ul>
+<li>kernel.shmmax：表示单个共享内存段的最大值，以字节为单位，缺省为32M,此值一般为物理内存的一半，不过大一点也没关系，这里设定的为4GB，即”4294967295/1024/1024/1024=4G”。</li>
+<li>kernel.shmmni：表示单个共享内存段的最小值，一般为4kB，即4096bit。</li>
+<li>kernel.shmall：表示可用共享内存的总量，单位是页，在32位系统上一页等于4kB，也就是4096字节。</li>
+<li>kernel.sem：表示设置的信号量，这4个参数内容大小固定。</li>
+<li>fs.file-max：表示文件句柄的最大数量,文件句柄表示在Linux系统中可以打开的<br>文件数量。</li>
+<li>net.core.rmem_default：表示接收套接字缓冲区大小的缺省值（以字节为单位）。</li>
+<li>net.core.rmem_max ：表示接收套接字缓冲区大小的最大值（以字节为单位）</li>
+<li>net.core.wmem_default：表示发送套接字缓冲区大小的缺省值（以字节为单位）。</li>
+<li>net.core.wmem_max：表示发送套接字缓冲区大小的最大值（以字节为单位）。</li>
+</ul>
+<h3 id="高负载系统，网络参数调整">高负载系统，网络参数调整</h3>
+<p><strong>net.ipv4.tcp_syncookies = 1</strong><br>表示开启SYN Cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；<br><strong>net.ipv4.tcp_tw_reuse = 1</strong><br>表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；<br><strong>net.ipv4.tcp_tw_recycle = 1</strong><br>表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。<br><strong>net.ipv4.tcp_fin_timeout = 30</strong><br>表示如果套接字由本端要求关闭，这个参数决定了它保持在FIN-WAIT-2状态的时间。<br><strong>net.ipv4.tcp_keepalive_time = 1200</strong><br>表示当keepalive起用的时候，TCP发送keepalive消息的频度。缺省是2小时，改为20分钟。<br><strong>net.ipv4.ip_local_port_range = 1024 65000</strong><br>表示用于向外连接的端口范围。缺省情况下很小：32768到61000，改为1024到65000。<br><strong>net.ipv4.tcp_max_syn_backlog = 8192</strong><br>表示SYN队列的长度，默认为1024，加大队列长度为8192，可以容纳更多等待连接的网络连接数。 </p>
+<p><strong>如果高负载系统使用了netfilter/iptables，调整以下参数</strong><br><strong>net.ipv4.ip_conntrack_max = 655360</strong><br>在内核内存中netfilter可以同时处理的“任务”（连接跟踪条目）<br><strong>net.ipv4.netfilter.ip_conntrack_tcp_timeout_established = 180</strong><br>跟踪的连接超时结束时间 </p>
+<h3 id="资源使用参数调整">资源使用参数调整</h3>
+<p>为了限制用户对资源的使用，需要对/etc/security/limits.conf文件进行修改，<br>imits.conf的格式如下：</p>
+<pre><code>domain       <span class="class"><span class="keyword">type</span>    <span class="title">item</span>      <span class="title">value</span></span>
+</code></pre><p><strong>domain：</strong>设置需要被限制的用户名，组名前面加@和用户名区别。也可以用通配符<em>来做所有用户的限制<br><strong>type：</strong>有 soft，hard 和 -，soft 指的是当前系统生效的设置值。hard 表明系统中<br>所能设定的最大值。soft的限制不能比hard限制高。用 <strong>-</strong> 就表明同时设置了soft和 hard的值。<br><em>*item：</em></em></p>
+<ul>
+<li>core 限制内核文件的大小</li>
+<li>date 最大数据大小</li>
+<li>fsize 最大文件大小</li>
+<li>memlock 最大锁定内存地址空间</li>
+<li>nofile 打开文件的最大数目</li>
+<li>rss 最大持久设置大小</li>
+<li>stack 最大栈大小</li>
+<li>cpu 以分钟为单位的最多 CPU 时间</li>
+<li>noproc 进程的最大数目</li>
+<li>as 地址空间限制</li>
+<li>maxlogins 此用户允许登录的最大数目</li>
+<li>priority 用户优先运行的进程</li>
+<li>locks 用户拥文件锁的数量</li>
+<li>sigpending 等待信号的大小</li>
+<li>msgqueue POSIX 信息队列的内存使用量</li>
+<li>nice 最好优先提升值： [-20, 19]</li>
+<li>rtprio 实时优先级</li>
+</ul>
+<p><strong>value</strong>:都是数字<br>例如：</p>
+<pre><code> * <span class="keyword">soft</span> nofile <span class="number">1048576</span>
+ * hard nofile <span class="number">1048576</span>
+</code></pre>
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/17/linux-kernel-core-paramater/">高可用性linux系统内核参数修改</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/linux内核参数/" class="label label-success" itemprop="url"><span itemprop="title">linux内核参数</span></a><a href="/tags/有技术/" class="label label-info" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-17 16:19:54"datetime="2014-09-17 16:19:54"> 9月 17 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/17/linux-kernel-core-paramater/#comments" class="ds-thread-count comment-link" data-thread-key="linux-kernel-core-paramater" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/09/10/java-c3p0-configurationl/" title="c3p0数据库连接池配置">c3p0数据库连接池配置 &rarr;</a></li>
+  
+</ul></div><div class="widget" id="widget_after_post_related_posts>">
+<ul class="list-group"><li class="list-group-item"><a href="/2014/08/31/linux-nginx-setup/">nginx在linux下的安装</a></li><li class="list-group-item"><a href="/2014/09/17/linux-kernel-core-paramater/">高可用性linux系统内核参数修改</a></li><li class="list-group-item"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></li><li class="list-group-item"><a href="/2014/06/07/linux grep命令详解/">linux grep命令详解</a></li><li class="list-group-item"><a href="/2014/09/03/linux-nginx-global-variable/">Nginx全局变量含义整理</a></li><li class="list-group-item"><a href="/2014/05/26/php-exec-linux-shell/">php在linux中利用exec执行shell脚本</a></li><li class="list-group-item"><a href="/2014/09/10/java-system-properties/">java获取操作系统参数</a></li><li class="list-group-item"><a href="/2014/09/10/java-c3p0-configurationl/">c3p0数据库连接池配置</a></li></ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="linux-kernel-core-paramater"  data-url="http://www.haozi520.com/2014/09/17/linux-kernel-core-paramater/" data-title="高可用性linux系统内核参数修改"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget panel panel-primary">
+    <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="search">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:www.haozi520.com">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_tagcloud" class="widget panel panel-primary">
+  <div class="panel-heading">标签云</div>  <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_latest_update_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近更新</div>  <div data-src='latest_update_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_random_posts" class="widget panel panel-primary">
+  <div class="panel-heading">随机文章</div>  <div class='hexo_random_posts' data-count=8></div></div>
+
+<div id="widget_google_sidebar" class="widget panel panel-primary">
+  <div class="panel-heading">赞助商</div>  <div style="margin-top:0">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- 侧边栏广告 -->
+	<ins class="adsbygoogle"
+	     style="display:inline-block;width:250px;height:250px"
+	     data-ad-client="ca-pub-2783023736003892"
+	     data-ad-slot="6006336369"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div></div>
+
+<div id="widget_links" class="widget panel panel-primary">
+  <div class="panel-heading">喜欢站点</div>  <div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="http://www.tuicool.com" title="推酷">推酷</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.51cto.com" title="51CTO">51CTO</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://studygolang.com/" title="Golang中文社区(Go语言构建)">Golang中文社区(Go语言构建)</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.36kr.com/" title="36氪 | 关注互联网创业">36氪 | 关注互联网创业</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://coolshell.cn/" title="酷壳 – CoolShell.cn">酷壳 – CoolShell.cn</a>
+        </li>
+    </ul>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2013-2014 lauking
+  
+    &nbsp;&nbsp;</span>
+  
+  <span id='analytics-51la'></span><span id='analytics-google'>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-46059111-1']);
+  _gaq.push(['_trackPageview']);
+  _js2load.push({src:('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'});
+</script></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000210742'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D1000210742%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-17 16:19:54</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haozi520"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://www.haozi520.com/2014/09/17/linux-kernel-core-paramater/";
+    var wumiiTitle = "高可用性linux系统内核参数修改";
+    var wumiiTags = "linux,linux内核参数,有技术";
+    var wumiiCategories = ["linux"];
+    var wumiiSitePrefix = "http://www.haozi520.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      if (alt){
+        $(this).before('<span class="caption">' + alt + '</span>');
+      }
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />');
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script type="text/javascript" src="/js/chenall.js"></script>
+  </body>
+</html>

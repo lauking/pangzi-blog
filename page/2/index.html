@@ -144,6 +144,381 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/08/30/mysql-date-function/">MySQL时间函数整理</a></h1>
+      
+        <span>发表于<time datetime="2014-08-30T09:37:12.000Z"> <a href="/2014/08/30/mysql-date-function/">8月 30 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <h3 id="Mysql_获得当前日期时间">Mysql 获得当前日期时间</h3>
+<p><strong>Now()</strong> : 获得当前的 日期+ 时间（date + time ）函数：</p>
+<pre><code><span class="header">mysql&gt; select now();
++---------------------+</span>
+<span class="header">| now()               |
++---------------------+</span>
+<span class="header">| 2011-03-01 10:26:23 |
++---------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p>同等的函数还包括current_timestamp(),localtime() ，但是now() 最容易记忆，所以推荐使用。</p>
+<p><strong>Sysdate()</strong> : 日期时间函数跟 now() 类似，不同之处在于：now() 在执行开始时值就得到了， sysdate() 在函数执行时动态得到值。</p>
+<p>看下面的例子就明白了：</p>
+<pre><code>mysql&gt; select now(),sleep(3),now();
+
+<span class="code">+---------------------+</span>----------<span class="code">+---------------------+</span>
+<span class="header">| now()               | sleep(3) | now()               |
++---------------------+----------+---------------------+</span>
+<span class="header">| 2011-03-01 10:51:43 |        0 | 2011-03-01 10:51:43 |
++---------------------+----------+---------------------+</span>
+1 row in set (3.02 sec)
+<span class="header">mysql&gt; select sysdate(),sleep(3),sysdate();
++---------------------+----------+---------------------+</span>
+<span class="header">| sysdate()           | sleep(3) | sysdate()           |
++---------------------+----------+---------------------+</span>
+<span class="header">| 2011-03-01 10:52:09 |        0 | 2011-03-01 10:52:12 |
++---------------------+----------+---------------------+</span>
+1 row in set (3.00 sec)
+</code></pre><p>可以看到，虽然中途 sleep 3 秒，但 now() 函数两次的时间值是相同的； sysdate() 函数两次得到的时间值相差 3 秒</p>
+<p><strong>也可以只取当前日期或者当前时间</strong><br><strong>Curdate()</strong>: 获得当前日期</p>
+<pre><code><span class="header">mysql&gt; select curdate();
++------------+</span>
+<span class="header">| curdate()  |
++------------+</span>
+<span class="header">| 2011-03-01 |
++------------+</span>
+1 row in set (0.01 sec)
+</code></pre><p><strong>Curtime()</strong>：获得当前时间（time ）函数</p>
+<pre><code><span class="header">mysql&gt; select curtime();
++-----------+</span>
+<span class="header">| curtime() |
++-----------+</span>
+<span class="header">| 10:55:12  |
++-----------+</span>
+1 row in set (0.00 sec)
+</code></pre><h3 id="Mysql日期时间的抽取">Mysql日期时间的抽取</h3>
+<p>通过这一功能，我们可以从一个时间中抽取自己想要的部分，例如</p>
+<pre><code>mysql&gt; <span class="built_in">set</span> @ct=<span class="string">'2011-03-01 11:16:14.123456'</span>; 
+Query OK, <span class="number">0</span> rows affected (<span class="number">0.01</span> <span class="built_in">sec</span>)
+</code></pre><p>设置变量ct 为某一时间值，精确到微妙<br><strong>获取其日期值</strong>：</p>
+<pre><code><span class="header">mysql&gt; select date(@ct);
++------------+</span>
+<span class="header">| date(@ct)  |
++------------+</span>
+<span class="header">| 2011-03-01 |
++------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>查看此日期所属季度</strong></p>
+<pre><code><span class="header">mysql&gt; select quarter(@ct);
++--------------+</span>
+<span class="header">| quarter(@ct) |
++--------------+</span>
+<span class="header">|            1 |
++--------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>查看此日期属于当年哪一周</strong></p>
+<pre><code><span class="header">mysql&gt; select week(@ct);
++-----------+</span>
+<span class="header">| week(@ct) |
++-----------+</span>
+<span class="header">|         9 |
++-----------+</span>
+1 row in set (0.00 sec)
+</code></pre><p>另外还有year(),day(),hour(),minute(),second() 等，在此不一一赘述。</p>
+<p>采用extract() ，也可以实现类似的功能，语法格式为extract(year from @ct) ，<br>不足之处在于需要多敲几次键盘</p>
+<h3 id="Dayof_函数">Dayof 函数</h3>
+<p>Dayofweek(),dayofmonth(),dayofyear() 分别返回日期再一周、一月以及一年中的位置</p>
+<pre><code><span class="header">mysql&gt; select dayofweek(@ct);
++----------------+</span>
+<span class="header">| dayofweek(@ct) |
++----------------+</span>
+<span class="header">|              3 |
++----------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p>注意：其实3 月1 号是星期二，但是返回数字3 ，因为是从Sunday 开始算起的(1=Sunday,2=Monday, …)</p>
+<pre><code><span class="header">mysql&gt; select dayofmonth(@ct);
++-----------------+</span>
+<span class="header">| dayofmonth(@ct) |
++-----------------+</span>
+<span class="header">|               1 |
++-----------------+</span>
+1 row in set (0.00 sec)
+
+<span class="header">mysql&gt; select dayofyear(@ct);
++----------------+</span>
+<span class="header">| dayofyear(@ct) |
++----------------+</span>
+<span class="header">|             60 |
++----------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>weekofyear()</strong>:查看日期属于当年的第几周</p>
+<pre><code><span class="header">mysql&gt; select weekofyear(@ct);
++-----------------+</span>
+<span class="header">| weekofyear(@ct) |
++-----------------+</span>
+<span class="header">|               9 |
++-----------------+</span>
+1 row in set (0.00 sec)
+</code></pre><h3 id="返回星期名和月份名的函数">返回星期名和月份名的函数</h3>
+<p><strong>Dayname()</strong>： 计算日期是星期几</p>
+<pre><code><span class="header">mysql&gt; select dayname(@ct);
++--------------+</span>
+<span class="header">| dayname(@ct) |
++--------------+</span>
+<span class="header">| Tuesday      |
++--------------+</span>
+1 row in set (0.02 sec)
+</code></pre><p><strong>Monthname()</strong>:计算日期是哪一月</p>
+<pre><code><span class="header">mysql&gt; select monthname(@ct);
++----------------+</span>
+<span class="header">| monthname(@ct) |
++----------------+</span>
+<span class="header">| March          |
++----------------+</span>
+1 row in set (0.00 sec)
+</code></pre><h3 id="月份中最后一天">月份中最后一天</h3>
+<p><strong>Last_day()</strong> : 返回月份中最后一天</p>
+<pre><code><span class="header">mysql&gt; select now();
++---------------------+</span>
+<span class="header">| now()               |
++---------------------+</span>
+<span class="header">| 2011-03-01 13:15:00 |
++---------------------+</span>
+1 row in set (0.00 sec)
+
+<span class="header">mysql&gt; select last_day(now());
++-----------------+</span>
+<span class="header">| last_day(now()) |
++-----------------+</span>
+<span class="header">| 2011-03-31      |
++-----------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p>通过该函数，可以计算出当前月份有多少天</p>
+<pre><code><span class="header">mysql&gt; select now(),day(last_day(now())) ;
++---------------------+----------------------+</span>
+<span class="header">| now()               | day(last_day(now())) |
++---------------------+----------------------+</span>
+<span class="header">| 2011-03-01 13:17:12 |                   31 |
++---------------------+----------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><h3 id="Mysql_的日期时间计算函数">Mysql 的日期时间计算函数</h3>
+<p>Date_add() : 为日期增加一个时间间隔</p>
+<p>具体语法为date_add(@ct, interval num year/quarter/month/week/day/hour/minute/secont/microsecond);</p>
+<p>注意: 此函数并不改变变量@ct 的实际值</p>
+<pre><code>mysql&gt; set @ct=now();
+Query OK, 0 rows affected (0.00 sec)
+<span class="header">mysql&gt; select @ct;
++---------------------+</span>
+<span class="header">| @ct                 |
++---------------------+</span>
+<span class="header">| 2011-03-01 15:09:16 |
++---------------------+</span>
+1 row in set (0.00 sec)
+<span class="header">mysql&gt; select date_add(@ct,interval 1 day);
++------------------------------+</span>
+<span class="header">| date_add(@ct,interval 1 day) |
++------------------------------+</span>
+<span class="header">| 2011-03-02 15:09:16          |
++------------------------------+</span>
+1 row in set (0.00 sec)
+<span class="header">mysql&gt; select @ct;
++---------------------+</span>
+<span class="header">| @ct                 |
++---------------------+</span>
+<span class="header">| 2011-03-01 15:09:16 |
++---------------------+</span>
+1 row in set (0.00 sec)
+<span class="header">mysql&gt; select date_add(@ct,interval 1 week);
++-------------------------------+</span>
+<span class="header">| date_add(@ct,interval 1 week) |
++-------------------------------+</span>
+<span class="header">| 2011-03-08 15:09:16           |
++-------------------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p>类似功能还有adddate(),addtime() 等函数，与之相对应的是date_sub() ，顾名思义就是日期减法<br>另类日期函数</p>
+<p><strong>Period_add(P,N)</strong>: 日期加/ 减去N 月，其中P 的格式应为yyyymm 或yymm<br><strong>Period_diff(P1,P2)</strong>: 日期p1-p2 ，返回N 个月</p>
+<pre><code><span class="header">mysql&gt; select period_add(201103,2),period_add(201103,-2) ;
++----------------------+-----------------------+</span>
+<span class="header">| period_add(201103,2) | period_add(201103,-2) |
++----------------------+-----------------------+</span>
+<span class="header">|               201105 |                201101 |
++----------------------+-----------------------+</span>
+1 row in set (0.00 sec)
+
+<span class="header">mysql&gt; select period_diff('201103','201101');
++--------------------------------+</span>
+<span class="header">| period_diff('201103','201101') |
++--------------------------------+</span>
+<span class="header">|                              2 |
++--------------------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>日期时间相减函数</strong><br><strong>Datediff(date1,date2)</strong> : 两个日期date1-date2</p>
+<pre><code><span class="header">mysql&gt; select datediff('2011-03-09','2011-03-01');
++-------------------------------------+</span>
+<span class="header">| datediff('2011-03-09','2011-03-01') |
++-------------------------------------+</span>
+<span class="header">|                                   8 |
++-------------------------------------+</span>
+1 row in set (0.00 sec)
+
+<span class="header">mysql&gt; select datediff('2011-03-01','2011-03-09');
++-------------------------------------+</span>
+<span class="header">| datediff('2011-03-01','2011-03-09') |
++-------------------------------------+</span>
+<span class="header">|                                  -8 |
++-------------------------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>Timediff(time1,time2)</strong> : 两个时间相减</p>
+<pre><code><span class="header">mysql&gt; select timediff('2011-03-03 15:33:00','2011-03-02 15:33:59');
++-------------------------------------------------------+</span>
+<span class="header">| timediff('2011-03-03 15:33:00','2011-03-02 15:33:59') |
++-------------------------------------------------------+</span>
+<span class="header">| 23:59:01                                              |
++-------------------------------------------------------+</span>
+1 row in set (0.00 sec)
+<span class="header">mysql&gt; select timediff('15:33:00','15:33:59');
++---------------------------------+</span>
+<span class="header">| timediff('15:33:00','15:33:59') |
++---------------------------------+</span>
+<span class="header">| -00:00:59                       |
++---------------------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><h3 id="MySql_日期、时间转换函数">MySql 日期、时间转换函数</h3>
+<p><strong>Time_to_sec(time)</strong> : 时间—&gt; 秒 转换函数<br><strong>Sec_to_time(num)</strong> : 秒—&gt; 时间 转换函数</p>
+<pre><code><span class="header">mysql&gt; select time_to_sec('01:00:00');
++-------------------------+</span>
+<span class="header">| time_to_sec('01:00:00') |
++-------------------------+</span>
+<span class="header">|                    3600 |
++-------------------------+</span>
+1 row in set (0.00 sec)
+<span class="header">mysql&gt; select sec_to_time(3600);
++-------------------+</span>
+<span class="header">| sec_to_time(3600) |
++-------------------+</span>
+<span class="header">| 01:00:00          |
++-------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>To_days(date)</strong> : 日期—&gt; 天 转换函数 起始日期为0000-00-00<br><strong>From_days(num)</strong> : 天—&gt; 日期 将数字转换为具体的日期</p>
+<pre><code><span class="header">mysql&gt; select to_days('2011-03-01');
++-----------------------+</span>
+<span class="header">| to_days('2011-03-01') |
++-----------------------+</span>
+<span class="header">|                734562 |
++-----------------------+</span>
+1 row in set (0.00 sec) 
+<span class="header">mysql&gt; select from_days(734562);
++-------------------+</span>
+<span class="header">| from_days(734562) |
++-------------------+</span>
+<span class="header">| 2011-03-01        |
++-------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>Str_to_date(str,date)</strong>: 字符串—&gt; 日期 转换函数<br>可以将一些杂乱无章的字符转换为日期格式</p>
+<pre><code><span class="header">mysql&gt; select str_to_date('01.03.2011', '%m.%d.%Y');
++---------------------------------------+</span>
+<span class="header">| str_to_date('01.03.2011', '%m.%d.%Y') |
++---------------------------------------+</span>
+<span class="header">| 2011-01-03                            |
++---------------------------------------+</span>
+1 row in set (0.00 sec)
+
+<span class="header">mysql&gt; select str_to_date('01/03/2011', '%m/%d/%Y');
++---------------------------------------+</span>
+<span class="header">| str_to_date('01/03/2011', '%m/%d/%Y') |
++---------------------------------------+</span>
+<span class="header">| 2011-01-03                            |
++---------------------------------------+</span>
+1 row in set (0.00 sec)
+</code></pre><h3 id="小练习：">小练习：</h3>
+<p>以表centralmobile_logs 为例，目前该表总共有270 多万条数据</p>
+<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs;
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|  2725403 |
++----------+</span>
+1 row in set (0.00 sec)
+</code></pre><p><strong>现在对其做一些统计</strong><br><strong>查询过去30 天总共有多少数据</strong></p>
+<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where to_days(curdate())- to_days(create_time)&lt;=30;
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|  2367518 |
++----------+</span>
+1 row in set (3.38 sec)
+<span class="header">mysql&gt; select count(*) from centralmobile_logs where datediff(curdate(),create_time) &lt;=30;
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|  2367518 |
++----------+</span>
+1 row in set (3.29 sec)
+</code></pre><p><strong>查看每月第一天的数据</strong></p>
+<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where dayofmonth(create_time)=1;
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|   161293 |
++----------+</span>
+1 row in set (3.14 sec)
+</code></pre><p><strong>查看11 年1 月31 日之前的数据</strong></p>
+<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where create_time &lt;='2011-01-31 00:00:00';
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|   413797 |
++----------+</span>
+1 row in set (0.17 sec)
+</code></pre><p><strong>查看11 年整个二月份的数据</strong></p>
+<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where monthname(create_time)='February' and year(create_time)=2011;
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|  2149284 |
++----------+</span>
+1 row in set (3.94 sec)
+</code></pre><p><strong>查看11 年每个周日的累积数据</strong></p>
+<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where dayname(create_time)='Sunday' and year(create_time)=2011;
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|   479033 |
++----------+</span>
+1 row in set (3.88 sec)
+</code></pre><p><strong>查看每天零点时分插入的数据总和</strong></p>
+<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where time(create_time)='00:00:00';
++----------+</span>
+<span class="header">| count(*) |
++----------+</span>
+<span class="header">|       37 |
++----------+</span>
+1 row in set (3.99 sec)
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/mysql/" itemprop="url"><span itemprop="title" >mysql</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/mysql/" class="label label-primary" itemprop="url"><span itemprop="title">mysql</span></a><a href="/tags/时间函数/" class="label label-success" itemprop="url"><span itemprop="title">时间函数</span></a><a href="/tags/时间转换/" class="label label-info" itemprop="url"><span itemprop="title">时间转换</span></a></span> | <span class="time">最近更新:<time title="2014-09-02 19:09:17"datetime="2014-09-02 19:09:17"> 9月 2 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/08/30/mysql-date-function/#comments" class="ds-thread-count comment-link" data-thread-key="mysql-date-function" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+
+  <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/18/js-jquery-plugin-dev/">这是你要的jQuery插件开发吗？</a></h1>
       
         <span>发表于<time datetime="2014-06-18T14:21:00.000Z"> <a href="/2014/06/18/js-jquery-plugin-dev/">6月 18 2014</a></time></span>      
@@ -865,53 +1240,6 @@ $(<span class="string">"a"</span>).greenify().addClass(<span class="string">"gre
 
 
 
-  <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/18/java-thread-001/">java线程：概念与原理</a></h1>
-      
-        <span>发表于<time datetime="2014-06-18T07:41:00.000Z"> <a href="/2014/06/18/java-thread-001/">6月 18 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>今天我开始整理java线程方面的知识，那么首先了解线程的概念和原理</p>
-<h3 id="操作系统中线程和进程的概念">操作系统中线程和进程的概念</h3>
-<p>现在的操作系统是多任务操作系统。多线程是实现多任务的一种方式。<br>进程是指一个内存中运行的应用程序，每个进程都有自己独立的一块内存空间，一个进程中可以启动多个线程。比如在Windows系统中，一个运行的exe就是一个进程。<br>线程是指进程中的一个执行流程，一个进程中可以运行多个线程。比如java.exe进程中可以运行很多线程。线程总是属于某个进程，进程中的多个线程共享进程的内存。<br>“同时”执行是人的感觉，在线程之间实际上轮换执行。</p>
-<h3 id="Java中的线程">Java中的线程</h3>
-<p>在Java中，“线程”指两件不同的事情：</p>
-<ul>
-<li>java.lang.Thread类的一个实例</li>
-<li>线程的执行</li>
-</ul>
-<p>使用java.lang.Thread类或者java.lang.Runnable接口编写代码来定义、实例化和启动新<br>线程。<br>一个Thread类实例只是一个对象，像Java中的任何其他对象一样，具有变量和方法，生死于堆上。<br>Java中，每个线程都有一个调用栈，即使不在程序中创建任何新的线程，线程也在后台运行着。<br>一个Java应用总是从main()方法开始运行，mian()方法运行在一个线程内，它被称为主线<br>程。<br>一旦创建一个新的线程，就产生一个新的调用栈。<br>线程总体分两类：用户线程和守候线程</p>
-<ul>
-<li>当所有用户线程执行完毕的时候，JVM自动关闭</li>
-<li>守候线程却不独立于JVM，守候线程一般是由操作系统或者用户自己创建的。</li>
-</ul>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/线程/" class="label label-success" itemprop="url"><span itemprop="title">线程</span></a></span> | <span class="time">最近更新:<time title="2014-06-18 15:58:03"datetime="2014-06-18 15:58:03"> 6月 18 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/18/java-thread-001/#comments" class="ds-thread-count comment-link" data-thread-key="java-thread-001" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-
 
 
 <ul id="pagination" class="pagination pagination-lg">
@@ -1006,7 +1334,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-10 15:20:30</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-17 16:20:43</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
