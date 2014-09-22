@@ -4,7 +4,7 @@
   <subtitle><![CDATA[做一个有知识，有文化、有技术、有内涵、有梦想的人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.haozi520.com/"/>
-  <updated>2014-09-22T04:15:14.135Z</updated>
+  <updated>2014-09-22T09:34:32.247Z</updated>
   <id>http://www.haozi520.com/</id>
   
   <author>
@@ -13,6 +13,26 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[一张图，一棵树，六种人，六载人生]]></title>
+    <link href="http://www.haozi520.com/2014/09/22/culture-ideal-collect/"/>
+    <id>http://www.haozi520.com/2014/09/22/culture-ideal-collect/</id>
+    <published>2014-09-22T09:25:00.000Z</published>
+    <updated>2014-09-22T09:34:07.000Z</updated>
+    <content type="html"><![CDATA[<p>一张图，一棵树，六种人，六载人生<br><img src="http://haozi520.u.qiniudn.com/20140922172205.jpg" alt=""></p>
+]]></content>
+    
+    
+      <category term="有文化" scheme="http://www.haozi520.com/tags/%E6%9C%89%E6%96%87%E5%8C%96/"/>
+    
+      <category term="有理想" scheme="http://www.haozi520.com/tags/%E6%9C%89%E7%90%86%E6%83%B3/"/>
+    
+      <category term="收藏" scheme="http://www.haozi520.com/tags/%E6%94%B6%E8%97%8F/"/>
+    
+      <category term="有文化" scheme="http://www.haozi520.com/categories/%E6%9C%89%E6%96%87%E5%8C%96/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Nginx配置日志、Location、Rewrite的语法]]></title>
@@ -2211,67 +2231,6 @@ $(<span class="string">"a"</span>).greenify().addClass(<span class="string">"gre
       <category term="蜂蜜" scheme="http://www.haozi520.com/tags/%E8%9C%82%E8%9C%9C/"/>
     
       <category term="有知识" scheme="http://www.haozi520.com/categories/%E6%9C%89%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[老是遗忘的crontab配置]]></title>
-    <link href="http://www.haozi520.com/2014/06/12/linux-crontab-configuration/"/>
-    <id>http://www.haozi520.com/2014/06/12/linux-crontab-configuration/</id>
-    <published>2014-06-12T02:54:00.000Z</published>
-    <updated>2014-06-12T04:23:36.000Z</updated>
-    <content type="html"><![CDATA[<blockquote>
-<p>很多情况下，都需要在linux系统中定制一些定时任务自动完成操作，而我总是会忘记一些配置项，今天就好好整理下，在linux中crontab的配置</p>
-</blockquote>
-<h3 id="任务调度分类">任务调度分类</h3>
-<ul>
-<li>系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存</li>
-<li>个人执行的工作：某个用户定期要做的工作，例如每隔10分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置</li>
-</ul>
-<h3 id="权限文件">权限文件</h3>
-<ul>
-<li>/etc/cron.deny 该文件中所列的用户不允许使用Crontab命令</li>
-<li>/etc/cron.allow 该文件中所列的用户允许使用Crontab命令</li>
-<li>/var/spool/cron/ 是所有用户的crontab文件 </li>
-</ul>
-<h3 id="crontab命令">crontab命令</h3>
-<p>Crontab命令的格式为：crontab –l|-r|-e|-i [username]</p>
-<ul>
-<li>-l 显示用户的Crontab文件的内容,eg:crontab -l</li>
-<li>-i 删除用户的Crontab文件前给提示,eg:crontab -ri</li>
-<li>-r 从Crontab目录中删除用户的Crontab文件,eg:crontab -r</li>
-<li>e 编辑用户的Crontab文件,eg:crontab -e</li>
-</ul>
-<p><em>用户所建立的Crontab文件存于/var/spool/cron中，其文件名与用户名一致。</em></p>
-<h3 id="crontab格式">crontab格式</h3>
-<p>它的格式共分为六段，前五段为时间设定段，第六段为所要执行的命令段，<br>格式如下：<em> </em> <em> </em> * </p>
-<pre><code>.------------- minute (<span class="number">0</span>-<span class="number">59</span>) 
-|  .---------- hour (<span class="number">0</span>-<span class="number">23</span>)
-|  |  .------- day of month (<span class="number">1</span>-<span class="number">31</span>)
-|  |  |  .---- month (<span class="number">1</span>-<span class="number">12</span>) OR jan,feb,mar,apr <span class="keyword">...</span>
-|  |  |  |  .- day of week(<span class="number">0</span>-<span class="number">6</span>)(Sunday=0or7) OR sun,mon,tue,wed,thu,fri,sat
-|  |  |  |  |
-*  *  *  *  * user-name command to be executed
-</code></pre><h3 id="举例">举例</h3>
-<ul>
-<li>0 17 <em> </em> 1-5 mail -s “hi” alex@domain.name&gt;/dev/null 2&gt;&amp;1 周一到周五每天下午 5:00 寄一封信给 alex@domain.name</li>
-<li>0 6-12/3 <em> 12 </em> /usr/bin/backup  在 12 月内, 每天的早上 6 点到 12 点中，每隔 20 分钟执行一次 /usr/bin/backup</li>
-<li>0 <em>/2 </em> <em> </em> /sbin/service httpd restart  意思是每两个小时重启一次apache</li>
-<li>50 7 <em> </em> * /sbin/service sshd start  意思是每天7：50开启ssh服务</li>
-<li>50 22 <em> </em> * /sbin/service sshd stop  意思是每天22：50关闭ssh服务</li>
-<li>0 0 1,15 <em> </em> fsck /home  每月1号和15号检查/home 磁盘</li>
-<li>1 <em> </em> <em> </em> /home/bruce/backup  每小时的第一分执行 /home/bruce/backup这个文件</li>
-<li>00 03 <em> </em> 1-5 find /home “*.xxx” -mtime +4 -exec rm {} \;  每周一至周五3点钟，在目录/home中，查找文件名为*.xxx的文件，并删除4天前的文件。</li>
-<li>30 6 <em>/10 </em> * ls  意思是每月的1、11、21、31日是的6：30执行一次ls命令</li>
-</ul>
-]]></content>
-    
-    
-      <category term="linux" scheme="http://www.haozi520.com/tags/linux/"/>
-    
-      <category term="crontab" scheme="http://www.haozi520.com/tags/crontab/"/>
-    
-      <category term="linux" scheme="http://www.haozi520.com/categories/linux/"/>
     
   </entry>
   
