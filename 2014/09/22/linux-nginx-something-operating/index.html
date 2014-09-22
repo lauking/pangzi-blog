@@ -1,0 +1,370 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+<meta name="wumiiVerification" content="eaeee5f8-f47e-44b2-b042-3fe25f5ee8fd" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nginx配置日志、Location、Rewrite的语法 | 胖浩网</title>
+<meta name="author" content="lauking">
+
+<meta name="description" content="经常遇到配置nginx日志、Location和rewrite的语法问题，这里分别给出他们的配置方法">
+
+<meta name="keywords" content="胖浩网，linux，nginx，Nginx配置日志Log，Location，Rewrite，nginx配置">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="Nginx配置日志、Location、Rewrite的语法"/>
+<meta property="og:site_name" content="胖浩网"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css"><![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="胖浩网 Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.staticfile.org/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+      <header id="header" class="container"><nav id="main-nav" class="navbar navbar-default navbar-fixed-top " role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">胖浩网</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+  
+        <li><a href="/categories/go" title="GoLang">GoLang</a></li>      
+        <li><a href="/categories/java" title="Java">Java</a></li>      
+        <li><a href="/categories/php" title="PHP">PHP</a></li>      
+        <li><a href="/categories/nodejs" title="Nodejs">Nodejs</a></li>      
+        <li><a href="/categories/mysql" title="MySql">MySql</a></li>      
+        <li><a href="/categories/linux" title="Linux">Linux</a></li>      
+        <li><a href="/categories/有理想" title="有理想">有理想</a></li>      
+        <li><a href="/categories/有知识" title="有知识">有知识</a></li>      
+        <li><a href="/categories/有技术" title="有技术">有技术</a></li>      
+        <li><a href="/categories/有文化" title="有文化">有文化</a></li>      
+        <li><a href="/categories/收藏" title="收藏">收藏</a></li>      
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/lauking">github</a></li>
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id='content' class="container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>胖浩网 <small>做一个有知识，有文化、有技术、有内涵、有梦想的人</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title">Nginx配置日志、Location、Rewrite的语法</h1>
+      
+        <span>发表于<time datetime="2014-09-22T02:30:00.000Z"> <a href="/2014/09/22/linux-nginx-something-operating/">9月 22 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry">
+      
+        <p>经常遇到配置nginx日志、Location和rewrite的语法问题，这里分别给出他们的配置方法</p>
+<h3 id="error_log_日志">error_log 日志</h3>
+<p>nginx的log有以下几种类型： [ debug | info | notice | warn | error | crit ]<br>在nginx.conf的设置：</p>
+<pre><code>error_log logs/<span class="built_in">error</span>.log  <span class="built_in">debug</span>;
+</code></pre><p>debug 为最详细 crit最少</p>
+<h3 id="rewrites配置">rewrites配置</h3>
+<p>如果要把所有访问www.a.com的请求rewrite到www.b.com上则需要可以这样配置：</p>
+<pre><code>server {
+server_name   www<span class="preprocessor">.a</span><span class="preprocessor">.com</span><span class="comment">;</span>
+Location /{
+    if ($host = <span class="string">"www.a.com"</span>) {
+            rewrite ^(.*)$ http://www<span class="preprocessor">.b</span><span class="preprocessor">.com</span>$1 permanent<span class="comment">;</span>
+    }
+}
+}
+</code></pre><ul>
+<li>last 基本上都用这个Flag。</li>
+<li>break 中止Rewirte，不在继续匹配</li>
+<li>redirect 返回临时重定向的HTTP状态302</li>
+<li>permanent 返回永久重定向的HTTP状态301</li>
+</ul>
+<h3 id="Location语法">Location语法</h3>
+<p>location [=|~|~*|^~] /uri/ { … }</p>
+<p>= 开头表示精确匹配<br>^~ 开头表示uri以某个常规字符串开头，理解为匹配 url路径即可<br>~ 为区分大小写匹配<br>~<em> 为不区分大小写匹配<br>!~和!~</em>分别为区分大小写不匹配及不区分大小写不匹配<br>/ 通用匹配，任何请求都会匹配到。<br>多个location配置的情况下匹配顺序为<br>首先匹配 =，其次匹配^~, 其次是按文件中顺序的正则匹配，最后是交给 / 通用匹配。当有匹配成功时候，停止匹配，按当前匹配规则处理请求。<br>处理静态文件请求，这是nginx作为http服务器的强项<br><strong>有两种配置模式，目录匹配或后缀匹配,任选其一或搭配使用</strong></p>
+<pre><code>location ^~ <span class="regexp">/static/</span> {
+    root <span class="regexp">/webroot/static/</span>;
+}
+location ~* \.(gif|jpg|jpeg|png|css|js|ico)$ {
+    root <span class="regexp">/webroot/res/</span>;
+}
+</code></pre>
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/22/linux-nginx-something-operating/">Nginx配置日志、Location、Rewrite的语法</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nginx/" class="label label-primary" itemprop="url"><span itemprop="title">nginx</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-22 12:07:21"datetime="2014-09-22 12:07:21"> 9月 22 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/22/linux-nginx-something-operating/#comments" class="ds-thread-count comment-link" data-thread-key="linux-nginx-something-operating" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  
+  <li class="next"><a href="/2014/09/22/linux-nginx-configuration/" title="Nginx配置文件nginx.conf中文详解">Nginx配置文件nginx.conf中文详解 &rarr;</a></li>
+  
+</ul></div><div class="widget" id="widget_after_post_related_posts>">
+<ul class="list-group"><li class="list-group-item"><a href="/2014/09/22/linux-nginx-configuration/">Nginx配置文件nginx.conf中文详解</a></li><li class="list-group-item"><a href="/2014/09/10/java-system-properties/">java获取操作系统参数</a></li><li class="list-group-item"><a href="/2014/09/22/linux-nginx-something-operating/">Nginx配置日志、Location、Rewrite的语法</a></li><li class="list-group-item"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></li><li class="list-group-item"><a href="/2014/09/10/java-c3p0-configurationl/">c3p0数据库连接池配置</a></li><li class="list-group-item"><a href="/2014/06/07/linux grep命令详解/">linux grep命令详解</a></li><li class="list-group-item"><a href="/2014/08/31/linux-nginx-setup/">nginx在linux下的安装</a></li><li class="list-group-item"><a href="/2014/09/17/linux-kernel-core-paramater/">高可用性linux系统内核参数修改</a></li></ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="linux-nginx-something-operating"  data-url="http://www.haozi520.com/2014/09/22/linux-nginx-something-operating/" data-title="Nginx配置日志、Location、Rewrite的语法"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget panel panel-primary">
+    <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="search">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:www.haozi520.com">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_tagcloud" class="widget panel panel-primary">
+  <div class="panel-heading">标签云</div>  <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_latest_update_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近更新</div>  <div data-src='latest_update_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_random_posts" class="widget panel panel-primary">
+  <div class="panel-heading">随机文章</div>  <div class='hexo_random_posts' data-count=8></div></div>
+
+<div id="widget_google_sidebar" class="widget panel panel-primary">
+  <div class="panel-heading">赞助商</div>  <div style="margin-top:0">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- 侧边栏广告 -->
+	<ins class="adsbygoogle"
+	     style="display:inline-block;width:250px;height:250px"
+	     data-ad-client="ca-pub-2783023736003892"
+	     data-ad-slot="6006336369"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div></div>
+
+<div id="widget_links" class="widget panel panel-primary">
+  <div class="panel-heading">喜欢站点</div>  <div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="http://www.tuicool.com" title="推酷">推酷</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.51cto.com" title="51CTO">51CTO</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://studygolang.com/" title="Golang中文社区(Go语言构建)">Golang中文社区(Go语言构建)</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.36kr.com/" title="36氪 | 关注互联网创业">36氪 | 关注互联网创业</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://coolshell.cn/" title="酷壳 – CoolShell.cn">酷壳 – CoolShell.cn</a>
+        </li>
+    </ul>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2013-2014 lauking
+  
+    &nbsp;&nbsp;</span>
+  
+  <span id='analytics-51la'></span><span id='analytics-google'>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-46059111-1']);
+  _gaq.push(['_trackPageview']);
+  _js2load.push({src:('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'});
+</script></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000210742'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D1000210742%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 12:07:21</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haozi520"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://www.haozi520.com/2014/09/22/linux-nginx-something-operating/";
+    var wumiiTitle = "Nginx配置日志、Location、Rewrite的语法";
+    var wumiiTags = "nginx,有技术";
+    var wumiiCategories = ["linux"];
+    var wumiiSitePrefix = "http://www.haozi520.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      if (alt){
+        $(this).before('<span class="caption">' + alt + '</span>');
+      }
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />');
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script type="text/javascript" src="/js/chenall.js"></script>
+  </body>
+</html>

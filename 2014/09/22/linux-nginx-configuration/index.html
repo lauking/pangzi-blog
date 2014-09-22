@@ -1,0 +1,493 @@
+<!DOCTYPE HTML>
+<html><head>
+<meta http-equiv="Cache-Control" content="max-age=7200" />
+<meta name="wumiiVerification" content="eaeee5f8-f47e-44b2-b042-3fe25f5ee8fd" />
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Nginx配置文件nginx.conf中文详解 | 胖浩网</title>
+<meta name="author" content="lauking">
+
+<meta name="description" content="linux下nginx的所有操作都就是配置nginx.conf">
+
+<meta name="keywords" content="胖浩网，linux,nginx,Nginx配置nginx.conf详解，nginx配置文件中文详解,有技术">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<meta property="og:title" content="Nginx配置文件nginx.conf中文详解"/>
+<meta property="og:site_name" content="胖浩网"/>
+
+<!--[if IE]><style>.testIE.IE{display:inline;}</style><![endif]-->
+<!--[if lte IE 7]><link rel="stylesheet" href="/css/ie7.css" type="text/css"><![endif]-->
+<!--[if (lt IE 9)&(gt IE 7)]><style>.testIE.IE8{display:inline;}</style><![endif]-->
+<!--[if gt IE 8]><style>.testIE.IE9{display:inline;}</style><![endif]-->
+
+
+<link href="/favicon.png" rel="icon">
+<link rel="alternate" href="/atom.xml" title="胖浩网 Feed" type="application/atom+xml">
+
+<link rel="stylesheet" href="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/prettify/r298/prettify.min.css" type="text/css">
+<link rel="stylesheet" href="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css">
+<link rel="stylesheet" href="/css/style.css" type="text/css">
+<!--[if lt IE 9]>
+   <style>article,aside,dialog,footer,header,section,footer,nav,figure,menu{display:block}</style>
+   <script src="http://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+   <script src="http://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<link href="http://cdn.staticfile.org/respond.js/1.4.2/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="/js/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="/js/respond.proxy.js"></script>
+   <script src="http://cdn.bootcss.com/selectivizr/1.0.2/selectivizr-min.js"></script>
+<![endif]-->
+<script type="text/javascript">var site = {BASE_URI: '/'};var _js2load = [];</script>
+
+</head>
+<body>
+      <header id="header" class="container"><nav id="main-nav" class="navbar navbar-default navbar-fixed-top " role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">胖浩网</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+  
+        <li><a href="/categories/go" title="GoLang">GoLang</a></li>      
+        <li><a href="/categories/java" title="Java">Java</a></li>      
+        <li><a href="/categories/php" title="PHP">PHP</a></li>      
+        <li><a href="/categories/nodejs" title="Nodejs">Nodejs</a></li>      
+        <li><a href="/categories/mysql" title="MySql">MySql</a></li>      
+        <li><a href="/categories/linux" title="Linux">Linux</a></li>      
+        <li><a href="/categories/有理想" title="有理想">有理想</a></li>      
+        <li><a href="/categories/有知识" title="有知识">有知识</a></li>      
+        <li><a href="/categories/有技术" title="有技术">有技术</a></li>      
+        <li><a href="/categories/有文化" title="有文化">有文化</a></li>      
+        <li><a href="/categories/收藏" title="收藏">收藏</a></li>      
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+      
+        <li><a href="/atom.xml">RSS</a></li>
+      
+      
+      
+      
+      
+        <li><a href="https://github.com/lauking">github</a></li>
+      
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id='content' class="container">
+     <div class="page-header-wrapper">
+      <!--[if lt IE 9]><div class="alert alert-warning alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button><strong>提示:</strong>您的浏览器版本太低了,建议升级到 <strong><a href="http://windows.microsoft.com/zh-cn/internet-explorer/download-ie" title="IE9">IE9</a></strong> 以上,本站使用<a href="https://www.google.com/intl/zh-CN/chrome/">Chrome浏览器</a>可以获得最好的显示效果.</div><![endif]-->
+      <div class="page-header"><h1>胖浩网 <small>做一个有知识，有文化、有技术、有内涵、有梦想的人</small></h1></div>
+     </div>
+     <div class="row">
+       <div id="main-col" class="alignleft col-sx-12 col-sm-8 col-md-9 col-lg-9">
+      <section id='header_widget'></section>
+          <div id="wrapper"><article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title">Nginx配置文件nginx.conf中文详解</h1>
+      
+        <span>发表于<time datetime="2014-09-22T02:23:00.000Z"> <a href="/2014/09/22/linux-nginx-configuration/">9月 22 2014</a></time></span>      
+    </header>
+    
+    <section id='before_content_widget'></section>
+    <div class="entry">
+      
+        <p>linux下nginx的所有操作都就是配置nginx.conf,如何配置一个优秀的安全的nginx环境，首当其冲的就是要学些它的配置文件,现在给出nginx.conf的中文解释。</p>
+<h3 id="nginx-conf配置文件">nginx.conf配置文件</h3>
+<pre><code><span class="comment">#定义Nginx运行的用户和用户组</span>
+user www www;
+
+<span class="comment">#nginx进程数，建议设置为等于CPU总核心数。</span>
+worker_processes <span class="number">8</span>;
+
+<span class="comment">#全局错误日志定义类型，[ debug | info | notice | warn | error | crit ]</span>
+error_log /<span class="keyword">var</span>/log/nginx/error.log info;
+
+<span class="comment">#进程文件</span>
+pid /<span class="keyword">var</span>/run/nginx.pid;
+
+<span class="comment">#一个nginx进程打开的最多文件描述符数目，理论值应该是最多打开文件数（系统的值ulimit -n）与nginx进程数相除，但是nginx分配请求并不均匀，所以建议与</span>
+ulimit -n的值保持一致。
+worker_rlimit_nofile <span class="number">65535</span>;
+
+<span class="comment">#工作模式与连接数上限</span>
+events
+{
+<span class="comment">#参考事件模型，use [ kqueue | rtsig | epoll | /dev/poll | select | poll ]; epoll模型是Linux2.6以上版本内核中的高性能网络I/O模型，如果跑在FreeBSD上面，</span>
+就用kqueue模型。
+<span class="keyword">use</span> <span class="title">epoll</span>;
+<span class="comment">#单个进程最大连接数（最大连接数=连接数*进程数）</span>
+worker_connections <span class="number">65535</span>;
+}
+
+<span class="comment">#设定http服务器</span>
+http
+{
+    <span class="keyword">include</span> mime.types; <span class="comment">#文件扩展名与文件类型映射表</span>
+    default_type application/octet-stream; <span class="comment">#默认文件类型</span>
+    <span class="comment">#charset utf-8; #默认编码</span>
+    server_names_hash_bucket_size <span class="number">128</span>; <span class="comment">#服务器名字的hash表大小</span>
+    client_header_buffer_size <span class="number">32</span>k; <span class="comment">#上传文件大小限制</span>
+    large_client_header_buffers <span class="number">4</span> <span class="number">64</span>k; <span class="comment">#设定请求缓</span>
+    client_max_body_size <span class="number">8</span>m; <span class="comment">#设定请求缓</span>
+    sendfile on; <span class="comment">#开启高效文件传输模式，sendfile指令指定nginx是否调用sendfile函数来输出文件，对于普通应用设为 on，如果用来进行下载等应用磁盘IO重负</span>
+    载应用，可设置为off，以平衡磁盘与网络I/O处理速度，降低系统的负载。
+    注意：如果图片显示不正常把这个改成off。
+    autoindex on; <span class="comment">#开启目录列表访问，合适下载服务器，默认关闭。</span>
+    tcp_nopush on; <span class="comment">#防止网络阻塞</span>
+    tcp_nodelay on; <span class="comment">#防止网络阻塞</span>
+     keepalive_timeout <span class="number">120</span>; <span class="comment">#长连接超时时间，单位是秒</span>
+     <span class="comment">#FastCGI</span>
+    相关参数是为了改善网站的性能：减少资源占用，提高访问速度。下面参数看字面意思都能理解。
+    fastcgi_connect_timeout <span class="number">300</span>;
+    fastcgi_send_timeout <span class="number">300</span>;
+    fastcgi_read_timeout <span class="number">300</span>;
+    fastcgi_buffer_size <span class="number">64</span>k;
+    fastcgi_buffers <span class="number">4</span> <span class="number">64</span>k;
+    fastcgi_busy_buffers_size <span class="number">128</span>k;
+    fastcgi_temp_file_write_size <span class="number">128</span>k;
+    <span class="comment">#gzip模块设置</span>
+    gzip on; <span class="comment">#开启gzip压缩输出</span>
+    gzip_min_length <span class="number">1</span>k; <span class="comment">#最小压缩文件大小</span>
+    gzip_buffers <span class="number">4</span> <span class="number">16</span>k; <span class="comment">#压缩缓冲区</span>
+    gzip_http_version <span class="number">1.0</span>; <span class="comment">#压缩版本（默认1.1，前端如果是squid2.5请使用1.0）</span>
+    gzip_comp_level <span class="number">2</span>; <span class="comment">#压缩等级</span>
+    gzip_types text/plain application/x-javascript
+     text/css application/xml;
+    <span class="comment">#压缩类型，默认就已经包含text/html，所以下面就不用再写了，写上去也不会有问题，但是会有一个warn。</span>
+    gzip_vary on;
+    <span class="comment">#limit_zone crawler $binary_remote_addr 10m; #开启限制IP连接数的时候需要使用</span>
+    upstream blog.ha97.com {
+        <span class="comment">#upstream的负载均衡，weight是权重，可以根据机器配置定义权重。weigth参数表示权值，权值越高被分配到的几率越大。</span>
+        server <span class="number">192.168</span><span class="number">.80</span><span class="number">.121</span>:<span class="number">80</span> weight=<span class="number">3</span>;
+        server <span class="number">192.168</span><span class="number">.80</span><span class="number">.122</span>:<span class="number">80</span> weight=<span class="number">2</span>;
+        server <span class="number">192.168</span><span class="number">.80</span><span class="number">.123</span>:<span class="number">80</span> weight=<span class="number">3</span>;
+    }
+
+    <span class="comment">#虚拟主机的配置</span>
+    server
+    {
+    <span class="comment">#监听端口</span>
+    listen <span class="number">80</span>;
+    <span class="comment">#域名可以有多个，用空格隔开</span>
+    server_name www.ha97.com ha97.com;
+    index index.html index.htm index.php;
+    root /data/www/ha97;
+    location ~ .*.(php|php5)?$
+    {
+    fastcgi_pass <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">9000</span>;
+    fastcgi_index index.php;
+    <span class="keyword">include</span> fastcgi.conf;
+    }
+    <span class="comment">#图片缓存时间设置</span>
+    location ~ .*.(gif|jpg|jpeg|png|bmp|swf)$
+    {
+    expires <span class="number">10</span>d;
+    }
+    <span class="comment">#JS和CSS缓存时间设置</span>
+    location ~ .*.(js|css)?$
+    {
+    expires <span class="number">1</span>h;
+    }
+    <span class="comment">#日志格式设定</span>
+    log_format
+     access <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span>
+    <span class="string">'$status $body_bytes_sent "$http_referer" '</span>
+    <span class="string">'"$http_user_agent" $http_x_forwarded_for'</span>;
+    <span class="comment">#定义本虚拟主机的访问日志</span>
+    access_log /<span class="keyword">var</span>/log/nginx/ha97access.log access;
+    <span class="comment">#对 "/" 启用反向代理</span>
+    location / {
+        proxy_pass http:<span class="comment">//127.0.0.1:88;</span>
+        proxy_redirect off;
+        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;
+        <span class="comment">#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP</span>
+        proxy_set_header X-Forwarded-<span class="keyword">For</span> <span class="variable">$proxy_add_x_forwarded_for</span>;
+        <span class="comment">#以下是一些反向代理的配置，可选。</span>
+        proxy_set_header Host <span class="variable">$host</span>;
+        client_max_body_size <span class="number">10</span>m; <span class="comment">#允许客户端请求的最大单文件字节数</span>
+        client_body_buffer_size <span class="number">128</span>k; <span class="comment">#缓冲区代理缓冲用户端请求的最大字节数，</span>
+        proxy_connect_timeout <span class="number">90</span>; <span class="comment">#nginx跟后端服务器连接超时时间(代理连接超时)</span>
+        proxy_send_timeout <span class="number">90</span>; <span class="comment">#后端服务器数据回传时间(代理发送超时)</span>
+        proxy_read_timeout <span class="number">90</span>; <span class="comment">#连接成功后，后端服务器响应时间(代理接收超时)</span>
+        proxy_buffer_size <span class="number">4</span>k; <span class="comment">#设置代理服务器（nginx）保存用户头信息的缓冲区大小</span>
+        proxy_buffers <span class="number">4</span> <span class="number">32</span>k; <span class="comment">#proxy_buffers缓冲区，网页平均在32k以下的设置</span>
+        proxy_busy_buffers_size <span class="number">64</span>k; <span class="comment">#高负荷下缓冲大小（proxy_buffers*2）</span>
+        proxy_temp_file_write_size <span class="number">64</span>k;
+        <span class="comment">#设定缓存文件夹大小，大于这个值，将从upstream服务器传</span>
+    }
+    <span class="comment">#设定查看Nginx状态的地址</span>
+    location /NginxStatus {
+        stub_status on;
+        access_log on;
+        auth_basic <span class="string">"NginxStatus"</span>;
+        auth_basic_user_file conf/htpasswd;
+        <span class="comment">#htpasswd文件的内容可以用apache提供的htpasswd工具来产生。</span>
+    } 
+    <span class="comment">#本地动静分离反向代理配置</span>
+    <span class="comment">#所有jsp的页面均交由tomcat或jetty处理</span>
+    location ~ .(jsp|jspx|<span class="keyword">do</span>)?$ {
+        proxy_set_header Host <span class="variable">$host</span>;
+        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;
+        proxy_set_header X-Forwarded-<span class="keyword">For</span> <span class="variable">$proxy_add_x_forwarded_for</span>;
+        proxy_pass http:<span class="comment">//127.0.0.1:8080;</span>
+    }
+    <span class="comment">#所有静态文件由nginx直接读取不经过tomcat或resin</span>
+    location ~ .*.(htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma)${ 
+        expires <span class="number">15</span>d; 
+    }
+
+    location ~ .*.(js|css)?$
+    { 
+        expires <span class="number">1</span>h; 
+    }
+    }
+}
+</code></pre>
+      
+    </div>
+    <section id='after_content_widget'><div class="widget" id="widget_after_content_wumiiRelatedItems>">
+<script type="text/javascript" id="wumiiRelatedItems"></script>
+</div><div class="widget" id="widget_after_content_post_footer_info>">
+<div class="panel panel-success">
+    <div class="panel-heading" align="center">希望本站内容对您有点用处,有什么疑问或建议请在后面留言评论</div>
+    <div align="center" class="panel-body">若无特别注明，本站内容均属原创,转载请注明作者(<a href="">lauking</a>)和出处 <a href="http://www.haozi520.com">胖浩网</a> ，请勿用于任何商业用途</div>
+    <div class="panel-body">本文链接: <a href="/2014/09/22/linux-nginx-configuration/">Nginx配置文件nginx.conf中文详解</a></div>
+</div></div><div class="widget" id="widget_after_content_ujian>">
+<div class="ujian-hook"></div>
+</div></section>
+    
+    
+        <footer id="post-meta">
+        <div class="categories" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nginx/" class="label label-primary" itemprop="url"><span itemprop="title">nginx</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-22 12:14:49"datetime="2014-09-22 12:14:49"> 9月 22 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/22/linux-nginx-configuration/#comments" class="ds-thread-count comment-link" data-thread-key="linux-nginx-configuration" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+    <section id='after_post_widget'><div class="widget" id="widget_after_post_post_pageNav>">
+<ul class="pager">
+  
+  <li class="previous"><a href="/2014/09/22/linux-nginx-something-operating/" title="Nginx配置日志、Location、Rewrite的语法">&larr; Nginx配置日志、Location、Rewrite的语法</a></li>
+  
+  
+  <li class="next"><a href="/2014/09/17/linux-kernel-core-paramater/" title="高可用性linux系统内核参数修改">高可用性linux系统内核参数修改 &rarr;</a></li>
+  
+</ul></div><div class="widget" id="widget_after_post_related_posts>">
+<ul class="list-group"><li class="list-group-item"><a href="/2014/09/10/java-c3p0-configurationl/">c3p0数据库连接池配置</a></li><li class="list-group-item"><a href="/2014/09/10/java-system-properties/">java获取操作系统参数</a></li><li class="list-group-item"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></li><li class="list-group-item"><a href="/2014/08/31/linux-nginx-setup/">nginx在linux下的安装</a></li><li class="list-group-item"><a href="/2014/09/17/linux-kernel-core-paramater/">高可用性linux系统内核参数修改</a></li><li class="list-group-item"><a href="/2014/09/22/linux-nginx-something-operating/">Nginx配置日志、Location、Rewrite的语法</a></li><li class="list-group-item"><a href="/2014/09/22/linux-nginx-configuration/">Nginx配置文件nginx.conf中文详解</a></li><li class="list-group-item"><a href="/2014/09/03/linux-nginx-global-variable/">Nginx全局变量含义整理</a></li></ul></div></section>    
+	<div id="comments"><!-- Duoshuo Comment BEGIN -->
+
+<div class="ds-thread"  data-thread-key="linux-nginx-configuration"  data-url="http://www.haozi520.com/2014/09/22/linux-nginx-configuration/" data-title="Nginx配置文件nginx.conf中文详解"></div>
+<!-- Duoshuo Comment END -->
+
+</div></div><!--wapper-->
+       </div><!-- ID main-col END -->
+       <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
+<div id="widget_search" class="widget panel panel-primary">
+    <form action="//google.com/search" method="get" accept-charset="utf-8">
+  <div class="input-group">
+    <input class="form-control" id="searchbox" type="search" name="q" results="0" placeholder="search">
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="submit">Go!</button>
+    </span>
+    <input type="hidden" name="q" value="site:www.haozi520.com">
+  </div>
+</form>
+</div>
+
+<div id="widget_recent_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近文章</div>  <div data-src='recent_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_tagcloud" class="widget panel panel-primary">
+  <div class="panel-heading">标签云</div>  <div data-src='tagcloud' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_latest_update_posts" class="widget panel panel-primary">
+  <div class="panel-heading">最近更新</div>  <div data-src='latest_update_posts' class='ajax_widgets'>正在加载...</div></div>
+
+<div id="widget_random_posts" class="widget panel panel-primary">
+  <div class="panel-heading">随机文章</div>  <div class='hexo_random_posts' data-count=8></div></div>
+
+<div id="widget_google_sidebar" class="widget panel panel-primary">
+  <div class="panel-heading">赞助商</div>  <div style="margin-top:0">
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<!-- 侧边栏广告 -->
+	<ins class="adsbygoogle"
+	     style="display:inline-block;width:250px;height:250px"
+	     data-ad-client="ca-pub-2783023736003892"
+	     data-ad-slot="6006336369"></ins>
+	<script>
+	(adsbygoogle = window.adsbygoogle || []).push({});
+	</script>
+</div></div>
+
+<div id="widget_links" class="widget panel panel-primary">
+  <div class="panel-heading">喜欢站点</div>  <div>
+    <ul class="list-group">
+        <li class="list-group-item">
+            <a href="http://www.tuicool.com" title="推酷">推酷</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.51cto.com" title="51CTO">51CTO</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://studygolang.com/" title="Golang中文社区(Go语言构建)">Golang中文社区(Go语言构建)</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.36kr.com/" title="36氪 | 关注互联网创业">36氪 | 关注互联网创业</a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://coolshell.cn/" title="酷壳 – CoolShell.cn">酷壳 – CoolShell.cn</a>
+        </li>
+    </ul>
+</div></div>
+
+</aside>
+       <div class="clearfix"></div>
+     </div><!-- row END -->
+  </div>
+  <footer id="footer" class="container">
+  <div class="panel panel-info">
+  <section id='footer_widget'></section>  <div class="panel-footer">
+  <div id="site-info">
+    <span class='author'>
+  
+  &copy; 2013-2014 lauking
+  
+    &nbsp;&nbsp;</span>
+  
+  <span id='analytics-51la'></span><span id='analytics-google'>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-46059111-1']);
+  _gaq.push(['_trackPageview']);
+  _js2load.push({src:('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'});
+</script></span><span id='analytics-cnzz'>
+<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000210742'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s17.cnzz.com/stat.php%3Fid%3D1000210742%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+</span><span id='analytics-baidu'>
+<script>
+var _hmt = _hmt || [];
+_js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
+</script>
+</span>  </div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 12:14:49</em></span></div>
+</div>
+<div class="clearfix"></div>
+  </div>
+  </footer>
+  
+        <script src="http://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>        
+        <script src="http://cdn.staticfile.org/twitter-bootstrap/3.1.0/js/bootstrap.min.js"></script>        
+                
+        <script src="http://cdn.bootcss.com/prettify/r298/prettify.min.js"></script>    <script type="text/javascript">
+   var lang=["bsh", "c", "cc", "cpp", "cs", "csh", "cyc", "cv", "htm", "html",
+    "java", "js", "m", "mxml", "perl", "pl", "pm", "py", "rb", "sh",
+    "xhtml", "xml", "xsl"];
+   var pretty_base='';
+   $('script').each(function(){
+	var c = $(this).attr('src');
+	if (!c)
+	    return;
+	if (c.match(/(\/)?prettify(\.min)?\.js/i))
+	{
+	    var index = c.lastIndexOf('/');
+	    if (index != -1)
+		pretty_base = c.substr(0,index + 1);
+	    return false;
+	}
+   })
+   $('pre code').each(function(){
+	var c = $(this).attr('class')
+	if (!c)
+	    return;
+	c = c.match(/\s?(lang\-\w+)/i);
+	if (c && lang.indexOf(c[1]) == -1)
+	{
+	    lang.push(c[1]);
+	    $.getScript(pretty_base + c[1] + '.min.js');
+	}
+   })
+
+    $(window).load(function(){
+       $("pre").addClass("prettyprint");
+       prettyPrint();
+    })
+</script>    
+            <script type="text/javascript">
+var duoshuoQuery = {short_name:"haozi520"};
+_js2load.push({src:'http://static.duoshuo.com/embed.js',charset:'UTF-8'});
+</script>
+    
+            <!--wumii_relatedItems-->
+
+<script type="text/javascript">
+    var wumiiPermaLink = "http://www.haozi520.com/2014/09/22/linux-nginx-configuration/";
+    var wumiiTitle = "Nginx配置文件nginx.conf中文详解";
+    var wumiiTags = "nginx,有技术";
+    var wumiiCategories = ["linux"];
+    var wumiiSitePrefix = "http://www.haozi520.com";
+    var wumiiParams = "&num=5&mode=3&pf=JAVASCRIPT";
+    _js2load.push({src:'http://widget.wumii.cn/ext/relatedItemsWidget'});
+</script>
+<a href="http://www.wumii.com/widget/relatedItems" style="border:0;">
+<img src="http://static.wumii.cn/images/pixel.png" alt="无觅关联推荐，快速提升流量" style="border:0;padding:0;margin:0;" />
+</a>
+    
+            
+<script type="text/javascript">var ujian_config = {num:6,showType:0,picSize:84,textHeight:45};_js2load.push({src:'http://v1.ujian.cc/code/ujian.js?uid=1899918'});</script>
+<a href="http://www.ujian.cc" style="border:0;"><img src="http://img.ujian.cc/pixel.png" alt="友荐云推荐" style="border:0;padding:0;margin:0;" /></a>
+    
+        <script src="http://cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js"></script>    <script type="text/javascript">
+(function($){
+  $('.entry').each(function(i){
+    $(this).find('img').each(function(){
+      var alt = this.alt;
+
+      if (alt){
+        $(this).before('<span class="caption">' + alt + '</span>');
+      }
+
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox" rel="fancybox' + i + '" />');
+    });
+  });
+
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>    
+        <script src="http://cdn.bootcss.com/mathjax/2.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+    
+<script type="text/javascript" src="/js/chenall.js"></script>
+  </body>
+</html>

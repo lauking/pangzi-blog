@@ -99,6 +99,103 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/05/08/mysql-copy-struct-data-sql/">MySQL复制表结构及数据SQL语句</a></h1>
+      
+        <span>发表于<time datetime="2014-05-08T02:23:12.000Z"> <a href="/2014/05/08/mysql-copy-struct-data-sql/">5月 8 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>对大数据取样操作时避免不了对一张大表数据取出一小部分数据进行分析，这样操作不但能节省时间而且能快速查询获取结果。  复制表结构和符合条件的数据到临时表就是很好的方案，下面介绍MySQL复制表结构及数据SQL语句</p>
+<h3 id="复制表结构及数据到新表">复制表结构及数据到新表</h3>
+<p>CREATE TABLE 新表SELECT * FROM 旧表<br>这种方法会将oldtable中所有的内容都拷贝过来，当然我们可以用delete from newtable;来删除。<br>不过这种方法的一个最不好的地方就是新表中没有了旧表的primary key、Extra（auto_increment）等属性。需要自己用&quot;alter&quot;添加，而且容易搞错。</p>
+<h3 id="只复制表结构到新表">只复制表结构到新表</h3>
+<p>CREATE TABLE 新表SELECT * FROM 旧表WHERE 1=2<br>或CREATE TABLE 新表LIKE 旧表</p>
+<h3 id="复制旧表的数据到新表(假设两个表结构一样)">复制旧表的数据到新表(假设两个表结构一样)</h3>
+<p>INSERT INTO 新表SELECT * FROM 旧表</p>
+<h3 id="复制旧表的数据到新表(假设两个表结构不一样)">复制旧表的数据到新表(假设两个表结构不一样)</h3>
+<p>INSERT INTO 新表(字段1,字段2,…….) SELECT 字段1,字段2,…… FROM 旧表</p>
+<h3 id="可以将表1结构复制到表2">可以将表1结构复制到表2</h3>
+<p>SELECT * INTO 表2 FROM 表1 WHERE 1=2</p>
+<h3 id="可以将表1内容全部复制到表2">可以将表1内容全部复制到表2</h3>
+<p>SELECT * INTO 表2 FROM 表1</p>
+<h3 id="show_create_table_旧表">show create table 旧表</h3>
+<p>这样会将旧表的创建命令列出。我们只需要将该命令拷贝出来，更改table的名字，就可以建立一个完全一样的表</p>
+<h3 id="mysqldump">mysqldump</h3>
+<p>用mysqldump将表dump出来，改名字后再导回去或者直接在命令行中运行</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/mysql/" itemprop="url"><span itemprop="title" >mysql</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/mysql/" class="label label-primary" itemprop="url"><span itemprop="title">mysql</span></a><a href="/tags/表数据/" class="label label-success" itemprop="url"><span itemprop="title">表数据</span></a><a href="/tags/表结构/" class="label label-info" itemprop="url"><span itemprop="title">表结构</span></a></span> | <span class="time">最近更新:<time title="2014-05-28 16:57:15"datetime="2014-05-28 16:57:15"> 5月 28 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/08/mysql-copy-struct-data-sql/#comments" class="ds-thread-count comment-link" data-thread-key="mysql-copy-struct-data-sql" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+
+  <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/05/05/sql-replace-update/">sql中使用replace函数用于update语句</a></h1>
+      
+        <span>发表于<time datetime="2014-05-05T03:44:12.000Z"> <a href="/2014/05/05/sql-replace-update/">5月 5 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>这两天在给一款游戏产品生成模拟玩家排行榜数据，主要生成玩家名字，玩家的积分，使用的道具。为了偷懒，直接从另一款产品中导过一批玩家名字，可是发现有些敏感字符、一些名字还很别扭，很玩家名字中间好几个空格或者名字前面好几个空格。这样在看到排行时就跟别扭了，产品一看就没有档次。<br><img src="http://haozi520.u.qiniudn.com/20140505113935.png" alt="sql中使用replace函数用于update语句"><br>想在数据库中把空格替换掉，看看SQl中replace函数在update中怎么使用。</p>
+<h3 id="REPLACE">REPLACE</h3>
+<p>   用第三个表达式替换第一个字符串表达式中出现的所有第二个给定字符串表达式。</p>
+<h4 id="语法">语法</h4>
+<pre><code><span class="operator"><span class="keyword">REPLACE</span> ( <span class="string">''</span>string_expression1<span class="string">''</span> , <span class="string">''</span>string_expression2<span class="string">''</span> , <span class="string">''</span>string_expression3<span class="string">''</span> )</span>
+</code></pre><h4 id="参数">参数</h4>
+<pre><code><span class="string">''</span>string_expression1<span class="string">''</span> <span class="comment">//待搜索的字符串表达式。string_expression1 可以是字符数据或二进制数据。</span>
+<span class="string">''</span>string_expression2<span class="string">''</span> <span class="comment">//待查找的字符串表达式。string_expression2 可以是字符数据或二进制数据。</span>
+<span class="string">''</span>string_expression3<span class="string">''</span><span class="comment">//替换用的字符串表达式。string_expression3 可以是字符数据或二进制数据。</span>
+</code></pre><h4 id="返回类型">返回类型</h4>
+<pre><code>如果string_expression（<span class="number">1</span>、<span class="number">2</span> 或 <span class="number">3</span>）是支持的字符数据类型之一，则返回字符数据。
+如果string_expression（<span class="number">1</span>、<span class="number">2</span> 或 <span class="number">3</span>）是支持的 <span class="keyword">binary</span> 数据类型之一，则返回二进制数据。
+</code></pre><h3 id="示例">示例</h3>
+<p>   下例用 xxx 替换 abcdefghi 中的字符串 cde。<br>    SELECT REPLACE(‘’abcdefghicde’’,’’cde’’,’’xxx’’)<br>   下面是结果集：<br>     abxxxfghixxx<br>     (1 row(s) affected)</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/mysql/" itemprop="url"><span itemprop="title" >mysql</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/mysql/" class="label label-primary" itemprop="url"><span itemprop="title">mysql</span></a><a href="/tags/replace函数/" class="label label-success" itemprop="url"><span itemprop="title">replace函数</span></a></span> | <span class="time">最近更新:<time title="2014-05-28 17:06:44"datetime="2014-05-28 17:06:44"> 5月 28 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/05/05/sql-replace-update/#comments" class="ds-thread-count comment-link" data-thread-key="sql-replace-update" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+
+  <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/02/26/only-come-from-love/">只源于：爱</a></h1>
       
         <span>发表于<time datetime="2014-02-26T11:51:12.000Z"> <a href="/2014/02/26/only-come-from-love/">2月 26 2014</a></time></span>      
@@ -335,7 +432,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-17 16:20:43</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 12:15:17</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

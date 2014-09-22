@@ -267,6 +267,53 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/09/Golang中new和make的区别/">Golang中new和make的区别</a></h1>
+      
+        <span>发表于<time datetime="2014-06-09T09:20:12.000Z"> <a href="/2014/06/09/Golang中new和make的区别/">6月 9 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>刚学go的人，在看源码或别人的代码时都会头晕，有的时候用new创建变量，有的时候用make创建，一下整理几点</p>
+<h3 id="总结几点">总结几点</h3>
+<ul>
+<li>new会分配结构空间，并初始化为清空为零，不进一步初始化</li>
+<li>new之后需要一个指针来指向这个结构</li>
+<li>make会分配结构空间及其附属空间，并完成其间的指针初始化</li>
+<li>make返回这个结构空间，不另外分配一个指针</li>
+</ul>
+<h3 id="例子new">例子new</h3>
+<p>var p *[]int = new([]int)<br>或p := new([]int)<br>以上分配了一个slice结构，但是结构中的应该指向底层数组的ptr指针为空，故实际不能往这个slice里面存取数据<br>同时分配了一个指针p，也即(在32位系统中)占4个字节并存放slice结构的地址</p>
+<h3 id="例子make">例子make</h3>
+<p>var v []int = make([]int, 0)<br>v := make([]int, 0)<br>以上分配了一个slice结构，且结构中的应该指向底层数组的ptr指针已经指向了某个底层数组，这个底层数组应该已经分配了，故这个slice已经可以使用了<br>注意v就是这个slice结构，而不是一个指向slice的指针<br>上述仅是示例，一般使用时都会明确长度和容量：v := make([]int, 10, 50)</p>
+<h3 id="结论">结论</h3>
+<p>由上可见，用new来分配slice的意义不大，因为没有恰当的初始化，无法直接使用<br>有附带空间的结构，使用make来初始化，可以完成内部指针初始化，其后可以立即使用</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a></span> | <span class="time">最近更新:<time title="2014-06-10 14:54:02"datetime="2014-06-10 14:54:02"> 6月 10 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/09/Golang中new和make的区别/#comments" class="ds-thread-count comment-link" data-thread-key="Golang中new和make的区别" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/09/Golang环境变量及工作空间配置/">Golang环境变量及工作空间配置</a></h1>
       
         <span>发表于<time datetime="2014-06-09T09:20:12.000Z"> <a href="/2014/06/09/Golang环境变量及工作空间配置/">6月 9 2014</a></time></span>      
@@ -321,53 +368,6 @@ $GOPATH/src/mymath/sqrt.<span class="keyword">go</span>源码如下： <span cla
         <footer id="post-meta">
         <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a></span> | <span class="time">最近更新:<time title="2014-06-11 15:29:32"datetime="2014-06-11 15:29:32"> 6月 11 2014</time></span> | <span class="comment-link">
 <a href="http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/#comments" class="ds-thread-count comment-link" data-thread-key="Golang环境变量及工作空间配置" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/09/Golang中new和make的区别/">Golang中new和make的区别</a></h1>
-      
-        <span>发表于<time datetime="2014-06-09T09:20:12.000Z"> <a href="/2014/06/09/Golang中new和make的区别/">6月 9 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>刚学go的人，在看源码或别人的代码时都会头晕，有的时候用new创建变量，有的时候用make创建，一下整理几点</p>
-<h3 id="总结几点">总结几点</h3>
-<ul>
-<li>new会分配结构空间，并初始化为清空为零，不进一步初始化</li>
-<li>new之后需要一个指针来指向这个结构</li>
-<li>make会分配结构空间及其附属空间，并完成其间的指针初始化</li>
-<li>make返回这个结构空间，不另外分配一个指针</li>
-</ul>
-<h3 id="例子new">例子new</h3>
-<p>var p *[]int = new([]int)<br>或p := new([]int)<br>以上分配了一个slice结构，但是结构中的应该指向底层数组的ptr指针为空，故实际不能往这个slice里面存取数据<br>同时分配了一个指针p，也即(在32位系统中)占4个字节并存放slice结构的地址</p>
-<h3 id="例子make">例子make</h3>
-<p>var v []int = make([]int, 0)<br>v := make([]int, 0)<br>以上分配了一个slice结构，且结构中的应该指向底层数组的ptr指针已经指向了某个底层数组，这个底层数组应该已经分配了，故这个slice已经可以使用了<br>注意v就是这个slice结构，而不是一个指向slice的指针<br>上述仅是示例，一般使用时都会明确长度和容量：v := make([]int, 10, 50)</p>
-<h3 id="结论">结论</h3>
-<p>由上可见，用new来分配slice的意义不大，因为没有恰当的初始化，无法直接使用<br>有附带空间的结构，使用make来初始化，可以完成内部指针初始化，其后可以立即使用</p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a></span> | <span class="time">最近更新:<time title="2014-06-10 14:54:02"datetime="2014-06-10 14:54:02"> 6月 10 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/09/Golang中new和make的区别/#comments" class="ds-thread-count comment-link" data-thread-key="Golang中new和make的区别" data-count-type="comments">暂无评论</a></span>
         </footer>
     
     <div class="clearfix"></div>
@@ -470,7 +470,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-17 16:20:43</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 12:15:17</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

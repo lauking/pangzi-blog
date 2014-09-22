@@ -103,6 +103,253 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/22/linux-nginx-something-operating/">Nginx配置日志、Location、Rewrite的语法</a></h1>
+      
+        <span>发表于<time datetime="2014-09-22T02:30:00.000Z"> <a href="/2014/09/22/linux-nginx-something-operating/">9月 22 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>经常遇到配置nginx日志、Location和rewrite的语法问题，这里分别给出他们的配置方法</p>
+<h3 id="error_log_日志">error_log 日志</h3>
+<p>nginx的log有以下几种类型： [ debug | info | notice | warn | error | crit ]<br>在nginx.conf的设置：</p>
+<pre><code>error_log logs/<span class="built_in">error</span>.log  <span class="built_in">debug</span>;
+</code></pre><p>debug 为最详细 crit最少</p>
+<h3 id="rewrites配置">rewrites配置</h3>
+<p>如果要把所有访问www.a.com的请求rewrite到www.b.com上则需要可以这样配置：</p>
+<pre><code>server {
+server_name   www<span class="preprocessor">.a</span><span class="preprocessor">.com</span><span class="comment">;</span>
+Location /{
+    if ($host = <span class="string">"www.a.com"</span>) {
+            rewrite ^(.*)$ http://www<span class="preprocessor">.b</span><span class="preprocessor">.com</span>$1 permanent<span class="comment">;</span>
+    }
+}
+}
+</code></pre><ul>
+<li>last 基本上都用这个Flag。</li>
+<li>break 中止Rewirte，不在继续匹配</li>
+<li>redirect 返回临时重定向的HTTP状态302</li>
+<li>permanent 返回永久重定向的HTTP状态301</li>
+</ul>
+<h3 id="Location语法">Location语法</h3>
+<p>location [=|~|~*|^~] /uri/ { … }</p>
+<p>= 开头表示精确匹配<br>^~ 开头表示uri以某个常规字符串开头，理解为匹配 url路径即可<br>~ 为区分大小写匹配<br>~<em> 为不区分大小写匹配<br>!~和!~</em>分别为区分大小写不匹配及不区分大小写不匹配<br>/ 通用匹配，任何请求都会匹配到。<br>多个location配置的情况下匹配顺序为<br>首先匹配 =，其次匹配^~, 其次是按文件中顺序的正则匹配，最后是交给 / 通用匹配。当有匹配成功时候，停止匹配，按当前匹配规则处理请求。<br>处理静态文件请求，这是nginx作为http服务器的强项<br><strong>有两种配置模式，目录匹配或后缀匹配,任选其一或搭配使用</strong></p>
+<pre><code>location ^~ <span class="regexp">/static/</span> {
+    root <span class="regexp">/webroot/static/</span>;
+}
+location ~* \.(gif|jpg|jpeg|png|css|js|ico)$ {
+    root <span class="regexp">/webroot/res/</span>;
+}
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nginx/" class="label label-primary" itemprop="url"><span itemprop="title">nginx</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-22 12:07:21"datetime="2014-09-22 12:07:21"> 9月 22 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/22/linux-nginx-something-operating/#comments" class="ds-thread-count comment-link" data-thread-key="linux-nginx-something-operating" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/22/linux-nginx-configuration/">Nginx配置文件nginx.conf中文详解</a></h1>
+      
+        <span>发表于<time datetime="2014-09-22T02:23:00.000Z"> <a href="/2014/09/22/linux-nginx-configuration/">9月 22 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>linux下nginx的所有操作都就是配置nginx.conf,如何配置一个优秀的安全的nginx环境，首当其冲的就是要学些它的配置文件,现在给出nginx.conf的中文解释。</p>
+<h3 id="nginx-conf配置文件">nginx.conf配置文件</h3>
+<pre><code><span class="comment">#定义Nginx运行的用户和用户组</span>
+user www www;
+
+<span class="comment">#nginx进程数，建议设置为等于CPU总核心数。</span>
+worker_processes <span class="number">8</span>;
+
+<span class="comment">#全局错误日志定义类型，[ debug | info | notice | warn | error | crit ]</span>
+error_log /<span class="keyword">var</span>/log/nginx/error.log info;
+
+<span class="comment">#进程文件</span>
+pid /<span class="keyword">var</span>/run/nginx.pid;
+
+<span class="comment">#一个nginx进程打开的最多文件描述符数目，理论值应该是最多打开文件数（系统的值ulimit -n）与nginx进程数相除，但是nginx分配请求并不均匀，所以建议与</span>
+ulimit -n的值保持一致。
+worker_rlimit_nofile <span class="number">65535</span>;
+
+<span class="comment">#工作模式与连接数上限</span>
+events
+{
+<span class="comment">#参考事件模型，use [ kqueue | rtsig | epoll | /dev/poll | select | poll ]; epoll模型是Linux2.6以上版本内核中的高性能网络I/O模型，如果跑在FreeBSD上面，</span>
+就用kqueue模型。
+<span class="keyword">use</span> <span class="title">epoll</span>;
+<span class="comment">#单个进程最大连接数（最大连接数=连接数*进程数）</span>
+worker_connections <span class="number">65535</span>;
+}
+
+<span class="comment">#设定http服务器</span>
+http
+{
+    <span class="keyword">include</span> mime.types; <span class="comment">#文件扩展名与文件类型映射表</span>
+    default_type application/octet-stream; <span class="comment">#默认文件类型</span>
+    <span class="comment">#charset utf-8; #默认编码</span>
+    server_names_hash_bucket_size <span class="number">128</span>; <span class="comment">#服务器名字的hash表大小</span>
+    client_header_buffer_size <span class="number">32</span>k; <span class="comment">#上传文件大小限制</span>
+    large_client_header_buffers <span class="number">4</span> <span class="number">64</span>k; <span class="comment">#设定请求缓</span>
+    client_max_body_size <span class="number">8</span>m; <span class="comment">#设定请求缓</span>
+    sendfile on; <span class="comment">#开启高效文件传输模式，sendfile指令指定nginx是否调用sendfile函数来输出文件，对于普通应用设为 on，如果用来进行下载等应用磁盘IO重负</span>
+    载应用，可设置为off，以平衡磁盘与网络I/O处理速度，降低系统的负载。
+    注意：如果图片显示不正常把这个改成off。
+    autoindex on; <span class="comment">#开启目录列表访问，合适下载服务器，默认关闭。</span>
+    tcp_nopush on; <span class="comment">#防止网络阻塞</span>
+    tcp_nodelay on; <span class="comment">#防止网络阻塞</span>
+     keepalive_timeout <span class="number">120</span>; <span class="comment">#长连接超时时间，单位是秒</span>
+     <span class="comment">#FastCGI</span>
+    相关参数是为了改善网站的性能：减少资源占用，提高访问速度。下面参数看字面意思都能理解。
+    fastcgi_connect_timeout <span class="number">300</span>;
+    fastcgi_send_timeout <span class="number">300</span>;
+    fastcgi_read_timeout <span class="number">300</span>;
+    fastcgi_buffer_size <span class="number">64</span>k;
+    fastcgi_buffers <span class="number">4</span> <span class="number">64</span>k;
+    fastcgi_busy_buffers_size <span class="number">128</span>k;
+    fastcgi_temp_file_write_size <span class="number">128</span>k;
+    <span class="comment">#gzip模块设置</span>
+    gzip on; <span class="comment">#开启gzip压缩输出</span>
+    gzip_min_length <span class="number">1</span>k; <span class="comment">#最小压缩文件大小</span>
+    gzip_buffers <span class="number">4</span> <span class="number">16</span>k; <span class="comment">#压缩缓冲区</span>
+    gzip_http_version <span class="number">1.0</span>; <span class="comment">#压缩版本（默认1.1，前端如果是squid2.5请使用1.0）</span>
+    gzip_comp_level <span class="number">2</span>; <span class="comment">#压缩等级</span>
+    gzip_types text/plain application/x-javascript
+     text/css application/xml;
+    <span class="comment">#压缩类型，默认就已经包含text/html，所以下面就不用再写了，写上去也不会有问题，但是会有一个warn。</span>
+    gzip_vary on;
+    <span class="comment">#limit_zone crawler $binary_remote_addr 10m; #开启限制IP连接数的时候需要使用</span>
+    upstream blog.ha97.com {
+        <span class="comment">#upstream的负载均衡，weight是权重，可以根据机器配置定义权重。weigth参数表示权值，权值越高被分配到的几率越大。</span>
+        server <span class="number">192.168</span><span class="number">.80</span><span class="number">.121</span>:<span class="number">80</span> weight=<span class="number">3</span>;
+        server <span class="number">192.168</span><span class="number">.80</span><span class="number">.122</span>:<span class="number">80</span> weight=<span class="number">2</span>;
+        server <span class="number">192.168</span><span class="number">.80</span><span class="number">.123</span>:<span class="number">80</span> weight=<span class="number">3</span>;
+    }
+
+    <span class="comment">#虚拟主机的配置</span>
+    server
+    {
+    <span class="comment">#监听端口</span>
+    listen <span class="number">80</span>;
+    <span class="comment">#域名可以有多个，用空格隔开</span>
+    server_name www.ha97.com ha97.com;
+    index index.html index.htm index.php;
+    root /data/www/ha97;
+    location ~ .*.(php|php5)?$
+    {
+    fastcgi_pass <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">9000</span>;
+    fastcgi_index index.php;
+    <span class="keyword">include</span> fastcgi.conf;
+    }
+    <span class="comment">#图片缓存时间设置</span>
+    location ~ .*.(gif|jpg|jpeg|png|bmp|swf)$
+    {
+    expires <span class="number">10</span>d;
+    }
+    <span class="comment">#JS和CSS缓存时间设置</span>
+    location ~ .*.(js|css)?$
+    {
+    expires <span class="number">1</span>h;
+    }
+    <span class="comment">#日志格式设定</span>
+    log_format
+     access <span class="string">'$remote_addr - $remote_user [$time_local] "$request" '</span>
+    <span class="string">'$status $body_bytes_sent "$http_referer" '</span>
+    <span class="string">'"$http_user_agent" $http_x_forwarded_for'</span>;
+    <span class="comment">#定义本虚拟主机的访问日志</span>
+    access_log /<span class="keyword">var</span>/log/nginx/ha97access.log access;
+    <span class="comment">#对 "/" 启用反向代理</span>
+    location / {
+        proxy_pass http:<span class="comment">//127.0.0.1:88;</span>
+        proxy_redirect off;
+        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;
+        <span class="comment">#后端的Web服务器可以通过X-Forwarded-For获取用户真实IP</span>
+        proxy_set_header X-Forwarded-<span class="keyword">For</span> <span class="variable">$proxy_add_x_forwarded_for</span>;
+        <span class="comment">#以下是一些反向代理的配置，可选。</span>
+        proxy_set_header Host <span class="variable">$host</span>;
+        client_max_body_size <span class="number">10</span>m; <span class="comment">#允许客户端请求的最大单文件字节数</span>
+        client_body_buffer_size <span class="number">128</span>k; <span class="comment">#缓冲区代理缓冲用户端请求的最大字节数，</span>
+        proxy_connect_timeout <span class="number">90</span>; <span class="comment">#nginx跟后端服务器连接超时时间(代理连接超时)</span>
+        proxy_send_timeout <span class="number">90</span>; <span class="comment">#后端服务器数据回传时间(代理发送超时)</span>
+        proxy_read_timeout <span class="number">90</span>; <span class="comment">#连接成功后，后端服务器响应时间(代理接收超时)</span>
+        proxy_buffer_size <span class="number">4</span>k; <span class="comment">#设置代理服务器（nginx）保存用户头信息的缓冲区大小</span>
+        proxy_buffers <span class="number">4</span> <span class="number">32</span>k; <span class="comment">#proxy_buffers缓冲区，网页平均在32k以下的设置</span>
+        proxy_busy_buffers_size <span class="number">64</span>k; <span class="comment">#高负荷下缓冲大小（proxy_buffers*2）</span>
+        proxy_temp_file_write_size <span class="number">64</span>k;
+        <span class="comment">#设定缓存文件夹大小，大于这个值，将从upstream服务器传</span>
+    }
+    <span class="comment">#设定查看Nginx状态的地址</span>
+    location /NginxStatus {
+        stub_status on;
+        access_log on;
+        auth_basic <span class="string">"NginxStatus"</span>;
+        auth_basic_user_file conf/htpasswd;
+        <span class="comment">#htpasswd文件的内容可以用apache提供的htpasswd工具来产生。</span>
+    } 
+    <span class="comment">#本地动静分离反向代理配置</span>
+    <span class="comment">#所有jsp的页面均交由tomcat或jetty处理</span>
+    location ~ .(jsp|jspx|<span class="keyword">do</span>)?$ {
+        proxy_set_header Host <span class="variable">$host</span>;
+        proxy_set_header X-Real-IP <span class="variable">$remote_addr</span>;
+        proxy_set_header X-Forwarded-<span class="keyword">For</span> <span class="variable">$proxy_add_x_forwarded_for</span>;
+        proxy_pass http:<span class="comment">//127.0.0.1:8080;</span>
+    }
+    <span class="comment">#所有静态文件由nginx直接读取不经过tomcat或resin</span>
+    location ~ .*.(htm|html|gif|jpg|jpeg|png|bmp|swf|ioc|rar|zip|txt|flv|mid|doc|ppt|pdf|xls|mp3|wma)${ 
+        expires <span class="number">15</span>d; 
+    }
+
+    location ~ .*.(js|css)?$
+    { 
+        expires <span class="number">1</span>h; 
+    }
+    }
+}
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nginx/" class="label label-primary" itemprop="url"><span itemprop="title">nginx</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-22 12:14:49"datetime="2014-09-22 12:14:49"> 9月 22 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/22/linux-nginx-configuration/#comments" class="ds-thread-count comment-link" data-thread-key="linux-nginx-configuration" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/09/17/linux-kernel-core-paramater/">高可用性linux系统内核参数修改</a></h1>
       
         <span>发表于<time datetime="2014-09-17T06:23:00.000Z"> <a href="/2014/09/17/linux-kernel-core-paramater/">9月 17 2014</a></time></span>      
@@ -342,292 +589,11 @@ tcp   <span class="number">0</span>      <span class="number">0</span>      <spa
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/12/linux-crontab-configuration/">老是遗忘的crontab配置</a></h1>
-      
-        <span>发表于<time datetime="2014-06-12T02:54:00.000Z"> <a href="/2014/06/12/linux-crontab-configuration/">6月 12 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <blockquote>
-<p>很多情况下，都需要在linux系统中定制一些定时任务自动完成操作，而我总是会忘记一些配置项，今天就好好整理下，在linux中crontab的配置</p>
-</blockquote>
-<h3 id="任务调度分类">任务调度分类</h3>
-<ul>
-<li>系统执行的工作：系统周期性所要执行的工作，如备份系统数据、清理缓存</li>
-<li>个人执行的工作：某个用户定期要做的工作，例如每隔10分钟检查邮件服务器是否有新信，这些工作可由每个用户自行设置</li>
-</ul>
-<h3 id="权限文件">权限文件</h3>
-<ul>
-<li>/etc/cron.deny 该文件中所列的用户不允许使用Crontab命令</li>
-<li>/etc/cron.allow 该文件中所列的用户允许使用Crontab命令</li>
-<li>/var/spool/cron/ 是所有用户的crontab文件 </li>
-</ul>
-<h3 id="crontab命令">crontab命令</h3>
-<p>Crontab命令的格式为：crontab –l|-r|-e|-i [username]</p>
-<ul>
-<li>-l 显示用户的Crontab文件的内容,eg:crontab -l</li>
-<li>-i 删除用户的Crontab文件前给提示,eg:crontab -ri</li>
-<li>-r 从Crontab目录中删除用户的Crontab文件,eg:crontab -r</li>
-<li>e 编辑用户的Crontab文件,eg:crontab -e</li>
-</ul>
-<p><em>用户所建立的Crontab文件存于/var/spool/cron中，其文件名与用户名一致。</em></p>
-<h3 id="crontab格式">crontab格式</h3>
-<p>它的格式共分为六段，前五段为时间设定段，第六段为所要执行的命令段，<br>格式如下：<em> </em> <em> </em> * </p>
-<pre><code>.------------- minute (<span class="number">0</span>-<span class="number">59</span>) 
-|  .---------- hour (<span class="number">0</span>-<span class="number">23</span>)
-|  |  .------- day of month (<span class="number">1</span>-<span class="number">31</span>)
-|  |  |  .---- month (<span class="number">1</span>-<span class="number">12</span>) OR jan,feb,mar,apr <span class="keyword">...</span>
-|  |  |  |  .- day of week(<span class="number">0</span>-<span class="number">6</span>)(Sunday=0or7) OR sun,mon,tue,wed,thu,fri,sat
-|  |  |  |  |
-*  *  *  *  * user-name command to be executed
-</code></pre><h3 id="举例">举例</h3>
-<ul>
-<li>0 17 <em> </em> 1-5 mail -s “hi” alex@domain.name&gt;/dev/null 2&gt;&amp;1 周一到周五每天下午 5:00 寄一封信给 alex@domain.name</li>
-<li>0 6-12/3 <em> 12 </em> /usr/bin/backup  在 12 月内, 每天的早上 6 点到 12 点中，每隔 20 分钟执行一次 /usr/bin/backup</li>
-<li>0 <em>/2 </em> <em> </em> /sbin/service httpd restart  意思是每两个小时重启一次apache</li>
-<li>50 7 <em> </em> * /sbin/service sshd start  意思是每天7：50开启ssh服务</li>
-<li>50 22 <em> </em> * /sbin/service sshd stop  意思是每天22：50关闭ssh服务</li>
-<li>0 0 1,15 <em> </em> fsck /home  每月1号和15号检查/home 磁盘</li>
-<li>1 <em> </em> <em> </em> /home/bruce/backup  每小时的第一分执行 /home/bruce/backup这个文件</li>
-<li>00 03 <em> </em> 1-5 find /home “*.xxx” -mtime +4 -exec rm {} \;  每周一至周五3点钟，在目录/home中，查找文件名为*.xxx的文件，并删除4天前的文件。</li>
-<li>30 6 <em>/10 </em> * ls  意思是每月的1、11、21、31日是的6：30执行一次ls命令</li>
-</ul>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/crontab/" class="label label-success" itemprop="url"><span itemprop="title">crontab</span></a></span> | <span class="time">最近更新:<time title="2014-06-12 12:23:36"datetime="2014-06-12 12:23:36"> 6月 12 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/12/linux-crontab-configuration/#comments" class="ds-thread-count comment-link" data-thread-key="linux-crontab-configuration" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/07/linux grep命令详解/">linux grep命令详解</a></h1>
-      
-        <span>发表于<time datetime="2014-06-07T08:32:12.000Z"> <a href="/2014/06/07/linux grep命令详解/">6月 7 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>grep (global search regular expression(RE) and print out the line,全面搜索正则表达式并把行打印出来)是一种强大的文本搜索工具，<br>它能使用正则表达式搜索文本，并把匹配的行打印出来。<br>Unix的grep家族包括grep、egrep和fgrep。egrep和fgrep的命令只跟grep有很小不同。egrep是grep的扩展，支持更多的re元字符， fgrep就是fixed grep或fast grep，它们把所有的字母都看作单词，也就是说，正则表达式中的元字符表示回其自身的字面意义，不再特殊。linux使用GNU版本的grep。它功能更强，可以通过-G、-E、-F命令行选项来使用egrep和fgrep的功能。</p>
-<h3 id="grep常用用法">grep常用用法</h3>
-<p><strong>grep [-acinv] [—color=auto] ‘搜寻字符串’ filename</strong></p>
-<pre><code>选项与参数：
--<span class="ruby">a ：将 binary 文件以 text 文件的方式搜寻数据
-</span>-<span class="ruby">c ：计算找到 <span class="string">'搜寻字符串'</span> 的次数
-</span>-<span class="ruby">i ：忽略大小写的不同，所以大小写视为相同
-</span>-<span class="ruby">n ：顺便输出行号
-</span>-<span class="ruby">v ：反向选择，亦即显示出没有 <span class="string">'搜寻字符串'</span> 内容的那一行！
-</span>-<span class="ruby">-color=auto ：可以将找到的关键词部分加上颜色的显示喔！</span>
-</code></pre><p>以操作/etc/passwd文件来说明：</p>
-<pre><code>将/etc/passwd，有出现 root 的行取出来
-   <span class="keyword">grep</span> root /etc/passwd
-将/etc/passwd，有出现 root 的行取出来,同时显示这些行在/etc/passwd的行号
-   <span class="keyword">grep</span> -n root /etc/passwd
-将/etc/passwd，将没有出现 root 的行取出来
-   <span class="keyword">grep</span> -v root /etc/passwd 
-将/etc/passwd，将没有出现 root 和nologin的行取出来
-   <span class="keyword">grep</span> -v root /etc/passwd | <span class="keyword">grep</span> -v nologin 
-用 dmesg 列出核心信息，再以 <span class="keyword">grep</span> 找出内含 eth 那行,要将捉到的关键字显色，且加上行号来表示
-   dmesg | <span class="keyword">grep</span> -n --color=auto <span class="string">'eth'</span>
-用 dmesg 列出核心信息，再以 <span class="keyword">grep</span> 找出内含 eth 那行,在关键字所在行的前两行与后三行也一起捉出来显示
-   dmesg | <span class="keyword">grep</span> -n -A3 -B2 --color=auto <span class="string">'eth'</span> 
-</code></pre><blockquote>
-<p>在关键字的显示方面，grep 可以使用 —color=auto 来将关键字部分使用颜色显示。 这可是个很不错的功能啊！但是如果每次使用 grep 都得要自行加上 —color=auto 又显的很麻烦～ 此时那个好用的 alias 就得来处理一下啦！你可以在 ~/.bashrc 内加上这行：『alias grep=’grep —color=auto’』再以『 source ~/.bashrc 』来立即生效即可喔！ 这样每次运行 grep 他都会自动帮你加上颜色显示啦</p>
-</blockquote>
-<h3 id="根据文件内容递归查找目录">根据文件内容递归查找目录</h3>
-<pre><code><span class="keyword">grep</span> ‘energywise’ *           <span class="comment">#在当前目录搜索带'energywise'行的文件</span>
-<span class="keyword">grep</span> -r ‘energywise’ *        <span class="comment">#在当前目录及其子目录下搜索'energywise'行的文件</span>
-<span class="keyword">grep</span> -l -r ‘energywise’ *     <span class="comment">#在当前目录及其子目录下搜索'energywise'行的文件，但是不显示匹配的行，只显示匹配的文件</span>
-</code></pre><p>这几个命令很使用，是查找文件的利器。</p>
-<h3 id="grep与正规表达式">grep与正规表达式</h3>
-<p><strong>字符类</strong><br>字符类的搜索：如果我想要搜寻 test 或 taste 这两个单字时，可以发现到，<br>其实她们有共通的 ‘t?st’ 存在～这个时候，我可以这样来搜寻</p>
-<pre><code>grep -n <span class="string">'t[ae]st'</span> regular_express.txt
-<span class="number">8</span><span class="symbol">:I</span> can<span class="string">'t finish the test.
-9:Oh! The soup taste good.</span>
-</code></pre><p>其实 [] 里面不论有几个字节，他都谨代表某『一个』字节， 所以，上面的例子说明了，<br>我需要的字串是『tast』或『test』两个字串而已！</p>
-<p>字符类的反向选择 [^] ：如果想要搜索到有 oo 的行，但不想要 oo 前面有 g，如下</p>
-<pre><code>[root<span class="variable">@www</span> ~]<span class="comment"># grep -n '[^g]oo' regular_express.txt</span>
-<span class="number">2</span><span class="symbol">:apple</span> is my favorite food.
-<span class="number">3</span><span class="symbol">:Football</span> game is <span class="keyword">not</span> use feet only.
-<span class="number">18</span><span class="symbol">:google</span> is the best tools <span class="keyword">for</span> search keyword.
-<span class="number">19</span><span class="symbol">:goooooogle</span> yes!
-</code></pre><p>第 2,3 行没有疑问，因为 foo 与 Foo 均可被接受！<br>但是第 18 行明明有 google 的 goo 啊～别忘记了，因为该行后面出现了 tool 的 too 啊！所以该行也被列出来～ 也就是说， 18 行里面虽然出现了我们所不要的项目 (goo) 但是由於有需要的项目 (too) ， 因此，是符合字串搜寻的喔！<br>至於第 19 行，同样的，因为 goooooogle 里面的 oo 前面可能是 o ，例如： go(ooo)oogle ，所以，这一行也是符合需求的！</p>
-<p>字符类的连续：再来，假设我 oo 前面不想要有小写字节，所以，我可以这样写 [^abcd….z]oo ， 但是这样似乎不怎么方便，由於小写字节的 ASCII 上编码的顺序是连续的， 因此，我们可以将之简化为底下这样：</p>
-<pre><code>[root<span class="variable">@www</span> ~]<span class="comment"># grep -n '[^a-z]oo' regular_express.txt</span>
-<span class="number">3</span><span class="symbol">:Football</span> game is <span class="keyword">not</span> use feet only.
-</code></pre><p>也就是说，当我们在一组集合字节中，如果该字节组是连续的，例如大写英文/小写英文/数字等等， 就可以使用[a-z],[A-Z],[0-9]等方式来书写，那么如果我们的要求字串是数<br>字与英文呢？ 呵呵！就将他全部写在一起，变成：[a-zA-Z0-9]。我们要取得有数字的那<br>一行，就这样：</p>
-<pre><code>[root<span class="property">@www</span> ~]<span class="comment"># grep -n '[0-9]' regular_express.txt</span>
-<span class="number">5</span>:However, <span class="keyword">this</span> dress <span class="keyword">is</span> about $ <span class="number">3183</span> dollars.
-<span class="number">15</span>:You are the best <span class="keyword">is</span> mean you are the <span class="literal">no</span>. <span class="number">1.</span>
-</code></pre><p>行首与行尾字节 ^ $<br>行首字符：如果我想要让 the 只在行首列出呢？ 这个时候就得要使用定位字节了！我们可以这样做：</p>
-<pre><code>[root@www ~]<span class="preprocessor"># grep -n '^the' regular_express.txt</span>
-<span class="number">12</span>:the symbol <span class="string">'*'</span> <span class="keyword">is</span> represented <span class="keyword">as</span> start.
-</code></pre><p>此时，就只剩下第 12 行，因为只有第 12 行的行首是 the 开头啊～此外， 如果我想要开头是小写字节的那一行就列出呢？可以这样：</p>
-<pre><code>[root@www ~]<span class="comment"># grep -n '^[a-z]' regular_express.txt</span>
-<span class="number">2</span>:apple <span class="keyword">is</span> <span class="keyword">my</span> favorite food.
-<span class="number">4</span>:this dress doesn't fit <span class="keyword">me</span>.
-<span class="number">10</span>:motorcycle <span class="keyword">is</span> cheap than car.
-<span class="number">12</span>:<span class="keyword">the</span> symbol '*' <span class="keyword">is</span> represented <span class="keyword">as</span> start.
-<span class="number">18</span>:google <span class="keyword">is</span> <span class="keyword">the</span> best tools <span class="keyword">for</span> search keyword.
-<span class="number">19</span>:goooooogle yes!
-<span class="number">20</span>:go! go! Let's go.
-</code></pre><p>如果我不想要开头是英文字母，则可以是这样：</p>
-<pre><code>[root@www ~]<span class="preprocessor"># grep -n '^[^a-zA-Z]' regular_express.txt</span>
-<span class="number">1</span>:<span class="string">"Open Source"</span> <span class="keyword">is</span> a good mechanism <span class="keyword">to</span> develop programs.
-<span class="number">21</span>:<span class="preprocessor"># I am VBird</span>
-</code></pre><p>^ 符号，在字符类符号(括号[])之内与之外是不同的！ 在 [] 内代表『反向选择』，在 [] 之外则代表定位在行首的意义！</p>
-<p>那如果我想要找出来，行尾结束为小数点 (.) 的那一行：</p>
-<pre><code>[root@www ~]<span class="comment"># grep -n '\.$' regular_express.txt</span>
-<span class="number">1</span>:<span class="string">"Open Source"</span> <span class="keyword">is</span> a good mechanism <span class="keyword">to</span> develop programs.
-<span class="number">2</span>:apple <span class="keyword">is</span> <span class="keyword">my</span> favorite food.
-<span class="number">3</span>:Football game <span class="keyword">is</span> <span class="keyword">not</span> use feet only.
-<span class="number">4</span>:this dress doesn't fit <span class="keyword">me</span>.
-<span class="number">10</span>:motorcycle <span class="keyword">is</span> cheap than car.
-<span class="number">11</span>:This window <span class="keyword">is</span> clear.
-<span class="number">12</span>:<span class="keyword">the</span> symbol '*' <span class="keyword">is</span> represented <span class="keyword">as</span> start.
-<span class="number">15</span>:You are <span class="keyword">the</span> best <span class="keyword">is</span> mean you are <span class="keyword">the</span> no. <span class="number">1.</span>
-<span class="number">16</span>:The world &lt;Happy&gt; <span class="keyword">is</span> <span class="keyword">the</span> same <span class="keyword">with</span> <span class="string">"glad"</span>.
-<span class="number">17</span>:I like dog.
-<span class="number">18</span>:google <span class="keyword">is</span> <span class="keyword">the</span> best tools <span class="keyword">for</span> search keyword.
-<span class="number">20</span>:go! go! Let's go.
-</code></pre><p><em>特别注意到，因为小数点具有其他意义(底下会介绍)，所以必须要使用转义字符()来加以解除其特殊意义！</em></p>
-<p>找出空白行：</p>
-<pre><code>[root<span class="variable">@www</span> ~]<span class="comment"># grep -n '^$' regular_express.txt</span>
-<span class="number">22</span><span class="symbol">:</span>
-</code></pre><p>因为只有行首跟行尾 (^$)，所以，这样就可以找出空白行啦！</p>
-<p>任意一个字节 . 与重复字节 *<br>这两个符号在正则表达式的意义如下：</p>
-<pre><code>-<span class="ruby"> . (小数点)：代表『一定有一个任意字节』的意思；
-</span>-<span class="ruby"> * (星号)：代表『重复前一个字符， <span class="number">0</span> 到无穷多次』的意思，为组合形态</span>
-</code></pre><p>假设我需要找出 g??d 的字串，亦即共有四个字节， 起头是 g 而结束是 d ，我可以这样做：</p>
-<pre><code>[root@www ~]<span class="comment"># grep -n 'g..d' regular_express.txt</span>
-<span class="number">1</span>:<span class="string">"Open Source"</span> <span class="keyword">is</span> a good mechanism <span class="keyword">to</span> develop programs.
-<span class="number">9</span>:Oh! The soup taste good.
-<span class="number">16</span>:The world &lt;Happy&gt; <span class="keyword">is</span> <span class="keyword">the</span> same <span class="keyword">with</span> <span class="string">"glad"</span>.
-</code></pre><p>因为强调 g 与 d 之间一定要存在两个字节，因此，第 13 行的 god 与第 14 行的 gd 就不会被列出来啦！</p>
-<p>如果我想要列出有 oo, ooo, oooo 等等的数据， 也就是说，至少要有两个(含) o 以上，该如何是好？</p>
-<p>因为 <em> 代表的是『重复 0 个或多个前面的 RE 字符』的意义， 因此，『o</em>』代表的是：『拥有空字节或一个 o 以上的字节』，因此，『 grep -n ‘o*’ regular_express.txt 』将会把所有的数据都列印出来终端上！</p>
-<p>当我们需要『至少两个 o 以上的字串』时，就需要 ooo* ，亦即是：</p>
-<pre><code>[root@www ~]<span class="comment"># grep -n 'ooo*' regular_express.txt</span>
-<span class="number">1</span>:<span class="string">"Open Source"</span> <span class="keyword">is</span> a good mechanism <span class="keyword">to</span> develop programs.
-<span class="number">2</span>:apple <span class="keyword">is</span> <span class="keyword">my</span> favorite food.
-<span class="number">3</span>:Football game <span class="keyword">is</span> <span class="keyword">not</span> use feet only.
-<span class="number">9</span>:Oh! The soup taste good.
-<span class="number">18</span>:google <span class="keyword">is</span> <span class="keyword">the</span> best tools <span class="keyword">for</span> search keyword.
-<span class="number">19</span>:goooooogle yes!
-</code></pre><p>如果我想要字串开头与结尾都是 g，但是两个 g 之间仅能存在至少一个 o ，亦即是 gog, goog, gooog…. 等等，那该如何？</p>
-<pre><code>[root<span class="variable">@www</span> ~]<span class="comment"># grep -n 'goo*g' regular_express.txt</span>
-<span class="number">18</span><span class="symbol">:google</span> is the best tools <span class="keyword">for</span> search keyword.
-<span class="number">19</span><span class="symbol">:goooooogle</span> yes!
-</code></pre><p>如果我想要找出 g 开头与 g 结尾的行，当中的字符可有可无</p>
-<pre><code>[root@www ~]<span class="preprocessor"># grep -n 'g.*g' regular_express.txt</span>
-<span class="number">1</span>:<span class="string">"Open Source"</span> <span class="keyword">is</span> a good mechanism <span class="keyword">to</span> develop programs.
-<span class="number">14</span>:The gd software <span class="keyword">is</span> a library <span class="keyword">for</span> drafting programs.
-<span class="number">18</span>:google <span class="keyword">is</span> the best tools <span class="keyword">for</span> search keyword.
-<span class="number">19</span>:goooooogle yes!
-<span class="number">20</span>:go! go! <span class="keyword">Let</span><span class="comment">'s go.</span>
-</code></pre><p>因为是代表 g 开头与 g 结尾，中间任意字节均可接受，所以，第 1, 14, 20 行是可接受的喔！ 这个 .* 的 RE 表示任意字符是很常见的.</p>
-<p>如果我想要找出『任意数字』的行？因为仅有数字，所以就成为：</p>
-<pre><code>[<span class="link_label">root@www ~</span>]# grep -n '[<span class="link_label">0-9</span>][<span class="link_reference">0-9</span>]*' regular_express.txt
-5:However, this dress is about $ 3183 dollars.
-15:You are the best is mean you are the no. 1.
-</code></pre><p>限定连续 RE 字符范围 {}<br>我们可以利用 . 与 RE 字符及 * 来配置 0 个到无限多个重复字节， 那如果我想要限制一个范围区间内的重复字节数呢？</p>
-<p>举例来说，我想要找出两个到五个 o 的连续字串，该如何作？这时候就得要使用到限定范围的字符 {} 了。 但因为 { 与 } 的符号在 shell 是有特殊意义的，因此， 我们必须要使用字符   \ 来让他失去特殊意义才行。 至於 {} 的语法是这样的，假设我要找到两个 o 的字串，可以是：</p>
-<pre><code>[root@www ~]<span class="comment"># grep -n 'o\{2\}' regular_express.txt</span>
-<span class="number">1</span>:<span class="string">"Open Source"</span> <span class="keyword">is</span> a good mechanism <span class="keyword">to</span> develop programs.
-<span class="number">2</span>:apple <span class="keyword">is</span> <span class="keyword">my</span> favorite food.
-<span class="number">3</span>:Football game <span class="keyword">is</span> <span class="keyword">not</span> use feet only.
-<span class="number">9</span>:Oh! The soup taste good.
-<span class="number">18</span>:google <span class="keyword">is</span> <span class="keyword">the</span> best tools <span class="keyword">for</span> search ke
-<span class="number">19</span>:goooooogle yes!
-</code></pre><p>假设我们要找出 g 后面接 2 到 5 个 o ，然后再接一个 g 的字串，他会是这样：</p>
-<pre><code>[root<span class="variable">@www</span> ~]<span class="comment"># grep -n 'go\{2,5\}g' regular_express.txt</span>
-<span class="number">18</span><span class="symbol">:google</span> is the best tools <span class="keyword">for</span> search keyword.
-</code></pre><p>如果我想要的是 2 个 o 以上的 goooo….g 呢？除了可以是 gooo*g ，也可以是：</p>
-<pre><code>[root<span class="variable">@www</span> ~]<span class="comment"># grep -n 'go\{2,\}g' regular_express.txt</span>
-<span class="number">18</span><span class="symbol">:google</span> is the best tools <span class="keyword">for</span> search keyword.
-<span class="number">19</span><span class="symbol">:goooooogle</span> yes!
-</code></pre><h3 id="扩展grep(grep_-E_或者_egrep)：">扩展grep(grep -E 或者 egrep)：</h3>
-<p>使用扩展grep的主要好处是增加了额外的正则表达式元字符集。</p>
-<p>打印所有包含NW或EA的行。如果不是使用egrep，而是grep，将不会有结果查出。</p>
-<pre><code><span class="array"># egrep </span><span class="string">'NW|EA'</span> testfile     
-northwest       NW      Charles Main        <span class="number">3.0</span>     <span class="number">.98</span>     <span class="number">3</span>       <span class="number">34</span>
-eastern         EA      TB Savage           <span class="number">4.4</span>     <span class="number">.84</span>     <span class="number">5</span>       <span class="number">20</span>
-</code></pre><p>对于标准grep，如果在扩展元字符前面加\，grep会自动启用扩展选项-E。</p>
-<pre><code><span class="array">#grep </span><span class="string">'NW\|EA'</span> testfile
-northwest       NW      Charles Main        <span class="number">3.0</span>     <span class="number">.98</span>     <span class="number">3</span>       <span class="number">34</span>
-eastern         EA      TB Savage           <span class="number">4.4</span>     <span class="number">.84</span>     <span class="number">5</span>       <span class="number">20</span>
-</code></pre><p>搜索所有包含一个或多个3的行。</p>
-<pre><code><span class="preprocessor"># egrep '3+' testfile</span>
-<span class="preprocessor"># grep -E '3+' testfile</span>
-<span class="preprocessor"># grep '3\+' testfile        </span>
-<span class="preprocessor">#这3条命令将会</span>
-northwest      <span class="constant"> NW </span>     Charles Main          <span class="number">3.0</span>     <span class="number">.98</span>     <span class="number">3</span>       <span class="number">34</span>
-western        <span class="constant"> WE </span>     Sharon Gray           <span class="number">5.3</span>     <span class="number">.97</span>     <span class="number">5</span>       <span class="number">23</span>
-northeast      <span class="constant"> NE </span>    <span class="constant"> AM </span>Main Jr.           <span class="number">5.1</span>     <span class="number">.94</span>     <span class="number">3</span>       <span class="number">13</span>
-central        <span class="constant"> CT </span>     Ann Stephens          <span class="number">5.7</span>     <span class="number">.94</span>     <span class="number">5</span>       <span class="number">13</span>
-</code></pre><p>搜索所有包含0个或1个小数点字符的行。</p>
-<pre><code><span class="preprocessor"># egrep '2\.?[0-9]' testfile </span>
-<span class="preprocessor"># grep -E '2\.?[0-9]' testfile</span>
-<span class="preprocessor"># grep '2\.\?[0-9]' testfile </span>
-<span class="preprocessor">#首先含有2字符，其后紧跟着0个或1个点，后面再是0和9之间的数字。</span>
-western        <span class="constant"> WE </span>      Sharon Gray          <span class="number">5.3</span>     <span class="number">.97</span>     <span class="number">5</span>       <span class="number">23</span>
-southwest      <span class="constant"> SW </span>     Lewis Dalsass         <span class="number">2.7</span>     <span class="number">.8</span>      <span class="number">2</span>       <span class="number">18</span>
-eastern        <span class="constant"> EA </span>     <span class="constant"> TB </span>Savage            <span class="number">4.4</span>     <span class="number">.84</span>     <span class="number">5</span>       <span class="number">20</span>
-</code></pre><p>搜索一个或者多个连续的no的行。</p>
-<pre><code><span class="array"># egrep </span><span class="string">'(no)+'</span> testfile
-<span class="array"># grep </span>-E <span class="string">'(no)+'</span> testfile
-<span class="array"># grep </span><span class="string">'\(no\)\+'</span> testfile   #<span class="number">3</span>个命令返回相同结果，
-northwest       NW      Charles Main        <span class="number">3.0</span>     <span class="number">.98</span>     <span class="number">3</span>       <span class="number">34</span>
-northeast       NE       AM Main Jr.        <span class="number">5.1</span>     <span class="number">.94</span>     <span class="number">3</span>       <span class="number">13</span>
-north           NO      Margot Weber        <span class="number">4.5</span>     <span class="number">.89</span>     <span class="number">5</span>       <span class="number">9</span>
-</code></pre><h3 id="不使用正则表达式">不使用正则表达式</h3>
-<p><strong>fgrep</strong><br>查询速度比grep命令快，但是不够灵活：它只能找固定的文本，而不是规则表达式。<br>如果你想在一个文件或者输出中找到包含星号字符的行</p>
-<pre><code>fgrep  <span class="string">'*'</span> /etc/profile
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="regexp">/etc/profile.d/</span>*.sh ; <span class="keyword">do</span>
-</code></pre><p>或</p>
-<pre><code>grep -F <span class="string">'*'</span> /etc/profile
-<span class="keyword">for</span> i <span class="keyword">in</span> <span class="regexp">/etc/profile.d/</span>*.sh ; <span class="keyword">do</span>
-</code></pre>
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/grep/" class="label label-success" itemprop="url"><span itemprop="title">grep</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 17:10:21"datetime="2014-06-07 17:10:21"> 6月 7 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/07/linux grep命令详解/#comments" class="ds-thread-count comment-link" data-thread-key="linux grep命令详解" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article></div><!--wapper-->
+<ul id="pagination" class="pagination pagination-lg">
+  <li class="active"><li><span class="page-number current">1</span></li></li><li><a class="page-number" href="/categories/linux/page/2/">2</a></li><li><a class="extend next" href="/categories/linux/page/2/">&raquo;</a></li>
+  <div class="clearfix"></div>
+</ul></div><!--wapper-->
        </div><!-- ID main-col END -->
        <aside id="sidebar" class="alignright col-sx-6 col-sm-4 col-md-3 col-lg-3">
 <div id="widget_search" class="widget panel panel-primary">
@@ -716,7 +682,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-17 16:20:43</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 12:15:17</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
