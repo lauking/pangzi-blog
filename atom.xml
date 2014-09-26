@@ -4,7 +4,7 @@
   <subtitle><![CDATA[做一个有知识，有文化、有技术、有内涵、有梦想的人]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.haozi520.com/"/>
-  <updated>2014-09-26T08:26:52.053Z</updated>
+  <updated>2014-09-26T09:20:26.962Z</updated>
   <id>http://www.haozi520.com/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.haozi520.com/2014/09/26/linux-bash-bug/"/>
     <id>http://www.haozi520.com/2014/09/26/linux-bash-bug/</id>
     <published>2014-09-26T07:54:00.000Z</published>
-    <updated>2014-09-26T08:24:42.000Z</updated>
+    <updated>2014-09-26T09:18:52.000Z</updated>
     <content type="html"><![CDATA[<p>日前Linux官方内置Bash中新发现一个非常严重安全漏洞（<a href="https://access.redhat.com/security/cve/CVE-2014-6271" target="_blank">漏洞参考</a>），黑客可以利用该Bash漏洞完全控制目标<br>系统并发起攻击。目前解决办法是Linux官方提供的解决办法，针对此漏洞Linux官方解决办法仍然有可能会被绕过，后续我会提供较为彻底的解决办法。</p>
 <h3 id="已确认被成功利用的软件及系统">已确认被成功利用的软件及系统</h3>
 <p>所有安装GNU bash 版本小于或者等于4.3的Linux操作系统。</p>
@@ -31,8 +31,13 @@
 <pre><code>vulnerable   
 <span class="keyword">this</span> <span class="keyword">is</span> a test  
 </code></pre><h3 id="修补方案">修补方案</h3>
-<p><strong>centos:</strong><br>ftp://ftp.cwru.edu/pub/bash/bash-4.3.tar.gz<br>ftp://ftp.gnu.org/pub/gnu/bash/bash-4.3.tar.gz</p>
-<p><strong>ubuntu:</strong><br>14.04 64bit</p>
+<p><strong>centos:</strong> </p>
+<pre><code><span class="preprocessor">#yum update bash</span>
+<span class="preprocessor">#rpm -qa | grep bash</span>
+bash-<span class="number">4.1</span><span class="number">.2</span>-<span class="number">15.</span>el6_4.x86_64
+</code></pre><p>或者</p>
+<pre><code><span class="variable">#rpm</span> <span class="subst">--</span>force <span class="attribute">-Uvh</span> http:<span class="comment">//mirrors.tencentyun.com/centos1/6.5/updates/x86_64/Packages/bash-4.1.2-15.el6_5.2.x86_64.rpm</span>
+</code></pre><p><strong>ubuntu:</strong><br>14.04 64bit</p>
 <pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_amd64.deb &amp;&amp; dpkg -i bash_4.3-7ubuntu1.1_amd64.deb</span>
 </code></pre><p>14.04 32bit </p>
 <pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_i386.deb &amp;&amp; dpkg -i  bash_4.3-7ubuntu1.1_i386.deb</span>
@@ -605,37 +610,6 @@ tcp   <span class="number">0</span>      <span class="number">0</span>      <spa
   </entry>
   
   <entry>
-    <title><![CDATA[MySQL建立唯一索引去重失效]]></title>
-    <link href="http://www.haozi520.com/2014/08/30/mysql-alert-ignore-index/"/>
-    <id>http://www.haozi520.com/2014/08/30/mysql-alert-ignore-index/</id>
-    <published>2014-08-30T09:37:12.000Z</published>
-    <updated>2014-08-30T10:00:37.000Z</updated>
-    <content type="html"><![CDATA[<h3 id="建立唯一索引">建立唯一索引</h3>
-<p>数据库在处理重复数据时经常会用到建立字段的唯一索引或联合索引</p>
-<pre><code>例如，user表中有user_id,user_name两个字段，如果不希望有两条一摸一样的的user_id和user_name，我们可以给user表添加两个字段的联合唯一索引：
-<span class="operator"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">user</span> <span class="keyword">add</span> <span class="keyword">unique</span> index(user_id,user_name);</span>
-这样当向表中添加相同记录的时候，会返回1062的添加失败信息。
-但是有一种情况是表中已经有n个重复的记录，这时候我们才想起来要添加唯一索引，再执行上面的操作时，数据库会告诉你已经有重复的记录了，建立索引失败，这时候，我们可以用下面的操作：
-<span class="operator"><span class="keyword">alter</span> ignore <span class="keyword">table</span> <span class="keyword">user</span> <span class="keyword">add</span> <span class="keyword">unique</span> index(user_id,user_name);</span>
-它会删除重复的记录（别怕，会保留一条），然后建立唯一索引，高效而且人性化。
-</code></pre><h3 id="问题">问题</h3>
-<p>在5.1版本中在5.1版本时创建唯一去重索引是会失效，网上说有人提交了bug，而mysql官方并没有对此进行快速修改，直到5.6版本才修正此bug。只好用临时方案解决此bug。就是在执行创建唯一去重索引语句前现执行：</p>
-<pre><code>mysql&gt;<span class="built_in">set</span> session old_alter_table =<span class="command"><span class="keyword">on</span>;</span>
-</code></pre><p>然后在执行创建唯一去重索引语句<br>关闭命令窗口后此次设置的session old_alter_table =on; 将失效</p>
-]]></content>
-    
-    
-      <category term="mysql" scheme="http://www.haozi520.com/tags/mysql/"/>
-    
-      <category term="索引" scheme="http://www.haozi520.com/tags/%E7%B4%A2%E5%BC%95/"/>
-    
-      <category term="去重" scheme="http://www.haozi520.com/tags/%E5%8E%BB%E9%87%8D/"/>
-    
-      <category term="mysql" scheme="http://www.haozi520.com/categories/mysql/"/>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[MySQL时间函数整理]]></title>
     <link href="http://www.haozi520.com/2014/08/30/mysql-date-function/"/>
     <id>http://www.haozi520.com/2014/08/30/mysql-date-function/</id>
@@ -991,6 +965,37 @@ Query OK, 0 rows affected (0.00 sec)
       <category term="时间函数" scheme="http://www.haozi520.com/tags/%E6%97%B6%E9%97%B4%E5%87%BD%E6%95%B0/"/>
     
       <category term="时间转换" scheme="http://www.haozi520.com/tags/%E6%97%B6%E9%97%B4%E8%BD%AC%E6%8D%A2/"/>
+    
+      <category term="mysql" scheme="http://www.haozi520.com/categories/mysql/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[MySQL建立唯一索引去重失效]]></title>
+    <link href="http://www.haozi520.com/2014/08/30/mysql-alert-ignore-index/"/>
+    <id>http://www.haozi520.com/2014/08/30/mysql-alert-ignore-index/</id>
+    <published>2014-08-30T09:37:12.000Z</published>
+    <updated>2014-08-30T10:00:37.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="建立唯一索引">建立唯一索引</h3>
+<p>数据库在处理重复数据时经常会用到建立字段的唯一索引或联合索引</p>
+<pre><code>例如，user表中有user_id,user_name两个字段，如果不希望有两条一摸一样的的user_id和user_name，我们可以给user表添加两个字段的联合唯一索引：
+<span class="operator"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="keyword">user</span> <span class="keyword">add</span> <span class="keyword">unique</span> index(user_id,user_name);</span>
+这样当向表中添加相同记录的时候，会返回1062的添加失败信息。
+但是有一种情况是表中已经有n个重复的记录，这时候我们才想起来要添加唯一索引，再执行上面的操作时，数据库会告诉你已经有重复的记录了，建立索引失败，这时候，我们可以用下面的操作：
+<span class="operator"><span class="keyword">alter</span> ignore <span class="keyword">table</span> <span class="keyword">user</span> <span class="keyword">add</span> <span class="keyword">unique</span> index(user_id,user_name);</span>
+它会删除重复的记录（别怕，会保留一条），然后建立唯一索引，高效而且人性化。
+</code></pre><h3 id="问题">问题</h3>
+<p>在5.1版本中在5.1版本时创建唯一去重索引是会失效，网上说有人提交了bug，而mysql官方并没有对此进行快速修改，直到5.6版本才修正此bug。只好用临时方案解决此bug。就是在执行创建唯一去重索引语句前现执行：</p>
+<pre><code>mysql&gt;<span class="built_in">set</span> session old_alter_table =<span class="command"><span class="keyword">on</span>;</span>
+</code></pre><p>然后在执行创建唯一去重索引语句<br>关闭命令窗口后此次设置的session old_alter_table =on; 将失效</p>
+]]></content>
+    
+    
+      <category term="mysql" scheme="http://www.haozi520.com/tags/mysql/"/>
+    
+      <category term="索引" scheme="http://www.haozi520.com/tags/%E7%B4%A2%E5%BC%95/"/>
+    
+      <category term="去重" scheme="http://www.haozi520.com/tags/%E5%8E%BB%E9%87%8D/"/>
     
       <category term="mysql" scheme="http://www.haozi520.com/categories/mysql/"/>
     

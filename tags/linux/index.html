@@ -122,8 +122,13 @@
 <pre><code>vulnerable   
 <span class="keyword">this</span> <span class="keyword">is</span> a test  
 </code></pre><h3 id="修补方案">修补方案</h3>
-<p><strong>centos:</strong><br>ftp://ftp.cwru.edu/pub/bash/bash-4.3.tar.gz<br>ftp://ftp.gnu.org/pub/gnu/bash/bash-4.3.tar.gz</p>
-<p><strong>ubuntu:</strong><br>14.04 64bit</p>
+<p><strong>centos:</strong> </p>
+<pre><code><span class="preprocessor">#yum update bash</span>
+<span class="preprocessor">#rpm -qa | grep bash</span>
+bash-<span class="number">4.1</span><span class="number">.2</span>-<span class="number">15.</span>el6_4.x86_64
+</code></pre><p>或者</p>
+<pre><code><span class="variable">#rpm</span> <span class="subst">--</span>force <span class="attribute">-Uvh</span> http:<span class="comment">//mirrors.tencentyun.com/centos1/6.5/updates/x86_64/Packages/bash-4.1.2-15.el6_5.2.x86_64.rpm</span>
+</code></pre><p><strong>ubuntu:</strong><br>14.04 64bit</p>
 <pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_amd64.deb &amp;&amp; dpkg -i bash_4.3-7ubuntu1.1_amd64.deb</span>
 </code></pre><p>14.04 32bit </p>
 <pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_i386.deb &amp;&amp; dpkg -i  bash_4.3-7ubuntu1.1_i386.deb</span>
@@ -155,7 +160,7 @@
     
     
         <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/Bash/" class="label label-success" itemprop="url"><span itemprop="title">Bash</span></a><a href="/tags/系统漏洞/" class="label label-info" itemprop="url"><span itemprop="title">系统漏洞</span></a></span> | <span class="time">最近更新:<time title="2014-09-26 16:24:42"datetime="2014-09-26 16:24:42"> 9月 26 2014</time></span> | <span class="comment-link">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/Bash/" class="label label-success" itemprop="url"><span itemprop="title">Bash</span></a><a href="/tags/系统漏洞/" class="label label-info" itemprop="url"><span itemprop="title">系统漏洞</span></a></span> | <span class="time">最近更新:<time title="2014-09-26 17:18:52"datetime="2014-09-26 17:18:52"> 9月 26 2014</time></span> | <span class="comment-link">
 <a href="http://www.haozi520.com/2014/09/26/linux-bash-bug/#comments" class="ds-thread-count comment-link" data-thread-key="linux-bash-bug" data-count-type="comments">暂无评论</a></span>
         </footer>
     
@@ -721,7 +726,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-26 16:26:56</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-26 17:20:31</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
