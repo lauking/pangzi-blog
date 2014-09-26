@@ -99,6 +99,61 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/10/java-c3p0-configurationl/">c3p0数据库连接池配置</a></h1>
+      
+        <span>发表于<time datetime="2014-09-10T06:23:00.000Z"> <a href="/2014/09/10/java-c3p0-configurationl/">9月 10 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>使用java操作数据库时，都会想到使用数据库连接池，而c3p0是比较早的数据库连接池库，配置好数据源你只要从其中获取数据库连接，关闭连接就可以，其中关闭连接并未真正关闭，而是等到过了最大空闲时间才会关闭。</p>
+<h3 id="官方文档">官方文档</h3>
+<p><a href="http://www.mchange.com/projects/c3p0/index.html" target="_blank">http://www.mchange.com/projects/c3p0/index.html</a><br><img src="http://haozi520.u.qiniudn.com/20140910145039.png" alt=""></p>
+<h3 id="参数说明">参数说明</h3>
+<p><strong>acquireIncrement：</strong><br>当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3<br><strong>acquireRetryAttempts：</strong><br>定义在从数据库获取新连接失败后重复尝试的次数。<br>Default: 30<br><strong>acquireRetryDelay：</strong><br>两次连接中间隔时间，单位毫秒。Default: 1000<br><strong>autoCommitOnClose：</strong><br>连接关闭时默认将所有未提交的操作回滚。Default: false<br><strong>automaticTestTable：</strong><br>c3p0将建一张名为Test的空表，并使用其自带的查询语句进行测试。如果定义了这个参数那么属性preferredTestQuery将被忽略。你不能在这张Test表上进行任何操作，它将只供c3p0测试使用。Default: null<br><strong>breakAfterAcquireFailure：</strong><br>获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试获取连接失败后该数据源将申明已断开并永久关闭。Default: false<br><strong>checkoutTimeout：</strong><br>当连接池用完时客户端调用getConnection()后等待获取新连接的时间，<br>超时后将抛出SQLException,如设为0则无限期等待。单位毫秒。Default: 0<br><strong>connectionTesterClassName：</strong><br>通过实现ConnectionTester或QueryConnectionTester的类来测试连接。类名需制定全路径。Default: com.mchange.v2.c3p0.impl.DefaultConnectionTester<br><strong>factoryClassLocation：</strong><br>指定c3p0 libraries的路径，如果（通常都是这样）<br>在本地即可获得那么无需设置，默认null即可，Default: null<br><strong>forceIgnoreUnresolvedTransactions：</strong><br>作者强烈建议不使用的一个属性<br><strong>idleConnectionTestPeriod：</strong><br>每60秒检查所有连接池中的空闲连接。Default: 0<br><strong>initialPoolSize：</strong><br>初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3<br><strong>maxIdleTime：</strong><br>最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0<br><strong>maxPoolSize：</strong><br>连接池中保留的最大连接数。Default: 15<br><strong>maxStatements：</strong><br>JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0<br><strong>maxStatementsPerConnection：</strong><br>maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。Default: 0<br><strong>numHelperThreads：</strong><br>c3p0是异步操作的，缓慢的JDBC操作通过帮助进程完成。扩展这些操作可以有效的提升性能通过多线程实现多个操作同时被执行。Default: 3<br><strong>overrideDefaultUser：</strong><br>当用户调用getConnection()时使root用户成为去获取连接<br>的用户。主要用于连接池连接非c3p0的数据源时。Default: null<br><strong>overrideDefaultPassword：</strong><br>与overrideDefaultUser参数对应使用的一个参数。<br>Default: null<br><strong>password：</strong><br>密码。Default: null<br><strong>preferredTestQuery：</strong><br>定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。select id from test where id=1 注意：<br>测试的表必须在初始数据源的时候就存在。Default: null<br><strong>propertyCycle：</strong><br>用户修改系统配置参数执行前最多等待300秒。Default: 300<br><strong>testConnectionOnCheckout：</strong><br>因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的<br>时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable<br>等方法来提升连接测试的性能。Default: false<br><strong>testConnectionOnCheckin：</strong><br>如果设为true那么在取得连接的同时将校验连接的有效性。Default: false<br><strong>user：</strong><br>用户名。Default: null<br><strong>usesTraditionalReflectiveProxies：</strong><br>早期的c3p0版本对JDBC接口采用动态反射代理。在早期版本用途广泛的情况下这个参数<br>允许用户恢复到动态反射代理以解决不稳定的故障。最新的非反射代理更快并且已经开始<br>广泛的被使用，所以这个参数未必有用。现在原先的动态反射与新的非反射代理同时受到<br>支持，但今后可能的版本可能不支持动态反射代理。Default: false</p>
+<h3 id="配置项">配置项</h3>
+<pre><code>jdbc<span class="preprocessor">.driverClass</span>=<span class="keyword">com</span><span class="preprocessor">.mysql</span><span class="preprocessor">.jdbc</span><span class="preprocessor">.Driver</span>
+jdbc<span class="preprocessor">.jdbcUrl</span> = jdbc:mysql://localhost:<span class="number">3333</span>/panghaowang
+jdbc<span class="preprocessor">.user</span> = phroot
+jdbc<span class="preprocessor">.password</span> = <span class="number">123456</span>
+jdbc<span class="preprocessor">.miniPoolSize</span> = <span class="number">2</span>
+jdbc<span class="preprocessor">.maxPoolSize</span> = <span class="number">60</span>
+jdbc<span class="preprocessor">.initialPoolSize</span> =<span class="number">2</span>
+jdbc<span class="preprocessor">.maxIdleTime</span> = <span class="number">25000</span>
+jdbc<span class="preprocessor">.acquireIncrement</span> = <span class="number">2</span>
+
+jdbc<span class="preprocessor">.acquireRetryAttempts</span> = <span class="number">30</span>
+jdbc<span class="preprocessor">.acquireRetryDelay</span> = <span class="number">1000</span>
+jdbc<span class="preprocessor">.testConnectionOnCheckin</span> = true
+jdbc<span class="preprocessor">.automaticTestTable</span> = tb_test
+jdbc<span class="preprocessor">.idleConnectionTestPeriod</span> = <span class="number">18000</span>
+jdbc<span class="preprocessor">.checkoutTimeout</span>=<span class="number">3000</span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a><a href="/tags/c3p0/" class="label label-info" itemprop="url"><span itemprop="title">c3p0</span></a><a href="/tags/数据库连接池/" class="label label-warning" itemprop="url"><span itemprop="title">数据库连接池</span></a></span> | <span class="time">最近更新:<time title="2014-09-10 15:20:15"datetime="2014-09-10 15:20:15"> 9月 10 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/10/java-c3p0-configurationl/#comments" class="ds-thread-count comment-link" data-thread-key="java-c3p0-configurationl" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+
+  <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/09/10/java-system-properties/">java获取操作系统参数</a></h1>
       
         <span>发表于<time datetime="2014-09-10T02:23:00.000Z"> <a href="/2014/09/10/java-system-properties/">9月 10 2014</a></time></span>      
@@ -331,381 +386,6 @@ tcp   <span class="number">0</span>      <span class="number">0</span>      <spa
 
 
 
-  <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/08/30/mysql-date-function/">MySQL时间函数整理</a></h1>
-      
-        <span>发表于<time datetime="2014-08-30T09:37:12.000Z"> <a href="/2014/08/30/mysql-date-function/">8月 30 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <h3 id="Mysql_获得当前日期时间">Mysql 获得当前日期时间</h3>
-<p><strong>Now()</strong> : 获得当前的 日期+ 时间（date + time ）函数：</p>
-<pre><code><span class="header">mysql&gt; select now();
-+---------------------+</span>
-<span class="header">| now()               |
-+---------------------+</span>
-<span class="header">| 2011-03-01 10:26:23 |
-+---------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p>同等的函数还包括current_timestamp(),localtime() ，但是now() 最容易记忆，所以推荐使用。</p>
-<p><strong>Sysdate()</strong> : 日期时间函数跟 now() 类似，不同之处在于：now() 在执行开始时值就得到了， sysdate() 在函数执行时动态得到值。</p>
-<p>看下面的例子就明白了：</p>
-<pre><code>mysql&gt; select now(),sleep(3),now();
-
-<span class="code">+---------------------+</span>----------<span class="code">+---------------------+</span>
-<span class="header">| now()               | sleep(3) | now()               |
-+---------------------+----------+---------------------+</span>
-<span class="header">| 2011-03-01 10:51:43 |        0 | 2011-03-01 10:51:43 |
-+---------------------+----------+---------------------+</span>
-1 row in set (3.02 sec)
-<span class="header">mysql&gt; select sysdate(),sleep(3),sysdate();
-+---------------------+----------+---------------------+</span>
-<span class="header">| sysdate()           | sleep(3) | sysdate()           |
-+---------------------+----------+---------------------+</span>
-<span class="header">| 2011-03-01 10:52:09 |        0 | 2011-03-01 10:52:12 |
-+---------------------+----------+---------------------+</span>
-1 row in set (3.00 sec)
-</code></pre><p>可以看到，虽然中途 sleep 3 秒，但 now() 函数两次的时间值是相同的； sysdate() 函数两次得到的时间值相差 3 秒</p>
-<p><strong>也可以只取当前日期或者当前时间</strong><br><strong>Curdate()</strong>: 获得当前日期</p>
-<pre><code><span class="header">mysql&gt; select curdate();
-+------------+</span>
-<span class="header">| curdate()  |
-+------------+</span>
-<span class="header">| 2011-03-01 |
-+------------+</span>
-1 row in set (0.01 sec)
-</code></pre><p><strong>Curtime()</strong>：获得当前时间（time ）函数</p>
-<pre><code><span class="header">mysql&gt; select curtime();
-+-----------+</span>
-<span class="header">| curtime() |
-+-----------+</span>
-<span class="header">| 10:55:12  |
-+-----------+</span>
-1 row in set (0.00 sec)
-</code></pre><h3 id="Mysql日期时间的抽取">Mysql日期时间的抽取</h3>
-<p>通过这一功能，我们可以从一个时间中抽取自己想要的部分，例如</p>
-<pre><code>mysql&gt; <span class="built_in">set</span> @ct=<span class="string">'2011-03-01 11:16:14.123456'</span>; 
-Query OK, <span class="number">0</span> rows affected (<span class="number">0.01</span> <span class="built_in">sec</span>)
-</code></pre><p>设置变量ct 为某一时间值，精确到微妙<br><strong>获取其日期值</strong>：</p>
-<pre><code><span class="header">mysql&gt; select date(@ct);
-+------------+</span>
-<span class="header">| date(@ct)  |
-+------------+</span>
-<span class="header">| 2011-03-01 |
-+------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>查看此日期所属季度</strong></p>
-<pre><code><span class="header">mysql&gt; select quarter(@ct);
-+--------------+</span>
-<span class="header">| quarter(@ct) |
-+--------------+</span>
-<span class="header">|            1 |
-+--------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>查看此日期属于当年哪一周</strong></p>
-<pre><code><span class="header">mysql&gt; select week(@ct);
-+-----------+</span>
-<span class="header">| week(@ct) |
-+-----------+</span>
-<span class="header">|         9 |
-+-----------+</span>
-1 row in set (0.00 sec)
-</code></pre><p>另外还有year(),day(),hour(),minute(),second() 等，在此不一一赘述。</p>
-<p>采用extract() ，也可以实现类似的功能，语法格式为extract(year from @ct) ，<br>不足之处在于需要多敲几次键盘</p>
-<h3 id="Dayof_函数">Dayof 函数</h3>
-<p>Dayofweek(),dayofmonth(),dayofyear() 分别返回日期再一周、一月以及一年中的位置</p>
-<pre><code><span class="header">mysql&gt; select dayofweek(@ct);
-+----------------+</span>
-<span class="header">| dayofweek(@ct) |
-+----------------+</span>
-<span class="header">|              3 |
-+----------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p>注意：其实3 月1 号是星期二，但是返回数字3 ，因为是从Sunday 开始算起的(1=Sunday,2=Monday, …)</p>
-<pre><code><span class="header">mysql&gt; select dayofmonth(@ct);
-+-----------------+</span>
-<span class="header">| dayofmonth(@ct) |
-+-----------------+</span>
-<span class="header">|               1 |
-+-----------------+</span>
-1 row in set (0.00 sec)
-
-<span class="header">mysql&gt; select dayofyear(@ct);
-+----------------+</span>
-<span class="header">| dayofyear(@ct) |
-+----------------+</span>
-<span class="header">|             60 |
-+----------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>weekofyear()</strong>:查看日期属于当年的第几周</p>
-<pre><code><span class="header">mysql&gt; select weekofyear(@ct);
-+-----------------+</span>
-<span class="header">| weekofyear(@ct) |
-+-----------------+</span>
-<span class="header">|               9 |
-+-----------------+</span>
-1 row in set (0.00 sec)
-</code></pre><h3 id="返回星期名和月份名的函数">返回星期名和月份名的函数</h3>
-<p><strong>Dayname()</strong>： 计算日期是星期几</p>
-<pre><code><span class="header">mysql&gt; select dayname(@ct);
-+--------------+</span>
-<span class="header">| dayname(@ct) |
-+--------------+</span>
-<span class="header">| Tuesday      |
-+--------------+</span>
-1 row in set (0.02 sec)
-</code></pre><p><strong>Monthname()</strong>:计算日期是哪一月</p>
-<pre><code><span class="header">mysql&gt; select monthname(@ct);
-+----------------+</span>
-<span class="header">| monthname(@ct) |
-+----------------+</span>
-<span class="header">| March          |
-+----------------+</span>
-1 row in set (0.00 sec)
-</code></pre><h3 id="月份中最后一天">月份中最后一天</h3>
-<p><strong>Last_day()</strong> : 返回月份中最后一天</p>
-<pre><code><span class="header">mysql&gt; select now();
-+---------------------+</span>
-<span class="header">| now()               |
-+---------------------+</span>
-<span class="header">| 2011-03-01 13:15:00 |
-+---------------------+</span>
-1 row in set (0.00 sec)
-
-<span class="header">mysql&gt; select last_day(now());
-+-----------------+</span>
-<span class="header">| last_day(now()) |
-+-----------------+</span>
-<span class="header">| 2011-03-31      |
-+-----------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p>通过该函数，可以计算出当前月份有多少天</p>
-<pre><code><span class="header">mysql&gt; select now(),day(last_day(now())) ;
-+---------------------+----------------------+</span>
-<span class="header">| now()               | day(last_day(now())) |
-+---------------------+----------------------+</span>
-<span class="header">| 2011-03-01 13:17:12 |                   31 |
-+---------------------+----------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><h3 id="Mysql_的日期时间计算函数">Mysql 的日期时间计算函数</h3>
-<p>Date_add() : 为日期增加一个时间间隔</p>
-<p>具体语法为date_add(@ct, interval num year/quarter/month/week/day/hour/minute/secont/microsecond);</p>
-<p>注意: 此函数并不改变变量@ct 的实际值</p>
-<pre><code>mysql&gt; set @ct=now();
-Query OK, 0 rows affected (0.00 sec)
-<span class="header">mysql&gt; select @ct;
-+---------------------+</span>
-<span class="header">| @ct                 |
-+---------------------+</span>
-<span class="header">| 2011-03-01 15:09:16 |
-+---------------------+</span>
-1 row in set (0.00 sec)
-<span class="header">mysql&gt; select date_add(@ct,interval 1 day);
-+------------------------------+</span>
-<span class="header">| date_add(@ct,interval 1 day) |
-+------------------------------+</span>
-<span class="header">| 2011-03-02 15:09:16          |
-+------------------------------+</span>
-1 row in set (0.00 sec)
-<span class="header">mysql&gt; select @ct;
-+---------------------+</span>
-<span class="header">| @ct                 |
-+---------------------+</span>
-<span class="header">| 2011-03-01 15:09:16 |
-+---------------------+</span>
-1 row in set (0.00 sec)
-<span class="header">mysql&gt; select date_add(@ct,interval 1 week);
-+-------------------------------+</span>
-<span class="header">| date_add(@ct,interval 1 week) |
-+-------------------------------+</span>
-<span class="header">| 2011-03-08 15:09:16           |
-+-------------------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p>类似功能还有adddate(),addtime() 等函数，与之相对应的是date_sub() ，顾名思义就是日期减法<br>另类日期函数</p>
-<p><strong>Period_add(P,N)</strong>: 日期加/ 减去N 月，其中P 的格式应为yyyymm 或yymm<br><strong>Period_diff(P1,P2)</strong>: 日期p1-p2 ，返回N 个月</p>
-<pre><code><span class="header">mysql&gt; select period_add(201103,2),period_add(201103,-2) ;
-+----------------------+-----------------------+</span>
-<span class="header">| period_add(201103,2) | period_add(201103,-2) |
-+----------------------+-----------------------+</span>
-<span class="header">|               201105 |                201101 |
-+----------------------+-----------------------+</span>
-1 row in set (0.00 sec)
-
-<span class="header">mysql&gt; select period_diff('201103','201101');
-+--------------------------------+</span>
-<span class="header">| period_diff('201103','201101') |
-+--------------------------------+</span>
-<span class="header">|                              2 |
-+--------------------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>日期时间相减函数</strong><br><strong>Datediff(date1,date2)</strong> : 两个日期date1-date2</p>
-<pre><code><span class="header">mysql&gt; select datediff('2011-03-09','2011-03-01');
-+-------------------------------------+</span>
-<span class="header">| datediff('2011-03-09','2011-03-01') |
-+-------------------------------------+</span>
-<span class="header">|                                   8 |
-+-------------------------------------+</span>
-1 row in set (0.00 sec)
-
-<span class="header">mysql&gt; select datediff('2011-03-01','2011-03-09');
-+-------------------------------------+</span>
-<span class="header">| datediff('2011-03-01','2011-03-09') |
-+-------------------------------------+</span>
-<span class="header">|                                  -8 |
-+-------------------------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>Timediff(time1,time2)</strong> : 两个时间相减</p>
-<pre><code><span class="header">mysql&gt; select timediff('2011-03-03 15:33:00','2011-03-02 15:33:59');
-+-------------------------------------------------------+</span>
-<span class="header">| timediff('2011-03-03 15:33:00','2011-03-02 15:33:59') |
-+-------------------------------------------------------+</span>
-<span class="header">| 23:59:01                                              |
-+-------------------------------------------------------+</span>
-1 row in set (0.00 sec)
-<span class="header">mysql&gt; select timediff('15:33:00','15:33:59');
-+---------------------------------+</span>
-<span class="header">| timediff('15:33:00','15:33:59') |
-+---------------------------------+</span>
-<span class="header">| -00:00:59                       |
-+---------------------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><h3 id="MySql_日期、时间转换函数">MySql 日期、时间转换函数</h3>
-<p><strong>Time_to_sec(time)</strong> : 时间—&gt; 秒 转换函数<br><strong>Sec_to_time(num)</strong> : 秒—&gt; 时间 转换函数</p>
-<pre><code><span class="header">mysql&gt; select time_to_sec('01:00:00');
-+-------------------------+</span>
-<span class="header">| time_to_sec('01:00:00') |
-+-------------------------+</span>
-<span class="header">|                    3600 |
-+-------------------------+</span>
-1 row in set (0.00 sec)
-<span class="header">mysql&gt; select sec_to_time(3600);
-+-------------------+</span>
-<span class="header">| sec_to_time(3600) |
-+-------------------+</span>
-<span class="header">| 01:00:00          |
-+-------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>To_days(date)</strong> : 日期—&gt; 天 转换函数 起始日期为0000-00-00<br><strong>From_days(num)</strong> : 天—&gt; 日期 将数字转换为具体的日期</p>
-<pre><code><span class="header">mysql&gt; select to_days('2011-03-01');
-+-----------------------+</span>
-<span class="header">| to_days('2011-03-01') |
-+-----------------------+</span>
-<span class="header">|                734562 |
-+-----------------------+</span>
-1 row in set (0.00 sec) 
-<span class="header">mysql&gt; select from_days(734562);
-+-------------------+</span>
-<span class="header">| from_days(734562) |
-+-------------------+</span>
-<span class="header">| 2011-03-01        |
-+-------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>Str_to_date(str,date)</strong>: 字符串—&gt; 日期 转换函数<br>可以将一些杂乱无章的字符转换为日期格式</p>
-<pre><code><span class="header">mysql&gt; select str_to_date('01.03.2011', '%m.%d.%Y');
-+---------------------------------------+</span>
-<span class="header">| str_to_date('01.03.2011', '%m.%d.%Y') |
-+---------------------------------------+</span>
-<span class="header">| 2011-01-03                            |
-+---------------------------------------+</span>
-1 row in set (0.00 sec)
-
-<span class="header">mysql&gt; select str_to_date('01/03/2011', '%m/%d/%Y');
-+---------------------------------------+</span>
-<span class="header">| str_to_date('01/03/2011', '%m/%d/%Y') |
-+---------------------------------------+</span>
-<span class="header">| 2011-01-03                            |
-+---------------------------------------+</span>
-1 row in set (0.00 sec)
-</code></pre><h3 id="小练习：">小练习：</h3>
-<p>以表centralmobile_logs 为例，目前该表总共有270 多万条数据</p>
-<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs;
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|  2725403 |
-+----------+</span>
-1 row in set (0.00 sec)
-</code></pre><p><strong>现在对其做一些统计</strong><br><strong>查询过去30 天总共有多少数据</strong></p>
-<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where to_days(curdate())- to_days(create_time)&lt;=30;
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|  2367518 |
-+----------+</span>
-1 row in set (3.38 sec)
-<span class="header">mysql&gt; select count(*) from centralmobile_logs where datediff(curdate(),create_time) &lt;=30;
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|  2367518 |
-+----------+</span>
-1 row in set (3.29 sec)
-</code></pre><p><strong>查看每月第一天的数据</strong></p>
-<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where dayofmonth(create_time)=1;
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|   161293 |
-+----------+</span>
-1 row in set (3.14 sec)
-</code></pre><p><strong>查看11 年1 月31 日之前的数据</strong></p>
-<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where create_time &lt;='2011-01-31 00:00:00';
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|   413797 |
-+----------+</span>
-1 row in set (0.17 sec)
-</code></pre><p><strong>查看11 年整个二月份的数据</strong></p>
-<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where monthname(create_time)='February' and year(create_time)=2011;
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|  2149284 |
-+----------+</span>
-1 row in set (3.94 sec)
-</code></pre><p><strong>查看11 年每个周日的累积数据</strong></p>
-<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where dayname(create_time)='Sunday' and year(create_time)=2011;
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|   479033 |
-+----------+</span>
-1 row in set (3.88 sec)
-</code></pre><p><strong>查看每天零点时分插入的数据总和</strong></p>
-<pre><code><span class="header">mysql&gt; select count(*) from centralmobile_logs where time(create_time)='00:00:00';
-+----------+</span>
-<span class="header">| count(*) |
-+----------+</span>
-<span class="header">|       37 |
-+----------+</span>
-1 row in set (3.99 sec)
-</code></pre>
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/mysql/" itemprop="url"><span itemprop="title" >mysql</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/mysql/" class="label label-primary" itemprop="url"><span itemprop="title">mysql</span></a><a href="/tags/时间函数/" class="label label-success" itemprop="url"><span itemprop="title">时间函数</span></a><a href="/tags/时间转换/" class="label label-info" itemprop="url"><span itemprop="title">时间转换</span></a></span> | <span class="time">最近更新:<time title="2014-09-02 19:09:17"datetime="2014-09-02 19:09:17"> 9月 2 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/08/30/mysql-date-function/#comments" class="ds-thread-count comment-link" data-thread-key="mysql-date-function" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-
 
 
 <ul id="pagination" class="pagination pagination-lg">
@@ -800,7 +480,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 17:34:35</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-26 16:26:55</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

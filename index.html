@@ -99,6 +99,74 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/26/linux-bash-bug/">linux GNU Bash 系统漏洞修复</a></h1>
+      
+        <span>发表于<time datetime="2014-09-26T07:54:00.000Z"> <a href="/2014/09/26/linux-bash-bug/">9月 26 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>日前Linux官方内置Bash中新发现一个非常严重安全漏洞（<a href="https://access.redhat.com/security/cve/CVE-2014-6271" target="_blank">漏洞参考</a>），黑客可以利用该Bash漏洞完全控制目标<br>系统并发起攻击。目前解决办法是Linux官方提供的解决办法，针对此漏洞Linux官方解决办法仍然有可能会被绕过，后续我会提供较为彻底的解决办法。</p>
+<h3 id="已确认被成功利用的软件及系统">已确认被成功利用的软件及系统</h3>
+<p>所有安装GNU bash 版本小于或者等于4.3的Linux操作系统。</p>
+<h3 id="漏洞描述">漏洞描述</h3>
+<p>该漏洞源于你调用的bash shell之前创建的特殊的环境变量，这些变量可以包含代码，<br>同时会被bash执行。利用该漏洞，黑客可以远程窃取服务器上的信息，并进一步控制服务器</p>
+<h3 id="漏洞检测方法">漏洞检测方法</h3>
+<pre><code><span class="keyword">env</span> x=<span class="string">'() { :;}; echo vulnerable'</span> bash -c <span class="string">"echo this is a test"</span>
+</code></pre><p>如果出现：</p>
+<pre><code>vulnerable   
+<span class="keyword">this</span> <span class="keyword">is</span> a test  
+</code></pre><h3 id="修补方案">修补方案</h3>
+<p><strong>centos:</strong><br>ftp://ftp.cwru.edu/pub/bash/bash-4.3.tar.gz<br>ftp://ftp.gnu.org/pub/gnu/bash/bash-4.3.tar.gz</p>
+<p><strong>ubuntu:</strong><br>14.04 64bit</p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_amd64.deb &amp;&amp; dpkg -i bash_4.3-7ubuntu1.1_amd64.deb</span>
+</code></pre><p>14.04 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_i386.deb &amp;&amp; dpkg -i  bash_4.3-7ubuntu1.1_i386.deb</span>
+</code></pre><p>12.04 64bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.2-2ubuntu2.2_amd64.deb &amp;&amp; dpkg -i  bash_4.2-2ubuntu2.2_amd64.deb </span>
+</code></pre><p>12.04 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.2-2ubuntu2.2_i386.deb &amp;&amp; dpkg -i  bash_4.2-2ubuntu2.2_i386.deb </span>
+</code></pre><p>10.× 64bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-2ubuntu3.1_amd64.deb &amp;&amp; dpkg -i bash_4.1-2ubuntu3.1_amd64.deb </span>
+</code></pre><p>10.× 32bit</p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-2ubuntu3.1_i386.deb &amp;&amp; dpkg -i bash_4.1-2ubuntu3.1_i386.deb </span>
+</code></pre><p><strong>debian:</strong></p>
+<p>7.5 64bit &amp;&amp; 32bit </p>
+<pre><code>apt<span class="attribute">-get</span> <span class="attribute">-y</span> install <span class="subst">--</span>only<span class="attribute">-upgrade</span> bash 
+</code></pre><p>6.0.x 64bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-3+deb6u1_amd64.deb &amp;&amp;  dpkg -i bash_4.1-3+deb6u1_amd64.deb  </span>
+</code></pre><p>6.0.x 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-3+deb6u1_i386.deb &amp;&amp;  dpkg -i bash_4.1-3+deb6u1_i386.deb  </span>
+</code></pre><p><strong>opensuse</strong><br>13.1 64bit  </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash-4.2-68.4.1.x86_64.rpm &amp;&amp; rpm -Uvh bash-4.2-68.4.1.x86_64.rpm </span>
+</code></pre><p>13.1 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash-4.2-68.4.1.i586.rpm &amp;&amp; rpm -Uvh bash-4.2-68.4.1.i586.rpm </span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/Bash/" class="label label-success" itemprop="url"><span itemprop="title">Bash</span></a><a href="/tags/系统漏洞/" class="label label-info" itemprop="url"><span itemprop="title">系统漏洞</span></a></span> | <span class="time">最近更新:<time title="2014-09-26 16:24:42"datetime="2014-09-26 16:24:42"> 9月 26 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/26/linux-bash-bug/#comments" class="ds-thread-count comment-link" data-thread-key="linux-bash-bug" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+
+  <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/09/22/culture-ideal-collect/">一张图，一棵树，六种人，六载人生</a></h1>
       
         <span>发表于<time datetime="2014-09-22T09:25:00.000Z"> <a href="/2014/09/22/culture-ideal-collect/">9月 22 2014</a></time></span>      
@@ -503,61 +571,6 @@ fs<span class="preprocessor">.aio</span>-max-nr = <span class="number">1048576</
 
 
 
-  <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/09/10/java-c3p0-configurationl/">c3p0数据库连接池配置</a></h1>
-      
-        <span>发表于<time datetime="2014-09-10T06:23:00.000Z"> <a href="/2014/09/10/java-c3p0-configurationl/">9月 10 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>使用java操作数据库时，都会想到使用数据库连接池，而c3p0是比较早的数据库连接池库，配置好数据源你只要从其中获取数据库连接，关闭连接就可以，其中关闭连接并未真正关闭，而是等到过了最大空闲时间才会关闭。</p>
-<h3 id="官方文档">官方文档</h3>
-<p><a href="http://www.mchange.com/projects/c3p0/index.html" target="_blank">http://www.mchange.com/projects/c3p0/index.html</a><br><img src="http://haozi520.u.qiniudn.com/20140910145039.png" alt=""></p>
-<h3 id="参数说明">参数说明</h3>
-<p><strong>acquireIncrement：</strong><br>当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3<br><strong>acquireRetryAttempts：</strong><br>定义在从数据库获取新连接失败后重复尝试的次数。<br>Default: 30<br><strong>acquireRetryDelay：</strong><br>两次连接中间隔时间，单位毫秒。Default: 1000<br><strong>autoCommitOnClose：</strong><br>连接关闭时默认将所有未提交的操作回滚。Default: false<br><strong>automaticTestTable：</strong><br>c3p0将建一张名为Test的空表，并使用其自带的查询语句进行测试。如果定义了这个参数那么属性preferredTestQuery将被忽略。你不能在这张Test表上进行任何操作，它将只供c3p0测试使用。Default: null<br><strong>breakAfterAcquireFailure：</strong><br>获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。但是数据源仍有效保留，并在下次调用getConnection()的时候继续尝试获取连接。如果设为true，那么在尝试获取连接失败后该数据源将申明已断开并永久关闭。Default: false<br><strong>checkoutTimeout：</strong><br>当连接池用完时客户端调用getConnection()后等待获取新连接的时间，<br>超时后将抛出SQLException,如设为0则无限期等待。单位毫秒。Default: 0<br><strong>connectionTesterClassName：</strong><br>通过实现ConnectionTester或QueryConnectionTester的类来测试连接。类名需制定全路径。Default: com.mchange.v2.c3p0.impl.DefaultConnectionTester<br><strong>factoryClassLocation：</strong><br>指定c3p0 libraries的路径，如果（通常都是这样）<br>在本地即可获得那么无需设置，默认null即可，Default: null<br><strong>forceIgnoreUnresolvedTransactions：</strong><br>作者强烈建议不使用的一个属性<br><strong>idleConnectionTestPeriod：</strong><br>每60秒检查所有连接池中的空闲连接。Default: 0<br><strong>initialPoolSize：</strong><br>初始化时获取三个连接，取值应在minPoolSize与maxPoolSize之间。Default: 3<br><strong>maxIdleTime：</strong><br>最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0<br><strong>maxPoolSize：</strong><br>连接池中保留的最大连接数。Default: 15<br><strong>maxStatements：</strong><br>JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。但由于预缓存的statements属于单个connection而不是整个连接池。所以设置这个参数需要考虑到多方面的因素。如果maxStatements与maxStatementsPerConnection均为0，则缓存被关闭。Default: 0<br><strong>maxStatementsPerConnection：</strong><br>maxStatementsPerConnection定义了连接池内单个连接所拥有的最大缓存statements数。Default: 0<br><strong>numHelperThreads：</strong><br>c3p0是异步操作的，缓慢的JDBC操作通过帮助进程完成。扩展这些操作可以有效的提升性能通过多线程实现多个操作同时被执行。Default: 3<br><strong>overrideDefaultUser：</strong><br>当用户调用getConnection()时使root用户成为去获取连接<br>的用户。主要用于连接池连接非c3p0的数据源时。Default: null<br><strong>overrideDefaultPassword：</strong><br>与overrideDefaultUser参数对应使用的一个参数。<br>Default: null<br><strong>password：</strong><br>密码。Default: null<br><strong>preferredTestQuery：</strong><br>定义所有连接测试都执行的测试语句。在使用连接测试的情况下这个一显著提高测试速度。select id from test where id=1 注意：<br>测试的表必须在初始数据源的时候就存在。Default: null<br><strong>propertyCycle：</strong><br>用户修改系统配置参数执行前最多等待300秒。Default: 300<br><strong>testConnectionOnCheckout：</strong><br>因性能消耗大请只在需要的时候使用它。如果设为true那么在每个connection提交的<br>时候都将校验其有效性。建议使用idleConnectionTestPeriod或automaticTestTable<br>等方法来提升连接测试的性能。Default: false<br><strong>testConnectionOnCheckin：</strong><br>如果设为true那么在取得连接的同时将校验连接的有效性。Default: false<br><strong>user：</strong><br>用户名。Default: null<br><strong>usesTraditionalReflectiveProxies：</strong><br>早期的c3p0版本对JDBC接口采用动态反射代理。在早期版本用途广泛的情况下这个参数<br>允许用户恢复到动态反射代理以解决不稳定的故障。最新的非反射代理更快并且已经开始<br>广泛的被使用，所以这个参数未必有用。现在原先的动态反射与新的非反射代理同时受到<br>支持，但今后可能的版本可能不支持动态反射代理。Default: false</p>
-<h3 id="配置项">配置项</h3>
-<pre><code>jdbc<span class="preprocessor">.driverClass</span>=<span class="keyword">com</span><span class="preprocessor">.mysql</span><span class="preprocessor">.jdbc</span><span class="preprocessor">.Driver</span>
-jdbc<span class="preprocessor">.jdbcUrl</span> = jdbc:mysql://localhost:<span class="number">3333</span>/panghaowang
-jdbc<span class="preprocessor">.user</span> = phroot
-jdbc<span class="preprocessor">.password</span> = <span class="number">123456</span>
-jdbc<span class="preprocessor">.miniPoolSize</span> = <span class="number">2</span>
-jdbc<span class="preprocessor">.maxPoolSize</span> = <span class="number">60</span>
-jdbc<span class="preprocessor">.initialPoolSize</span> =<span class="number">2</span>
-jdbc<span class="preprocessor">.maxIdleTime</span> = <span class="number">25000</span>
-jdbc<span class="preprocessor">.acquireIncrement</span> = <span class="number">2</span>
-
-jdbc<span class="preprocessor">.acquireRetryAttempts</span> = <span class="number">30</span>
-jdbc<span class="preprocessor">.acquireRetryDelay</span> = <span class="number">1000</span>
-jdbc<span class="preprocessor">.testConnectionOnCheckin</span> = true
-jdbc<span class="preprocessor">.automaticTestTable</span> = tb_test
-jdbc<span class="preprocessor">.idleConnectionTestPeriod</span> = <span class="number">18000</span>
-jdbc<span class="preprocessor">.checkoutTimeout</span>=<span class="number">3000</span>
-</code></pre>
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/java/" itemprop="url"><span itemprop="title" >java</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/java/" class="label label-primary" itemprop="url"><span itemprop="title">java</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a><a href="/tags/c3p0/" class="label label-info" itemprop="url"><span itemprop="title">c3p0</span></a><a href="/tags/数据库连接池/" class="label label-warning" itemprop="url"><span itemprop="title">数据库连接池</span></a></span> | <span class="time">最近更新:<time title="2014-09-10 15:20:15"datetime="2014-09-10 15:20:15"> 9月 10 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/09/10/java-c3p0-configurationl/#comments" class="ds-thread-count comment-link" data-thread-key="java-c3p0-configurationl" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-
 
 
 <ul id="pagination" class="pagination pagination-lg">
@@ -652,7 +665,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 17:34:35</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-26 16:26:55</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

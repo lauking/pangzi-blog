@@ -103,6 +103,74 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/06/09/Golang环境变量及工作空间配置/">Golang环境变量及工作空间配置</a></h1>
+      
+        <span>发表于<time datetime="2014-06-09T09:20:12.000Z"> <a href="/2014/06/09/Golang环境变量及工作空间配置/">6月 9 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>最近看到很多文章关于GO环境的配置，那么go需要配置哪些环境变量呢？根据官方文档GOPATH,GOROOT,GOBIN,GOOS的go环境变量配置</p>
+<h3 id="说明">说明</h3>
+<p>GOROOT go的安装目录<br>GOBIN go安装目录下的bin目录，里面有可执行的程序<br>GOOS  这个变量是在编译代码时使用的<br>GOPATH 开发的工作目录<br><em>（注：这个不是Go安装目录）</em></p>
+<h3 id="下载安装包">下载安装包</h3>
+<p>windows默认安装在C:\go<br>linux和UNIX之类系统可指定安装目录</p>
+<h3 id="windows下配置">windows下配置</h3>
+<p>在环境变量中新建<br>GOROOT = C:\go<br>GOBIN = C:\go\bin<br>GOPATH = E:\workcode\golang<br>并在PATH中添加 %GOBIN%;%GOPATH%</p>
+<p><img src="http://haozi520.u.qiniudn.com/20140609160405.png" alt=""></p>
+<h3 id="linux和UNIX下配">linux和UNIX下配</h3>
+<h4 id="编辑用户目录下的-bashrc文件(其他用户无权操作)">编辑用户目录下的.bashrc文件(其他用户无权操作)</h4>
+<p>在文件末尾添加如下语句<br>export GOROOT = $home/go<br>export GOBIN = $GOROOT/bin<br>export GOPATH = $home/app/mygo<br>export PATH = $PATH:$GOBIN:$GOPATH</p>
+<p><em>编辑完后执行：source .bashrc 是环境变量生效</em></p>
+<h4 id="编辑/etc/profile文件">编辑/etc/profile文件</h4>
+<p>在文件末尾添加如下语句<br>export GOROOT = $home/go<br> export GOBIN = $GOROOT/bin<br> export GOPATH = $home/app/mygo<br> export PATH = $PATH:$GOBIN:$GOPATH</p>
+<p><em>编辑完后执行：source /etc/profile 是环境变量生效</em></p>
+<h3 id="创建工作空间">创建工作空间</h3>
+<p>在设定的GOPATH路径下创建三个目录：<br> src 存放源代码（比如：.go .c .h .s等）<br> pkg 编译后生成的文件（比如：.a）<br> bin 编译后生成的可执行文件（为了方便，可以把此目录加入到 $PATH 变量中）</p>
+<h3 id="应用结构目录">应用结构目录</h3>
+<p>建立包和目录：$GOPATH/src/mymath/sqrt.go(包名：mymath)</p>
+<p>以后自己新建应用或者一个代码包都是在src目录下新建一个文件夹，文件夹名称一般是代码包名称，当然也允许多级目录.</p>
+<pre><code>例如在src下面新建了目录
+$GOPATH/src/github<span class="preprocessor">.com</span>/lauking/blog, 
+那么这个包路径就是“/github<span class="preprocessor">.com</span>/lauking/blog ”，
+包名称是最后一个目录blog
+</code></pre><p>执行如下代码 sh cd $GOPATH/src mkdir mymath 新建文件sqrt.go，内容如下 </p>
+<pre><code><span class="keyword">go</span> <span class="comment">//</span>
+$GOPATH/src/mymath/sqrt.<span class="keyword">go</span>源码如下： <span class="keyword">package</span> mymath
+<span class="keyword">func</span> Sqrt(x <span class="typename">float64</span>) <span class="typename">float64</span> {
+    z :=<span class="number"> 0.0</span>
+    <span class="keyword">for</span> i :=<span class="number"> 0</span>; i &lt;<span class="number"> 1000</span>; i++ {
+        z -= (z*z - x) / <span class="number">(2</span> * x)
+    }
+    <span class="keyword">return</span> z
+}
+</code></pre><p>这样我的应用包目录和代码已经新建完毕，注意：一般建议package的名称和目录名保持一致</p>
+
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/go/" itemprop="url"><span itemprop="title" >go</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/go/" class="label label-primary" itemprop="url"><span itemprop="title">go</span></a><a href="/tags/golang/" class="label label-success" itemprop="url"><span itemprop="title">golang</span></a></span> | <span class="time">最近更新:<time title="2014-06-11 15:29:32"datetime="2014-06-11 15:29:32"> 6月 11 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/06/09/Golang环境变量及工作空间配置/#comments" class="ds-thread-count comment-link" data-thread-key="Golang环境变量及工作空间配置" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/06/07/从叛逆者到大英雄-孙悟空个性心理分析/">从叛逆者到大英雄：孙悟空个性心理分析</a></h1>
       
         <span>发表于<time datetime="2014-06-07T09:20:12.000Z"> <a href="/2014/06/07/从叛逆者到大英雄-孙悟空个性心理分析/">6月 7 2014</a></time></span>      
@@ -461,44 +529,6 @@ north           NO      Margot Weber        <span class="number">4.5</span>     
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/06/05/常看色情片会让大脑萎缩/">常看色情片会让大脑萎缩？</a></h1>
-      
-        <span>发表于<time datetime="2014-06-05T10:29:12.000Z"> <a href="/2014/06/05/常看色情片会让大脑萎缩/">6月 5 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>在<a href="http://www.guokr.com/article/438551/" target="_blank">果壳网</a>上看到这篇文章<br>根据德国一项最新研究，观看大量色情影片的人，其大脑负责奖励和动机的区域体积可能会更小，活跃程度也会更弱。研究论文刊登在《美国医学会杂志-精神病学》（JAMA Psychiatry）期刊上。</p>
-<p>来自德国柏林普朗克学会人类发展研究所的西蒙妮·库恩（Simone Kühn）博士，以及柏林查理特医科大学的尤尔根·加利纳特（Jurgen Gallinat）共同进行了这项研究。他们对64名21岁至45岁的健康男性进行了调查，调查内容包括了他们观看色情影片的习惯等问题。同时，研究者还利用核磁共振成像技术测量了参与者的脑部容量，并观察了他们大脑对色情图像的反应。结果发现，与完全不看色情影片或图像的男人相比，经常观看这类作品的男性脑部会出现明显的变化。</p>
-<p>库恩博士指出：“我们发现看色情影片越多的人，其纹状体（大脑中与奖赏反应机制和动机性行为有关的区域）体积也越小。”她还补充道：“此外也发现，更常看色情影片的人，其纹状体的另一块会对性刺激做出反应的区域比较不活跃。”研究者还发现，纹状体和前额叶皮质（大脑外层与身体行为和决策相关的区域）的连接会因观看色情影片时间的增加而变差。</p>
-<p>不过，这项研究并不能证明色情影片会导致大脑的改变。库恩博士指出，观看色情影片是否真正有害还不能得出结论。研究并没有显示观看色情影片就能导致脑容量和活跃度的减少。“因为实际上目前尚不清楚，究竟是由于看色情影片会导致大脑变化，还是天生拥有某种类型大脑的人，会更经常看色情影片。”库恩博士解释道，“很不幸，我们基于目前的研究结果仍不能回答这一问题。” 不过她表示，研究结果是首次阐释了观看色情片与脑容量的减小，以及大脑对性刺激的反应减弱之间的关系。</p>
-<p>对于这项研究结果，哥伦比亚大学纽约州精神病理学院的格里高利·陶（Gregory Tau）博士则评论说：“凡事过量都不好，况且能适可而止并不可怕。”陶并没有参与这项研究，他认为在这方面应该要做更多的研究工作，而得出是否色情影片会导致大脑的变化将需要长期的研究。“有可能是有些人拥有某种大脑而更容易受到这类行为影响，”他说，“或者是，过量观看色情影片使得引起大脑的变化。或者，也可以是两者都对。”另外库恩耶表示，其他行为比如驾驶出租车等，都与改变脑体积大小和功能相关。他表示：“人们经常做的事情基本上都可以塑造他们的大脑结构和功能。”（编辑：<a href="http://www.guokr.com/i/0108968453/" target="_blank">球藻怪</a>）<br><img src="http://haozi520.u.qiniudn.com/20140607145012.png" alt="好了，大家可以继续放心地看“电脑桌面”了。图片来源：fhm.com.tw"></p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/收藏/" itemprop="url"><span itemprop="title" >收藏</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/收藏/" class="label label-primary" itemprop="url"><span itemprop="title">收藏</span></a><a href="/tags/杂七杂八/" class="label label-success" itemprop="url"><span itemprop="title">杂七杂八</span></a></span> | <span class="time">最近更新:<time title="2014-06-07 14:56:25"datetime="2014-06-07 14:56:25"> 6月 7 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/06/05/常看色情片会让大脑萎缩/#comments" class="ds-thread-count comment-link" data-thread-key="常看色情片会让大脑萎缩" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
   <li><a class="extend prev" href="/archives/page/5/">&laquo;</a></li><li><a class="page-number" href="/archives/">1</a></li><li><a class="page-number" href="/archives/page/2/">2</a></li><li><a class="page-number" href="/archives/page/3/">3</a></li><li><a class="page-number" href="/archives/page/4/">4</a></li><li><a class="page-number" href="/archives/page/5/">5</a></li><li class="active"><li><span class="page-number current">6</span></li></li><li><a class="page-number" href="/archives/page/7/">7</a></li><li><a class="page-number" href="/archives/page/8/">8</a></li><li><a class="page-number" href="/archives/page/9/">9</a></li><li><a class="extend next" href="/archives/page/7/">&raquo;</a></li>
@@ -592,7 +622,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 17:34:35</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-26 16:26:54</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>

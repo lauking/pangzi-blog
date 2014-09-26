@@ -103,6 +103,74 @@
   <div class="post-content">
     <header class="well-sm">
       <i class="fa icon fa-5x pull-left"></i>
+      <h1 class="title"><a href="/2014/09/26/linux-bash-bug/">linux GNU Bash 系统漏洞修复</a></h1>
+      
+        <span>发表于<time datetime="2014-09-26T07:54:00.000Z"> <a href="/2014/09/26/linux-bash-bug/">9月 26 2014</a></time></span>      
+    </header>
+    
+    
+    <div class="entry">
+      
+        <p>日前Linux官方内置Bash中新发现一个非常严重安全漏洞（<a href="https://access.redhat.com/security/cve/CVE-2014-6271" target="_blank">漏洞参考</a>），黑客可以利用该Bash漏洞完全控制目标<br>系统并发起攻击。目前解决办法是Linux官方提供的解决办法，针对此漏洞Linux官方解决办法仍然有可能会被绕过，后续我会提供较为彻底的解决办法。</p>
+<h3 id="已确认被成功利用的软件及系统">已确认被成功利用的软件及系统</h3>
+<p>所有安装GNU bash 版本小于或者等于4.3的Linux操作系统。</p>
+<h3 id="漏洞描述">漏洞描述</h3>
+<p>该漏洞源于你调用的bash shell之前创建的特殊的环境变量，这些变量可以包含代码，<br>同时会被bash执行。利用该漏洞，黑客可以远程窃取服务器上的信息，并进一步控制服务器</p>
+<h3 id="漏洞检测方法">漏洞检测方法</h3>
+<pre><code><span class="keyword">env</span> x=<span class="string">'() { :;}; echo vulnerable'</span> bash -c <span class="string">"echo this is a test"</span>
+</code></pre><p>如果出现：</p>
+<pre><code>vulnerable   
+<span class="keyword">this</span> <span class="keyword">is</span> a test  
+</code></pre><h3 id="修补方案">修补方案</h3>
+<p><strong>centos:</strong><br>ftp://ftp.cwru.edu/pub/bash/bash-4.3.tar.gz<br>ftp://ftp.gnu.org/pub/gnu/bash/bash-4.3.tar.gz</p>
+<p><strong>ubuntu:</strong><br>14.04 64bit</p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_amd64.deb &amp;&amp; dpkg -i bash_4.3-7ubuntu1.1_amd64.deb</span>
+</code></pre><p>14.04 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.3-7ubuntu1.1_i386.deb &amp;&amp; dpkg -i  bash_4.3-7ubuntu1.1_i386.deb</span>
+</code></pre><p>12.04 64bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.2-2ubuntu2.2_amd64.deb &amp;&amp; dpkg -i  bash_4.2-2ubuntu2.2_amd64.deb </span>
+</code></pre><p>12.04 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.2-2ubuntu2.2_i386.deb &amp;&amp; dpkg -i  bash_4.2-2ubuntu2.2_i386.deb </span>
+</code></pre><p>10.× 64bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-2ubuntu3.1_amd64.deb &amp;&amp; dpkg -i bash_4.1-2ubuntu3.1_amd64.deb </span>
+</code></pre><p>10.× 32bit</p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-2ubuntu3.1_i386.deb &amp;&amp; dpkg -i bash_4.1-2ubuntu3.1_i386.deb </span>
+</code></pre><p><strong>debian:</strong></p>
+<p>7.5 64bit &amp;&amp; 32bit </p>
+<pre><code>apt<span class="attribute">-get</span> <span class="attribute">-y</span> install <span class="subst">--</span>only<span class="attribute">-upgrade</span> bash 
+</code></pre><p>6.0.x 64bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-3+deb6u1_amd64.deb &amp;&amp;  dpkg -i bash_4.1-3+deb6u1_amd64.deb  </span>
+</code></pre><p>6.0.x 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash_4.1-3+deb6u1_i386.deb &amp;&amp;  dpkg -i bash_4.1-3+deb6u1_i386.deb  </span>
+</code></pre><p><strong>opensuse</strong><br>13.1 64bit  </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash-4.2-68.4.1.x86_64.rpm &amp;&amp; rpm -Uvh bash-4.2-68.4.1.x86_64.rpm </span>
+</code></pre><p>13.1 32bit </p>
+<pre><code><span class="array">#wget http</span>:<span class="comment">//download.wx.51idc.com:8000/hotfix/bash-4.2-68.4.1.i586.rpm &amp;&amp; rpm -Uvh bash-4.2-68.4.1.i586.rpm </span>
+</code></pre>
+      
+    </div>
+    
+    
+      
+    
+    
+        <footer id="post-meta">
+        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/linux/" class="label label-primary" itemprop="url"><span itemprop="title">linux</span></a><a href="/tags/Bash/" class="label label-success" itemprop="url"><span itemprop="title">Bash</span></a><a href="/tags/系统漏洞/" class="label label-info" itemprop="url"><span itemprop="title">系统漏洞</span></a></span> | <span class="time">最近更新:<time title="2014-09-26 16:24:42"datetime="2014-09-26 16:24:42"> 9月 26 2014</time></span> | <span class="comment-link">
+<a href="http://www.haozi520.com/2014/09/26/linux-bash-bug/#comments" class="ds-thread-count comment-link" data-thread-key="linux-bash-bug" data-count-type="comments">暂无评论</a></span>
+        </footer>
+    
+    <div class="clearfix"></div>
+  </div>
+</div>
+</article>
+
+
+  
+    <article>
+<div id="post" class="post well">
+  <div class="post-content">
+    <header class="well-sm">
+      <i class="fa icon fa-5x pull-left"></i>
       <h1 class="title"><a href="/2014/09/22/linux-nginx-something-operating/">Nginx配置日志、Location、Rewrite的语法</a></h1>
       
         <span>发表于<time datetime="2014-09-22T02:30:00.000Z"> <a href="/2014/09/22/linux-nginx-something-operating/">9月 22 2014</a></time></span>      
@@ -508,87 +576,6 @@ fs<span class="preprocessor">.aio</span>-max-nr = <span class="number">1048576</
 
 
   
-    <article>
-<div id="post" class="post well">
-  <div class="post-content">
-    <header class="well-sm">
-      <i class="fa icon fa-5x pull-left"></i>
-      <h1 class="title"><a href="/2014/08/31/linux-nginx-setup/">nginx在linux下的安装</a></h1>
-      
-        <span>发表于<time datetime="2014-08-31T02:23:00.000Z"> <a href="/2014/08/31/linux-nginx-setup/">8月 31 2014</a></time></span>      
-    </header>
-    
-    
-    <div class="entry">
-      
-        <p>学好nginx，在linux下安装nginx是关键，动手自己配置才是最好的学习方法，今天我来编安装变记录安装的步骤:</p>
-<h3 id="下载nginx安装包">下载nginx安装包</h3>
-<p>到<a href="http://nginx.org/en/download.html" target="_blank">nginx官网</a>下载,下载稳定版（Stable Version）</p>
-<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># wget http://nginx.org/download/nginx-1.6.1.tar.gz</span>
-</code></pre><h3 id="解压">解压</h3>
-<p>使用linux解压命令tar</p>
-<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf nginx-1.6.1.tar.gz</span>
-[root<span class="variable">@localhost</span> download]<span class="comment"># cd nginx-1.6.1</span>
-[root<span class="variable">@localhost</span> nginx-<span class="number">1.6</span>.<span class="number">1</span>]<span class="comment"># ./configure </span>
-</code></pre><p>执行./configure命令时会报 gcc、ssl、rewrite、gzip 模块需要依赖库<br><strong>gcc</strong>     只要在linux执行yum install -y gcc-c++ 即可安装<br><strong>gzip</strong>    模块需要 <a href="http://zlib.net/zlib-1.2.8.tar.gz" target="_blank">zlib</a>库<br><strong>rewrite</strong> 模块需要 <a href="http://jaist.dl.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz" target="_blank">pcre</a>库<br><strong>ssl</strong>     功能需要 <a href="http://www.openssl.org/source/openssl-fips-2.0.5.tar.gz" target="_blank">openssl</a>库</p>
-<p><strong>下载依赖库</strong></p>
-<pre><code><span class="array"># wget http</span>:<span class="comment">//www.openssl.org/source/openssl-fips-2.0.5.tar.gz</span>
-<span class="array"># wget http</span>:<span class="comment">//zlib.net/zlib-1.2.8.tar.gz</span>
-<span class="array"># wget http</span>:<span class="comment">//jaist.dl.sourceforge.net/project/pcre/pcre/8.35/pcre-8.35.tar.gz</span>
-</code></pre><p>依次安装openssl-fips-2.0.5.tar.gz、zlib-1.2.8.tar.gz、pcre-8.35.tar.gz、nginx-1.6.1.tar.gz</p>
-<h3 id="安装">安装</h3>
-<p><strong>安装openssl-fips-2.0.5.tar.gz</strong></p>
-<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf openssl-fips-2.0.5.tar.gz</span>
-[root<span class="variable">@localhost</span> download]<span class="comment"># cd openssl-fips-2.0.5</span>
-[root<span class="variable">@localhost</span> openssl-fips-<span class="number">2.0</span>.<span class="number">5</span>]<span class="comment"># ./config</span>
-[root<span class="variable">@localhost</span> openssl-fips-<span class="number">2.0</span>.<span class="number">5</span>]<span class="comment"># make &amp;&amp; make install</span>
-</code></pre><p><strong>安装zlib-1.2.8.tar.gz</strong></p>
-<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf zlib-1.2.8.tar.gz</span>
-[root<span class="variable">@localhost</span> download]<span class="comment"># cd  zlib-1.2.8</span>
-[root<span class="variable">@localhost</span> zlib-<span class="number">1.2</span>.<span class="number">8</span>]<span class="comment"># ./configure</span>
-[root<span class="variable">@localhost</span> zlib-<span class="number">1.2</span>.<span class="number">8</span>]<span class="comment"># make &amp;&amp; make install</span>
-</code></pre><p><strong>安装pcre-8.35.tar.gz</strong></p>
-<pre><code>[root<span class="variable">@localhost</span> download]<span class="comment"># tar xvf pcre-8.35.tar.gz</span>
-[root<span class="variable">@localhost</span> download]<span class="comment"># cd pcre-8.35</span>
-[root<span class="variable">@localhost</span> pcre-<span class="number">8.35</span>]<span class="comment"># ./configure</span>
-</code></pre><p><strong>继续安装nginx</strong> </p>
-<pre><code>[root<span class="keyword">@localhost</span> download]#root<span class="keyword">@localhost</span> nginx-<span class="number">1.6</span>.1]# ./configure --<span class="keyword">with</span>-pcre=../pcre-<span class="number">8.35</span> --<span class="keyword">with</span>-zlib=../zlib-<span class="number">1.2</span>.8 --<span class="keyword">with</span>-openssl=../openssl-fips-<span class="number">2.0</span>.5
-[root<span class="keyword">@localhost</span> nginx-<span class="number">1.6</span>.1]# make &amp;&amp; make install
-</code></pre><h3 id="检测是否安装成功">检测是否安装成功</h3>
-<pre><code>[root@localhost nginx-<span class="number">1.6</span><span class="number">.1</span>]<span class="comment"># cd /usr/local/nginx/sbin/</span>
-[root@localhost sbin]<span class="comment"># ./nginx -t</span>
-nginx: <span class="keyword">the</span> configuration <span class="type">file</span> /usr/<span class="keyword">local</span>/nginx/conf/nginx.conf syntax <span class="keyword">is</span> ok
-nginx: configuration <span class="type">file</span> /usr/<span class="keyword">local</span>/nginx/conf/nginx.conf test <span class="keyword">is</span> successful
-[root@localhost sbin]<span class="comment"># </span>
-</code></pre><p>出现上面提示说明安装成功<br><strong>启动nginx：</strong></p>
-<pre><code>[root<span class="variable">@localhost</span> sbin]<span class="comment"># ./nginx </span>
-</code></pre><p><strong>查看端口：</strong></p>
-<pre><code>[root<span class="variable">@localhost</span> sbin]<span class="comment"># netstat -ntlp</span>
-<span class="constant">Active</span> <span class="constant">Internet</span> connections (only servers)
-<span class="constant">Proto</span> <span class="constant">Recv</span>-<span class="constant">Q</span> <span class="constant">Send</span>-<span class="constant">Q</span> <span class="constant">LocalAddress</span> <span class="constant">ForeignAddress</span> <span class="constant">State</span>  <span class="constant">PID</span>/<span class="constant">Program</span> name   
-tcp   <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:</span><span class="number">80</span>   <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:*</span>      <span class="constant">LISTEN</span> <span class="number">19160</span>/nginx      
-tcp   <span class="number">0</span>      <span class="number">0</span>      <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:</span><span class="number">22</span>     <span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span>.<span class="number">0</span><span class="symbol">:*</span>    <span class="constant">LISTEN</span> <span class="number">988</span>/sshd    
-</code></pre><p>说明安装成功<br>打开浏览器访问:<a href="http://192.168.1.180,出现如下图" target="_blank">http://192.168.1.180,出现如下图</a><br><img src="http://haozi520.u.qiniudn.com/20140903134527.png" alt=""></p>
-
-      
-    </div>
-    
-    
-      
-    
-    
-        <footer id="post-meta">
-        <div class="categories"style="display:inline">归类<span class="breadcrumb fa fa-folder"><li><a href="/categories/linux/" itemprop="url"><span itemprop="title" >linux</span></a></li></span></div> | <span class="tags">标签 <a href="/tags/nginx/" class="label label-primary" itemprop="url"><span itemprop="title">nginx</span></a><a href="/tags/有技术/" class="label label-success" itemprop="url"><span itemprop="title">有技术</span></a></span> | <span class="time">最近更新:<time title="2014-09-03 13:49:40"datetime="2014-09-03 13:49:40"> 9月 3 2014</time></span> | <span class="comment-link">
-<a href="http://www.haozi520.com/2014/08/31/linux-nginx-setup/#comments" class="ds-thread-count comment-link" data-thread-key="linux-nginx-setup" data-count-type="comments">暂无评论</a></span>
-        </footer>
-    
-    <div class="clearfix"></div>
-  </div>
-</div>
-</article>
-
-
-  
   
 <ul id="pagination" class="pagination pagination-lg">
   <li class="active"><li><span class="page-number current">1</span></li></li><li><a class="page-number" href="/categories/linux/page/2/">2</a></li><li><a class="extend next" href="/categories/linux/page/2/">&raquo;</a></li>
@@ -682,7 +669,7 @@ var _hmt = _hmt || [];
 _js2load.push({src:"//hm.baidu.com/hm.js?8cbf5d471febc9fcb33de05542ef075a"});
 </script>
 </span>  </div>
-  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-22 17:34:35</em></span></div>
+  <div id="copyright">Blog powered by <a href='http://hexo.io/'  title="本站由hexo V2.6.0 生成"><strong>hexo</strong></a> Theme <strong><a href='https://github.com/chenall/hexo-theme-chenall'>chenall V2.0</a></strong><span class="pull-right"> 更新时间: <em>2014-09-26 16:26:55</em></span></div>
 </div>
 <div class="clearfix"></div>
   </div>
